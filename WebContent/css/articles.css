@@ -1,0 +1,166 @@
+html, body {
+	font-family: Verdana, Arial;
+	font-size: 16px;
+	height: 100%;
+	min-height: 100%;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+a {
+	text-decoration: none;
+}
+
+/* Page styling */
+
+#container {
+	width: 100%;
+	height: 100%;
+}
+
+/* Head section + buttons */
+.head {
+	width: 100%;
+	border-bottom: 2px solid #333;
+	min-height: 35px;
+	padding: 15px 0px;
+}
+
+#btn-logout {
+	display: inline-block;
+	float: right;
+	padding: 7px 15px;
+	border-radius: 5px;
+	margin-right: 10%;
+}
+
+.main-btns {
+	list-style-type: none;
+	margin-left: 5%;
+}
+
+.main-btns li {
+	float: left;
+	margin-left: 7%;
+}
+
+/* Main section*/
+
+.main {
+	width: 100%;
+	height: 100%;
+}
+
+textarea {
+	resize: none;
+}
+
+
+/* left part */
+
+.statistics {
+	padding-left: 10%;
+	padding-right: 10%;
+	padding-bottom: 25px;
+	border-bottom: 1px solid #333;
+}
+
+#datepicker {
+	width: 60%;
+	display: inline-block;
+	margin-top: 15px;
+	border-radius: 5px;
+	border: 1px solid #00E1FF;
+	padding: 5px;
+}
+
+#btn-statistics {
+	margin-left: 10%;	
+}
+
+.articlesList {
+	width: 35%;
+	height: 100%;
+	padding-top: 25px;
+}
+
+#searchForm {
+	margin: 0% 10%;
+	padding-top: 25px;
+}
+
+#search {
+	width: 95%;
+	display: block;
+	margin-top: 15px;
+	border-radius: 5px;
+	border: 1px solid #00E1FF;
+	padding: 5px;
+}
+
+.list {
+	margin: 0% 10%;
+	padding-top: 35px;
+}
+
+.articles {
+	margin-top: 15px;
+	margin-left: 25px;
+}
+
+.articles li {
+	margin: 10px 0px;
+	font-size: 0.8em;
+}
+
+.articles li a {
+	display: block;
+	color: #555;
+	font-style: italic;
+}
+
+.articles li a:hover {
+	cursor: pointer;
+	color: #d3d3d3;
+}
+
+/* Main body - right part */
+
+.currentArticle {
+	width: 65%;
+	height: 100%;
+	float: right;
+	border-left: 2px solid #333;
+	padding-top: 25px;
+	overflow: hidden;
+}
+
+#article {
+	margin: 0% 10%;
+}
+
+#articleTitle {
+	width: 95%;
+	height: 40px;
+	margin-top: 15px;
+	border-radius: 5px;
+	border: 1px solid #00E1FF;
+	padding: 5px;
+}
+
+.layout-articleContent {
+	margin-top: 35px;
+}
+
+#articleContent {
+	width: 95%;
+	height: 350px;
+	margin-top: 15px;
+	border-radius: 5px;
+	border: 1px solid #00E1FF;
+	padding: 5px;
+}
+
