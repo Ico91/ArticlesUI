@@ -26,6 +26,9 @@ function getArticles(response, userId) {
 
 function error(result) {
 	// TODO : FIX ERROR FLOW
-	console.log("Error ");
-	console.log(result);
+	//console.log("Error ");
+	//console.log(result);
+	
+	var error = $("#error-container");
+	error.html('<p>Wrong username or password</p>');
 }

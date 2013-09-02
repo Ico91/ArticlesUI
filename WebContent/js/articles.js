@@ -148,4 +148,17 @@ function pickDate(datepicker, userId) {
 		console.log("Error ");
 		console.log(result);
 	});
-}
+};
+
+function logout() {
+	var dataToSend = new DataToSend(null, null);
+	request('users/logout', 'POST', dataToSend, function(result) {
+		var url = "http://localhost:8080/ArticlesUI/";    
+		$(location).attr('href',url);
+	}, function(result) {
+		var url = "http://localhost:8080/ArticlesUI/unauthorized.html";    
+		$(location).attr('href',url);
+		//console.log("Error ");
+		//console.log(result);
+	});
+};

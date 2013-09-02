@@ -33,8 +33,11 @@ a {
 	display: inline-block;
 	float: right;
 	padding: 7px 15px;
-	border-radius: 5px;
 	margin-right: 10%;
+	background: #d3d3d3;
+	color: #333;
+	border-radius: 5px;
+	border-color: #333; 
 }
 
 .main-btns {

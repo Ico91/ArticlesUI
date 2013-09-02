@@ -17,6 +17,13 @@ a {
 	margin: 0 auto;
 }
 
+#error-container {
+	width: 800px;
+	padding: 8px;
+	color: #e01B32;
+	margin: 0 auto;
+}
+
 form {
 	margin-top: 200px;
 }
