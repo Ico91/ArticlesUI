@@ -53,11 +53,11 @@ function Articles() {
 			addToArticles(articlesLocal, articleToAdd);
 			article.id = articleToAdd.id; // saved article becomes currently opened, so save it's id
 			listArticles();
-			// TODO: message!
+			confirmDialog("Successfully added an article!");
 			console.log("Article added successfully");
 		},
 		function(result) {
-			// TODO: create error flow
+			confirmDialog("Error while adding an article!");
 			console.log("Error while adding new article!");
 			console.log(result);
 		}); 
@@ -78,10 +78,11 @@ function Articles() {
 		request(relativeURL, 'POST', dataToSend, function(result) {
 			updateArticles(articlesLocal, article);
 			listArticles();
-			// TODO: message!
+			confirmDialog("Successfully updated an article!");
 			console.log("Article updated succesfully!");
 		},
 		function(result) {
+			confirmDialog("Error while updating an article!");
 			// TODO: create error flow
 			// TODO: update local ?!
 			console.log("Error while updating article!");
@@ -97,15 +98,61 @@ function Articles() {
 		request(relativeURL, 'DELETE', dataToSend, function(result) {
 			deleteFromArticles(articlesLocal, article);
 			listArticles();
-			// TODO: message!
+			confirmDialog("Successfully deleted an article!");
 			console.log("Article deleted succesfully!");
 		},
 		function(result) {
 			// TODO: create error flow
 			console.log("Error while deleting article!");
+			console.log("Error while deleting article!");
 			console.log(result);
 		});
 	};
+	
+	function confirmDialog(text) {
+		var confirmHtml = '<div id="dialog" title="Success!">' + text + '</div>';
+		$('.currentArticle').append(confirmHtml);
+		$("#dialog").dialog({
+			resizable: false,
+			closeOnEscape: true,
+			draggable: true,
+			hide: "explode",
+			height: 250,
+			modal: true,
+			buttons: buttons = {
+					"OK": function() {
+						$(this).dialog("close");
+					}
+			}
+		});
+	}
+	
+	/*
+	 * function modalDelete(articles, currentArticle, articleTitleField, articleContentField) {
+	var modalHtml = '<div id="dialog" title="Warning!">Are you sure you want to delete this article?</div>';
+	$('.currentArticle').append(modalHtml);
+	$( "#dialog" ).dialog({
+		resizable: false,
+		closeOnEscape: true,
+		draggable: true,
+		hide: "explode",
+		height:250,
+		modal: true,
+		buttons: buttons = {
+				"Continue": function() {
+					articles.deleteArticle(currentArticle);
+					currentArticle = new Article(null, "", "", true);
+					articleTitleField.val('');
+					articleContentField.val('');
+					$(this).dialog("close");
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}
+	});
+}
+	 */
 	
 	this.getArticles = function() {
 		return this.articles;

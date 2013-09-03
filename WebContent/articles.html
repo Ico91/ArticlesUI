@@ -5,50 +5,40 @@
 <title>Articles</title>
 <link rel="stylesheet" href="css/articles.css">
 <link rel="stylesheet" href="css/tooltips.css">
-<link href="css/ui-darkness/jquery-ui-1.10.3.custom.css" rel="stylesheet">
+<link href="css/ui-darkness/jquery-ui-1.10.3.custom.css"
+	rel="stylesheet">
 <script src="js/jquery-2.0.3.min.js"></script>
 <script src="js/jquery-ui-1.10.3.custom.js"></script>
 </head>
 <body>
 	<div id="container">
 		<div class="head">
-			<a class="tooltip" id="btn-logout">Logout
-				<span class="custom info">
-						<img src="images/Info.png" alt="Info" height="48" width="48" />
-						Log out from the system
-						</span>
+			<a class="tooltip" id="btn-logout">Logout <span
+				class="custom info"> <img src="images/Info.png" alt="Info"
+					height="48" width="48" /> Log out from the system
+			</span>
 			</a>
 			<ul class="main-btns">
-				<li>
-					<a class="tooltip" id="btn-new" >
-						New
-						<span class="custom info">
-						<img src="images/Info.png" alt="Info" height="48" width="48" />
-						Create new article
-						</span>
-					</a>
-				</li>
-				<li>
-					<a href="#" id="btn-save" class="tooltip">
-						Save
-						<span class="custom help">
-						<img src="images/Help.png" alt="Help" height="48" width="48" />
-						Save currently opened article.
-						</span>
-					</a>
-				</li>
-				<li>
-					<a href="#" id="btn-delete" class="tooltip">
-						Delete
-						<span class="custom critical"><img src="images/Critical.png" alt="Error" height="48" width="48" /><em>Attention!</em>Delete currently opened article.</span>
-					</a>
-				</li>
-				<li>
-					<a id="btn-administrator" class="tooltip">
-						Administrator
-						<span class="custom critical"><img src="images/Info.png" alt="Info" height="48" width="48" />Open administrator panel</span>
-					</a>
-				</li>
+				<li><a class="tooltip" id="btn-new"> New <span
+						class="custom info"> <img src="images/Info.png" alt="Info"
+							height="48" width="48" /> Create new article
+					</span>
+				</a></li>
+				<li><a href="#" id="btn-save" class="tooltip"> Save <span
+						class="custom help"> <img src="images/Help.png" alt="Help"
+							height="48" width="48" /> Save currently opened article.
+					</span>
+				</a></li>
+				<li><a href="#" id="btn-delete" class="tooltip"> Delete <span
+						class="custom critical"><img src="images/Critical.png"
+							alt="Error" height="48" width="48" /><em>Attention!</em>Delete
+							currently opened article.</span>
+				</a></li>
+				<li><a id="btn-administrator" class="tooltip">
+						Administrator <span
+						class="custom info"> <img src="images/Info.png" alt="Info"
+							height="48" width="48" />Open administrator panel</span>
+				</a></li>
 			</ul>
 		</div>
 		<div class="main">
@@ -56,26 +46,30 @@
 				<form id="article">
 					<div class="layout-articleTitle">
 						<p>Title:</p>
-						<textarea name="articleTitle" id="articleTitle" cols="30" rows="10"></textarea>
+						<textarea name="articleTitle" id="articleTitle" cols="30"
+							rows="10"></textarea>
 					</div>
 					<div class="layout-articleContent">
 						<p>Content:</p>
-						<textarea name="articleContent" id="articleContent" cols="30" rows="10"></textarea>
+						<textarea name="articleContent" id="articleContent" cols="30"
+							rows="10"></textarea>
 					</div>
 				</form>
 			</div>
 			<div class="articlesList">
 				<div class="statistics">
 					<p>Statistics:</p>
-					<input type="text" id="datepicker" placeholder="Pick a date..."> <a href="#" id="btn-statistics">Check</a>
+					<input type="text" id="datepicker" placeholder="Pick a date...">
+					<a href="#" id="btn-statistics">Check</a>
 				</div>
 				<form id="searchForm">
 					<p>Search:</p>
-					<input type="text" id="search" placeholder="Търсачката още не е напълно функционална !!!">
+					<input type="text" id="search"
+						placeholder="Търсачката още не е напълно функционална !!!">
 				</form>
 				<div class="list">
 					<p>Articles:</p>
-					
+
 				</div>
 			</div>
 		</div>

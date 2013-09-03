@@ -19,9 +19,9 @@ $(document)
 					// ****************************************
 					$(btnNew).click(function(event) {
 						event.preventDefault();
-						
-						if(isChanged()) {
-							//	TODO: Confirmation dialog
+
+						if (isChanged()) {
+							// TODO: Confirmation dialog
 						}
 						clear();
 					});
@@ -131,11 +131,11 @@ $(document)
 							'.btn-user',
 							function(event) {
 								event.preventDefault();
-								
-								if(isChanged()) {
-									//	TODO: Confirmation dialog
+
+								if (isChanged()) {
+									// TODO: Confirmation dialog
 								}
-								
+
 								currentUser = users.getUsers()[$(this).parent()
 										.index()];
 								userUserIdField.val(currentUser.getUserId());
@@ -160,21 +160,23 @@ $(document)
 					function isChanged() {
 						var username = currentUser.getUsername();
 						var password = currentUser.getPassword();
-						
-						if(username == null) { 
+
+						if (username == null) {
 							username = "";
 						}
-						if(password == null) {
+						if (password == null) {
 							password = "";
 						}
-						
+
 						if (username == userUsernameField.val()
 								&& password == userPasswordField.val()
-								&& currentUser.getUserType() == userUserTypeField.val()) {
+								&& currentUser.getUserType() == userUserTypeField
+										.val()) {
 							return false;
 						}
 						return true;
-					};
+					}
+					;
 
 				});
 
