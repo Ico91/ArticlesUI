@@ -17,11 +17,9 @@ a {
 	margin: 0 auto;
 }
 
-#error-container {
-	width: 800px;
+.error {
 	padding: 8px;
 	color: #e01B32;
-	margin: 0 auto;
 }
 
 form {
