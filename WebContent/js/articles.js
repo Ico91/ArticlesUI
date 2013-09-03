@@ -14,26 +14,26 @@ $(document).ready(
 			var btnNew = $("#btn-new");
 			var btnSave = $("#btn-save");
 			var btnDelete = $("#btn-delete");
+			var btnAdmin = $("#btn-administrator");
 			var btnLogout = $("#btn-logout");
 
-			$(btnNew).click(
-					function(event) {
-						event.preventDefault();
-						if (articleIsModified()) {
-							console.log("Article is modified");
-							// TODO: Create modal window
-						}
-						currentArticle = new Article(null, "", "", true);
-						articleContentField.val('');
-						articleTitleField.val('');
-					});
+			$(btnNew).click(function(event) {
+				event.preventDefault();
+				if (articleIsModified()) {
+					console.log("Article is modified");
+					// TODO: Create modal window
+				}
+				currentArticle = new Article(null, "", "", true);
+				articleContentField.val('');
+				articleTitleField.val('');
+			});
 
 			btnSave.click(function(event) {
 				event.preventDefault();
-				
+
 				currentArticle.title = articleTitleField.val();
 				currentArticle.content = articleContentField.val();
-				
+
 				articles.add(currentArticle);
 				console.log(articles);
 			});
@@ -43,6 +43,11 @@ $(document).ready(
 				// TODO: Create modal window
 				currentArticle.deleteArticle();
 				userArticles = getUserArticles();
+			});
+
+			btnAdmin.click(function(event) {
+				event.preventDefault();
+				admin();
 			});
 
 			btnLogout.click(function(event) {
@@ -70,29 +75,31 @@ $(document).ready(
 			// *******************************
 
 			$('.list').on('click', '.btn-article', function(event) {
-				event.preventDefault();
-				if (articleIsModified()) {
-					console.log("Article is modified");
-					// TODO: Create modal window
-				}
-				currentArticle = articles.getArticles()[$(this).parent().index()];
-				articleTitleField.val(currentArticle.getTitle());
-				articleContentField.val(currentArticle.getContent());
-			});
+						event.preventDefault();
+						if (articleIsModified()) {
+							console.log("Article is modified");
+							// TODO: Create modal window
+						}
+						currentArticle = articles.getArticles()[$(this)
+								.parent().index()];
+						articleTitleField.val(currentArticle.getTitle());
+						articleContentField.val(currentArticle.getContent());
+					});
 
 			function articleIsModified() {
-				if(articleContentField.val().length > 0 || articleTitleField.val() > 0)
-				{
-					if (currentArticle.getContent() != articleContentField.val()
-							|| currentArticle.getTitle() != articleTitleField.val()) {
+				if (articleContentField.val().length > 0
+						|| articleTitleField.val() > 0) {
+					if (currentArticle.getContent() != articleContentField
+							.val()
+							|| currentArticle.getTitle() != articleTitleField
+									.val()) {
 						return true;
 					}
 				}
-				
+
 				return false;
 			}
 		});
-
 
 function getArticles(articlesDTO) {
 	var articles = new Articles();
@@ -119,10 +126,10 @@ function getUserId() {
 
 function listArticles() {
 	// get articles from sessionStorage
-	var articlesDTO = $.parseJSON(sessionStorage.getItem('articles')); 
+	var articlesDTO = $.parseJSON(sessionStorage.getItem('articles'));
 	// convert articlesDTO to Articles object
-	var articles = getArticles(articlesDTO); 
-	
+	var articles = getArticles(articlesDTO);
+
 	var list = $('.list');
 	list.html('<p>Articles:</p>');
 	var htmlString = '<ol class="articles">';
@@ -132,7 +139,7 @@ function listArticles() {
 	}
 	htmlString += '</ol>';
 	list.append(htmlString);
-	
+
 	return articles;
 };
 
@@ -150,15 +157,28 @@ function pickDate(datepicker, userId) {
 	});
 };
 
+function admin() {
+	var dataToSend = new DataToSend(null, null);
+	request('administrator/users/', 'GET', dataToSend, function(response) {
+		getUsers(response);
+	}, function(result) {
+		window.location = "unauthorized.html";
+	});
+};
+
+function getUsers(response) {
+	sessionStorage.clear();
+	sessionStorage.setItem('users', JSON.stringify(response.user));
+	window.location = "administrator.html";
+}
+
 function logout() {
 	var dataToSend = new DataToSend(null, null);
 	request('users/logout', 'POST', dataToSend, function(result) {
-		var url = "http://localhost:8080/ArticlesUI/";    
-		$(location).attr('href',url);
+		var url = "http://localhost:8080/ArticlesUI/";
+		$(location).attr('href', url);
 	}, function(result) {
-		var url = "http://localhost:8080/ArticlesUI/unauthorized.html";    
-		$(location).attr('href',url);
-		//console.log("Error ");
-		//console.log(result);
+		var url = "http://localhost:8080/ArticlesUI/unauthorized.html";
+		$(location).attr('href', url);
 	});
 };
