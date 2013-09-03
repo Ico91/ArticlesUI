@@ -115,6 +115,12 @@ function getUsers(usersDTO) {
 	return users;
 };
 
+function article() {
+	var logUser = new User(111, "admin", "123", "ADMIN");
+	login(logUser);
+	console.log(logUser.getUsername() + logUser.getUserId());
+};
+
 function logout() {
 	var dataToSend = new DataToSend(null, null);
 	request('users/logout', 'POST', dataToSend, function(result) {
