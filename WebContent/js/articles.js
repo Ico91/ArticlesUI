@@ -74,7 +74,10 @@ $(document).ready(
 			// ************************ End statistics buttons
 			// *******************************
 
-			$('.list').on('click', '.btn-article', function(event) {
+			$('.list').on(
+					'click',
+					'.btn-article',
+					function(event) {
 						event.preventDefault();
 						if (articleIsModified()) {
 							console.log("Article is modified");
@@ -103,18 +106,19 @@ $(document).ready(
 
 function getArticles(articlesDTO) {
 	var articles = new Articles();
-	if (articlesDTO instanceof Array) {
-		for ( var i = 0; i < articlesDTO.length; i++) {
-			articles.getArticles()
-					.push(
-							new Article(parseInt(articlesDTO[i].id),
-									articlesDTO[i].title,
-									articlesDTO[i].content, false));
-		}
-	} else
-		articles.getArticles().push(
-				new Article(parseInt(articlesDTO.id), articlesDTO.title,
-						articlesDTO.content, false));
+	if (articlesDTO != null) {
+		if (articlesDTO instanceof Array) {
+			for ( var i = 0; i < articlesDTO.length; i++) {
+				articles.getArticles().push(
+						new Article(parseInt(articlesDTO[i].id),
+								articlesDTO[i].title, articlesDTO[i].content,
+								false));
+			}
+		} else
+			articles.getArticles().push(
+					new Article(parseInt(articlesDTO.id), articlesDTO.title,
+							articlesDTO.content, false));
+	}
 	return articles;
 }
 
