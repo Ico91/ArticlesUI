@@ -166,6 +166,41 @@ function Article(id, title, content, isNew) {
 	this.getIsNew = function() {
 		return this.isNew;
 	};
+};
+
+function Users() {
+	this.users = [];
+	
+	this.getUsers = function() {
+		return this.users;
+	};
+	
+	this.getUser = function(index) {
+		return this.users[index];
+	};
+};
+
+function User(userId, username, password, type) {
+	this.userId = userId;
+	this.username = username;
+	this.password = password;
+	this.type = type;
+	
+	this.getUserId = function() {
+		return this.userId;
+	};
+	
+	this.getUsername = function() {
+		return this.username;
+	};
+	
+	this.getPassword = function() {
+		return this.password;
+	};
+	
+	this.getUserType = function() {
+		return this.type;
+	};
 }
 
 

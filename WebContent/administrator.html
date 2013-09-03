@@ -1,0 +1,89 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Administrator</title>
+<link rel="stylesheet" href="css/administrator.css">
+<link rel="stylesheet" href="css/tooltips.css">
+<link href="css/ui-darkness/jquery-ui-1.10.3.custom.css"
+	rel="stylesheet">
+<script src="js/jquery-2.0.3.min.js"></script>
+<script src="js/jquery-ui-1.10.3.custom.js"></script>
+</head>
+<body>
+	<div id="container">
+		<div class="head">
+			<a class="tooltip" id="btn-logout">Logout <span
+				class="custom info"> <img src="images/Info.png" alt="Info"
+					height="48" width="48" /> Log out from the system
+			</span>
+			</a>
+			<ul class="main-btns">
+				<li><a class="tooltip" id="btn-new"> New <span
+						class="custom info"> <img src="images/Info.png" alt="Info"
+							height="48" width="48" /> Create new user
+					</span>
+				</a></li>
+				<li><a href="#" id="btn-save" class="tooltip"> Save <span
+						class="custom help"> <img src="images/Help.png" alt="Help"
+							height="48" width="48" /> Save user
+					</span>
+				</a></li>
+				<li><a href="#" id="btn-delete" class="tooltip"> Delete <span
+						class="custom critical"><img src="images/Critical.png"
+							alt="Error" height="48" width="48" /><em>Attention!</em>Delete
+							user</span>
+				</a></li>
+				<li><a class="tooltip" id="btn-article"> Article <span
+						class="custom info"> <img src="images/Info.png" alt="Info"
+							height="48" width="48" /> Open article panel
+					</span>
+				</a></li>
+			</ul>
+		</div>
+		<div class="main">
+			<div class="currentUser">
+				<form id="user">
+					<div class="layout-userID">
+						<p>ID:</p>
+						<textarea name="userID" id="userID" cols="30" rows="10" readonly></textarea>
+					</div>
+					<div class="layout-username">
+						<p>Username:</p>
+						<textarea name=username id="username" cols="30" rows="10"></textarea>
+					</div>
+					<div class="layout-password">
+						<p>Password:</p>
+						<textarea name="password" id="password" cols="30" rows="10"></textarea>
+					</div>
+					<div class="layout-type">
+						<p>User type:</p>
+						<select class="types" name="types" id="types">
+							<option id="admin-type">ADMIN</option>
+							<option id="user-type">USER</option>
+						</select>
+					</div>
+				</form>
+			</div>
+			<div class="userList">
+				<div class="statistics">
+					<p>Statistics:</p>
+					<input type="text" id="datepicker" placeholder="Pick a date...">
+					<a href="#" id="btn-statistics">Check</a>
+				</div>
+				<form id="searchForm">
+					<p>Search:</p>
+					<input type="text" id="search" placeholder="Search...">
+				</form>
+				<div class="list">
+					<p>Users:</p>
+
+				</div>
+			</div>
+		</div>
+	</div>
+	<script type="text/javascript" src="js/environment.js"></script>
+	<script type="text/javascript" src="js/administrator.js"></script>
+	<script type="text/javascript" src="js/login.js"></script>
+</body>
+</html>

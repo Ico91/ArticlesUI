@@ -11,6 +11,7 @@ $(document).ready(
 			var btnNew = $("#btn-new");
 			var btnSave = $("#btn-save");
 			var btnDelete = $("#btn-delete");
+			var btnAdmin = $("#btn-administrator");
 			var btnLogout = $("#btn-logout");
 
 			$(btnNew).click(
@@ -42,6 +43,11 @@ $(document).ready(
 					return;
 				}
 				modalDelete(articles, currentArticle, articleTitleField, articleContentField);
+			});
+
+			btnAdmin.click(function(event) {
+				event.preventDefault();
+				admin();
 			});
 
 			btnLogout.click(function(event) {
@@ -107,14 +113,16 @@ $(document).ready(
 			});
 
 			function articleIsModified() {
-				if(articleContentField.val().length > 0 || articleTitleField.val() > 0)
-				{
-					if (currentArticle.getContent() != articleContentField.val()
-							|| currentArticle.getTitle() != articleTitleField.val()) {
+				if (articleContentField.val().length > 0
+						|| articleTitleField.val() > 0) {
+					if (currentArticle.getContent() != articleContentField
+							.val()
+							|| currentArticle.getTitle() != articleTitleField
+									.val()) {
 						return true;
 					}
 				}
-				
+
 				return false;
 			}
 		});
@@ -140,27 +148,28 @@ function searchArticle(container, input) {
 
 function getArticles(articlesDTO) {
 	var articles = new Articles();
-	if (articlesDTO instanceof Array) {
-		for ( var i = 0; i < articlesDTO.length; i++) {
-			articles.getArticles()
-					.push(
-							new Article(parseInt(articlesDTO[i].id),
-									articlesDTO[i].title,
-									articlesDTO[i].content, false));
-		}
-	} else
-		articles.getArticles().push(
-				new Article(parseInt(articlesDTO.id), articlesDTO.title,
-						articlesDTO.content, false));
+	if (articlesDTO != null) {
+		if (articlesDTO instanceof Array) {
+			for ( var i = 0; i < articlesDTO.length; i++) {
+				articles.getArticles().push(
+						new Article(parseInt(articlesDTO[i].id),
+								articlesDTO[i].title, articlesDTO[i].content,
+								false));
+			}
+		} else
+			articles.getArticles().push(
+					new Article(parseInt(articlesDTO.id), articlesDTO.title,
+							articlesDTO.content, false));
+	}
 	return articles;
 }
 
 function listArticles() {
 	// get articles from sessionStorage
-	var articlesDTO = $.parseJSON(sessionStorage.getItem('articles')); 
+	var articlesDTO = $.parseJSON(sessionStorage.getItem('articles'));
 	// convert articlesDTO to Articles object
-	var articles = getArticles(articlesDTO); 
-	
+	var articles = getArticles(articlesDTO);
+
 	var list = $('.list');
 	list.html('<p>Articles:</p>');
 	var htmlString = '<ol class="articles">';
@@ -170,7 +179,7 @@ function listArticles() {
 	}
 	htmlString += '</ol>';
 	list.append(htmlString);
-	
+
 	return articles;
 };
 
@@ -188,11 +197,26 @@ function saveArticle(articles, currentArticle) {
 	}
 }
 
+function admin() {
+	var dataToSend = new DataToSend(null, null);
+	request('administrator/users/', 'GET', dataToSend, function(response) {
+		getUsers(response);
+	}, function(result) {
+		window.location = "unauthorized.html";
+	});
+};
+
+function getUsers(response) {
+	sessionStorage.clear();
+	sessionStorage.setItem('users', JSON.stringify(response.user));
+	window.location = "administrator.html";
+}
+
 function logout() {
 	var dataToSend = new DataToSend(null, null);
 	request('users/logout', 'POST', dataToSend, function(result) {
-		var url = "http://localhost:8080/ArticlesUI/";    
-		$(location).attr('href',url);
+		var url = "http://localhost:8080/ArticlesUI/";
+		$(location).attr('href', url);
 	}, function(result) {
 		var url = "http://localhost:8080/ArticlesUI/unauthorized.html";    
 		$(location).attr('href',url);
