@@ -12,20 +12,20 @@
 
 #articleTitle {
 	width: 95%;
-	height: 40px;
-	margin-top: 15px;
+	height: 30px;
+	margin-top: 10px;
 	border-radius: 5px;
 	border: 1px solid #00E1FF;
 	padding: 5px;
 }
 
 .layout-articleContent {
-	margin-top: 35px;
+	margin-top: 20px;
 }
 
 #articleContent {
 	width: 95%;
-	height: 350px;
+	height: 300px;
 	margin-top: 15px;
 	border-radius: 5px;
 	border: 1px solid #00E1FF;
@@ -40,4 +40,14 @@ textarea {
 	display: inline-block;
 	margin-top: 25px;
 	margin-left: 40%;
+}
+
+#action-result {
+	border-radius: 10px;
+	padding: 5px 0px;
+}
+
+#action-result p {
+	color: #DBDBDB;
+	margin-left: 10%;
 }

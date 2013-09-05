@@ -24,7 +24,7 @@ function ArticlesController() {
 	};
 
 	this.onSave = function() {
-		articlesListController.refreshList();
+		articlesListController.refresh();
 	};
 	
 	function bind() {
