@@ -1,0 +1,13 @@
+#loginForm {
+	width: 800px;
+	margin: 0 auto;
+}
+
+.error {
+	padding: 8px;
+	color: #e01B32;
+}
+
+form {
+	margin-top: 200px;
+}

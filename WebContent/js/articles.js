@@ -106,10 +106,12 @@ $(document).ready(
 			var search = $('#search');
 
 			$(search).keyup(function(event) {
-				if(search.val() != '')
-					searchArticle(articles.getArticles(), search.val());
+				if(search.val() != '') {
+					articles.articles = searchArticle(articles.getArticles(), search.val());
+					console.log(articles.articles);
+				}
 				else
-					listArticles();
+					articles = listArticles();
 			});
 
 			function articleIsModified() {
@@ -144,6 +146,8 @@ function searchArticle(container, input) {
 	}
 	htmlString += '</ol>';
 	list.append(htmlString);
+
+	return articles;
 }
 
 function getArticles(articlesDTO) {

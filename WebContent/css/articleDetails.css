@@ -1,0 +1,43 @@
+#articleDetails {
+	width: 60%;
+	height: auto;
+	float: right;
+	padding-top: 25px;
+	overflow: hidden;
+}
+
+#article {
+	margin: 0% 10%;
+}
+
+#articleTitle {
+	width: 95%;
+	height: 40px;
+	margin-top: 15px;
+	border-radius: 5px;
+	border: 1px solid #00E1FF;
+	padding: 5px;
+}
+
+.layout-articleContent {
+	margin-top: 35px;
+}
+
+#articleContent {
+	width: 95%;
+	height: 350px;
+	margin-top: 15px;
+	border-radius: 5px;
+	border: 1px solid #00E1FF;
+	padding: 5px;
+}
+
+textarea {
+	resize: none;
+}
+
+#btnSave {
+	display: inline-block;
+	margin-top: 25px;
+	margin-left: 40%;
+}

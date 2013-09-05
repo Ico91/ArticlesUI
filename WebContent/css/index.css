@@ -12,21 +12,7 @@ a {
 	text-decoration: none;
 }
 
-#container {
-	width: 800px;
-	margin: 0 auto;
-}
-
-.error {
-	padding: 8px;
-	color: #e01B32;
-}
-
-form {
-	margin-top: 200px;
-}
-
-#login-btn {
+.btn-style {
 	display: inline-block;
 	padding: 8px 15px;
 	background: #333;
@@ -34,7 +20,7 @@ form {
 	border-radius: 5px;
 }
 
-#login-btn:hover {
+.btn-style:hover {
 	cursor: pointer;
 	color: #333;
 	background: #d3d3d3;
