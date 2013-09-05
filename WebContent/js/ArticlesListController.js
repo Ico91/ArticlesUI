@@ -17,6 +17,11 @@ function ArticlesListController(articlesController) {
 			event.preventDefault();
 			controller.onNew();
 		});
+		
+		$('body').on('click', 'btn-article', function(event) {
+			event.preventDefault();
+			controller.onSelect(listOfArticles[$(this).parent().index()]);
+		});
 	};
 	
 	function deleteArticle(index) {
