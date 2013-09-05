@@ -1,12 +1,11 @@
-function ArticleDetailsController() {
+function ArticleDetailsController(articlesController) {
 	var currentArticle = newArticle();
 	var articleTitleField = {};
 	var articleContentField = {};
-	var articlesController = {};
+	this.articlesController = articlesController;
 
 	this.init = function() {
 		$('#articleDetails').load('article_details.html', function() {
-			articlesController = new ArticlesController();
 			bind();
 		});
 	};

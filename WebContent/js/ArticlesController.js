@@ -1,12 +1,9 @@
 function ArticlesController() {
-	var articlesListController = {};
-	var articleDetailsController = {};
+	var articlesListController = new ArticlesListController(this);
+	var articleDetailsController = new ArticleDetailsController(this);
 	
 	this.init = function() {
 		$("#container").load('articles.html', function() {
-			articlesListController = new ArticlesListController();
-			articleDetailsController = new ArticleDetailsController();
-
 			articlesListController.init();
 			articleDetailsController.init();
 
