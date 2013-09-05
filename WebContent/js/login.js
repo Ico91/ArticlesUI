@@ -25,6 +25,12 @@ function login(result) {
 }
 
 function getArticles(response, userId) {
+	var articles = [];
+	for(var i = 0; i < response.article.length; i++) {
+		var article = response.article[i];
+		articles.push(new Article(article["@id"], article.title, article.content, false));
+	}
+	
 	sessionStorage.clear();
 	if (response != null) {
 		sessionStorage.setItem('articles', JSON.stringify(response.article));
@@ -34,9 +40,7 @@ function getArticles(response, userId) {
 
 function error(result) {
 	// TODO : FIX ERROR FLOW
-	// console.log("Error ");
-	// console.log(result);
-
-	var error = $("#error-container");
-	error.html('<p>Wrong username or password</p>');
+	var container = $('#container');
+	var error = '<p class="error">Wrong username or password</p>';
+	container.append(error);
 }

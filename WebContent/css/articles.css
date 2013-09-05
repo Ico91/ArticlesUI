@@ -33,7 +33,7 @@ a {
 	display: inline-block;
 	float: right;
 	padding: 7px 15px;
-	margin-right: 10%;
+	margin-right: 20%;
 	background: #d3d3d3;
 	color: #333;
 	border-radius: 5px;
@@ -86,8 +86,9 @@ textarea {
 
 .articlesList {
 	width: 35%;
-	height: 100%;
+	min-height: 100%;
 	padding-top: 25px;
+	border-right: 2px solid #333;
 }
 
 #searchForm {
@@ -133,10 +134,9 @@ textarea {
 /* Main body - right part */
 
 .currentArticle {
-	width: 65%;
-	height: 100%;
+	width: 60%;
+	height: auto;
 	float: right;
-	border-left: 2px solid #333;
 	padding-top: 25px;
 	overflow: hidden;
 }
@@ -167,3 +167,83 @@ textarea {
 	padding: 5px;
 }
 
+#statisticsModal {
+	width: 40%;
+	height: auto;
+	padding: 2% 8%;
+	background: #fff;
+	border-radius: 10px;
+	position: absolute;
+	left: 20%;
+	top: 25px;
+	z-index: 2;
+	display: none;
+}
+
+#statisticsModal h2 {
+	font-size: 1.5em;
+}
+
+#statisticsModal .date {
+	font-style: italic;
+	text-decoration: underline;
+}
+
+.user-statistics {
+	font-size: 0.75em;
+	list-style-type: none;
+	margin-top: 25px;
+	height: 400px;
+	overflow-y: scroll;
+	border-left: 1px solid #999;
+	border-bottom: 1px solid #999;
+}
+
+.user-statistics li {
+	padding: 5px 0px;
+	border-top: 1px solid #999;
+}
+
+
+.user-statistics .activity-date {
+	display: inline-block;
+	width: 50%;
+	padding: 0 5%;
+}
+
+.user-statistics .activity {
+	display: inline-block;
+	font-style: italic;
+}
+
+.statistics-head {
+	font-size: 1.25em;
+	font-weight: bold;
+}
+.btn-close {
+	display: inline-block;
+	padding: 8px 15px;
+	margin-top: 25px;
+	float: right;
+	background: #333;
+	color: #d3d3d3;
+	border-radius: 5px;
+}
+
+.btn-close:hover {
+	cursor: pointer;
+	color: #333;
+	background: #d3d3d3;
+}
+
+.darken {
+	width: 100%;
+	min-height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1;
+	background: rgba(0,0,0, 0.5);
+	cursor: pointer;
+	position: fixed;
+}

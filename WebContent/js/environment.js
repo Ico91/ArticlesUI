@@ -40,56 +40,119 @@ function Articles() {
 	this.add = function(article) {
 		if(article.getTitle() === '' || article.getContent() === '')
 			return "Article title or content is empty!";
+		var relativeURL = 'articles/';
 		var articleToSend = {
 			title : article.getTitle(),
 			content : article.getContent()
 		};
 		var articlesLocal = this.articles;
-		
 		var dataToSend = new DataToSend(JSON.stringify(articleToSend), "application/json; charset=utf-8");
-		request('articles/', 'PUT', dataToSend, function(result) {
-			updateLocalArray(articlesLocal, article);
+		
+		request(relativeURL, 'PUT', dataToSend, function(result) {
+			articleToAdd = new Article(result["@id"], result.title, result.content);
+			addToArticles(articlesLocal, articleToAdd);
+			article.id = articleToAdd.id; // saved article becomes currently opened, so save it's id
 			listArticles();
-			// TODO: message!
+			confirmDialog("Successfully added an article!");
 			console.log("Article added successfully");
 		},
 		function(result) {
-			// TODO: create error flow
-			console.log("Error");
+			confirmDialog("Error while adding an article!");
+			console.log("Error while adding new article!");
 			console.log(result);
 		}); 
 		
 	};
 	
 	this.update = function(article) {
+		if(article.getTitle() === '' || article.getContent() === '')
+			return "Article title or content is empty!";
 		var relativeURL = 'articles/' + article.getId();
-		var dataToSend = {
+		var articleToSend = {
 				title : article.getTitle(),
 				content : article.getContent()
 		};
+		var articlesLocal = this.articles;
+		var dataToSend = new DataToSend(JSON.stringify(articleToSend), "application/json; charset=utf-8");
+
 		request(relativeURL, 'POST', dataToSend, function(result) {
-			alert("Article updated succesfully!");
-			// TODO: update article locally !!!!!
+			updateArticles(articlesLocal, article);
+			listArticles();
+			confirmDialog("Successfully updated an article!");
+			console.log("Article updated succesfully!");
 		},
 		function(result) {
+			confirmDialog("Error while updating an article!");
 			// TODO: create error flow
-			alert("Error while updating article!");
+			// TODO: update local ?!
+			console.log("Error while updating article!");
 			console.log(result);
 		});
 	};
 	
 	this.deleteArticle = function(article) {
 		var relativeURL = 'articles/' + article.getId();
-		request(relativeURL, 'DELETE', null, function(result) {
-			alert("Article updated succesfully!");
-			// TODO: delete article locally !!!!!
+		var dataToSend = new DataToSend(null, null);
+		var articlesLocal = this.articles;
+
+		request(relativeURL, 'DELETE', dataToSend, function(result) {
+			deleteFromArticles(articlesLocal, article);
+			listArticles();
+			confirmDialog("Successfully deleted an article!");
+			console.log("Article deleted succesfully!");
 		},
 		function(result) {
 			// TODO: create error flow
-			alert("Error while updating article!");
+			console.log("Error while deleting article!");
+			console.log("Error while deleting article!");
 			console.log(result);
 		});
 	};
+	
+	function confirmDialog(text) {
+		var confirmHtml = '<div id="dialog" title="Success!">' + text + '</div>';
+		$('.currentArticle').append(confirmHtml);
+		$("#dialog").dialog({
+			resizable: false,
+			closeOnEscape: true,
+			draggable: true,
+			hide: "explode",
+			height: 250,
+			modal: true,
+			buttons: buttons = {
+					"OK": function() {
+						$(this).dialog("close");
+					}
+			}
+		});
+	}
+	
+	/*
+	 * function modalDelete(articles, currentArticle, articleTitleField, articleContentField) {
+	var modalHtml = '<div id="dialog" title="Warning!">Are you sure you want to delete this article?</div>';
+	$('.currentArticle').append(modalHtml);
+	$( "#dialog" ).dialog({
+		resizable: false,
+		closeOnEscape: true,
+		draggable: true,
+		hide: "explode",
+		height:250,
+		modal: true,
+		buttons: buttons = {
+				"Continue": function() {
+					articles.deleteArticle(currentArticle);
+					currentArticle = new Article(null, "", "", true);
+					articleTitleField.val('');
+					articleContentField.val('');
+					$(this).dialog("close");
+				},
+				Cancel: function() {
+					$( this ).dialog( "close" );
+				}
+		}
+	});
+}
+	 */
 	
 	this.getArticles = function() {
 		return this.articles;
@@ -98,12 +161,36 @@ function Articles() {
 	this.getArticle = function(index) {
 		return this.articles[index];
 	};
+
+	function addToArticles(articlesLocal, articleToAdd) {
+		articlesLocal.push(articleToAdd);
+		updateSessionStorage(articlesLocal);
+	}
+
+	function updateArticles(articlesLocal, articleToUpdate) {
+		$.grep(articlesLocal, function(article) { 
+			if (article.id === articleToUpdate.id) {
+				article.title = articleToUpdate.title;
+				article.content = articleToUpdate.content;
+			}
+		});
+		updateSessionStorage(articlesLocal);
+	}
+
+	function deleteFromArticles(articlesLocal, articleToDelete) {
+		for(var i = 0; i < articlesLocal.length; i++) {
+			if(articlesLocal[i].id === articleToDelete.id) {
+				articlesLocal.splice(i, 1);
+			}
+		}
+		updateSessionStorage(articlesLocal);
+	}
 	
-	function updateLocalArray(articlesLocal, article) {
-		articlesLocal.push(article);
+	function updateSessionStorage(articlesLocal) {
 		sessionStorage.clear();
 		sessionStorage.setItem('articles', JSON.stringify(articlesLocal));
 	}
+
 }
 
 function Article(id, title, content, isNew) {
