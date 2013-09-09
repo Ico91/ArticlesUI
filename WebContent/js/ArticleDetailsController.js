@@ -21,7 +21,7 @@ function ArticleDetailsController(articlesController) {
 	
 	this.articleDeleted = function(article) {
 		if(currentArticle['@id'] === article['@id']) {
-			visulize(null);
+			visualize(null);
 		}
 	};
 	
@@ -53,7 +53,7 @@ function ArticleDetailsController(articlesController) {
 			title : articleTitleField.val(),
 			content : articleContentField.val()
 		};
-		if(articleExists()) {
+		if(!articleExists()) {
 			request('articles/' + currentArticle['@id'], 'POST', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
 				currentArticle.title = articleTitleField.val();
 				currentArticle.content = articleContentField.val();
@@ -87,6 +87,7 @@ function ArticleDetailsController(articlesController) {
 	};
 
 	function articleExists() {
+		console.log(currentArticle['@id']);
 		return (currentArticle['@id'] == null);
 	}
 
