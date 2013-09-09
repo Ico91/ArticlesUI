@@ -87,17 +87,11 @@ function ArticleDetailsController(articlesController) {
 	};
 
 	function articleExists() {
-		if(currentArticle['@id'] == null)
-			return false;
-
-		return true;
+		return (currentArticle['@id'] == null);
 	}
 
 	function articleIsModified() {
-		if(currentArticle.title != articleTitleField.val() || currentArticle.content != articleContentField.val())
-			return true;
-
-		return false;
+		return (currentArticle.title != articleTitleField.val() || currentArticle.content != articleContentField.val());
 	}
 
 	function validateFields() {
