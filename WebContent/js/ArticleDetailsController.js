@@ -87,7 +87,6 @@ function ArticleDetailsController(articlesController) {
 	};
 
 	function articleExists() {
-		console.log(currentArticle['@id']);
 		return (currentArticle['@id'] == null);
 	}
 
