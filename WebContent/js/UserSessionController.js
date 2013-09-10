@@ -1,6 +1,15 @@
+/**
+ * @author Galina Hristova
+ * @author Hristo
+ * @param context
+ * @returns
+ */
 function UserSessionController(context) {
 	var mainController = context;
 	
+	/**
+	 * Load articles form
+	 */
 	this.init = function() {
 		$('#container').load('articles.html', function() {
 			bind();
@@ -9,6 +18,9 @@ function UserSessionController(context) {
 		});
 	};
 	
+	/**
+	 * Add listeners to the buttons
+	 */
 	function bind() {
 		$('body').on('click', '#btn-statistics', function(event) {
 			event.preventDefault();
@@ -22,7 +34,11 @@ function UserSessionController(context) {
 		});
 	}
 	
-
+	/**
+	 * Requesting a logout from the system. On success notifies the
+	 * MainController to load the login form. Otherwise shows warning window for
+	 * an occured error.
+	 */
 	function logout() {
 		request('users/logout', 'POST', null, null, function(result) {
 			mainController.init();

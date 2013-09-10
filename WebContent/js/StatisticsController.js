@@ -1,4 +1,13 @@
+/**
+ * Controls user statistics
+ * 
+ * @author Galina Hristova
+ * @returns
+ */
 function StatisticsController() {
+	/**
+	 * Initialize modal window which displays user statistics
+	 */
 	this.init = function() {
 		$("#statisticsModal").load('statistics.html', function() {
 			$(this).show().animate({
@@ -11,13 +20,16 @@ function StatisticsController() {
 		});
 	};
 
+	/**
+	 * Add listeners to buttons
+	 */
 	function bind() {
 		$("#datepicker").datepicker({
 			onSelect : function(date) {
 				var datestr = "date=" + date;
 
 				request('users/statistics', 'GET', datestr, null, function(result) {
-					showStatistics(result, date);
+					showStatistics(result);
 				}, function(result) {
 					console.log("Error ");
 					console.log(result);
@@ -34,8 +46,15 @@ function StatisticsController() {
 			close();
 		});
 	}
-
-	function showStatistics(result, date) {
+	
+	/**
+	 * Display statistics as an unordered list. This function generates list
+	 * element for every data from the result.
+	 * 
+	 * @param result -
+	 *            statistics which is result from request
+	 */
+	function showStatistics(result) {
 		$("#user-statistics").find("li:gt(0)").remove();
 		for ( var i = 0; i < result.length; i++) {
 			var li = $('#user-statistics li.list-head').clone();
@@ -46,6 +65,9 @@ function StatisticsController() {
 		};
 	};
 
+	/**
+	 * Close the modal window
+	 */
 	function close() {
 		$('#statisticsModal').animate({
 			opacity: 0

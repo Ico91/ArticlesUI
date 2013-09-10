@@ -1,12 +1,25 @@
+/**
+ * Controls the login form
+ * 
+ * @author Galina Hristova
+ * @param mainController
+ * @returns
+ */
 function LoginController(mainController) {
 	var controller = mainController;
 
+	/**
+	 * Load the login form
+	 */
 	this.init = function() {
 		$("#container").load('login.html', function() {
 			bind();
 		});
 	};
 
+	/**
+	 * Add listeners to the buttons
+	 */
 	function bind() {
 		$('#login-btn').on('click', function(event) {
 			event.preventDefault();
@@ -14,20 +27,30 @@ function LoginController(mainController) {
 		});
 	}
 
+	/**
+	 * Sending information to the server for a user that tries to login. On
+	 * success returns the result to the MainController. Otherwise shows an
+	 * error.
+	 */
 	function login() {
 		var user = {
 			username : $("#username").val(),
 			password : $("#password").val(),
 		};
-		
-		request('users/login', 'POST',  JSON.stringify(user), "application/json; charset=utf-8", function(result) {
-			controller.userLoggedIn(result);
-		}, function() {
-				var container = $('#container');
-				var error = '<p class="error">Wrong username or password</p>';
-				container.append(error);
-			}
-		);
+
+		request(
+				'users/login',
+				'POST',
+				JSON.stringify(user),
+				"application/json; charset=utf-8",
+				function(result) {
+					controller.userLoggedIn(result);
+				},
+				function() {
+					var container = $('#container');
+					var error = '<p class="error">Wrong username or password</p>';
+					container.append(error);
+				});
 	}
 
 }
