@@ -1,0 +1,110 @@
+html,body {
+	font-family: Verdana, Arial;
+	font-size: 16px;
+	height: 100%;
+	min-height: 100%;
+}
+
+* {
+	margin: 0px;
+	padding: 0px;
+}
+
+#datepicker {
+	width: 40%;
+	display: inline-block;
+	margin-top: 15px;
+	border-radius: 5px;
+	border: 1px solid #00E1FF;
+	padding: 5px;
+}
+
+#statisticsModal {
+	width: 40%;
+	height: auto;
+	padding: 2% 8%;
+	background: #fff;
+	border-radius: 10px;
+	position: absolute;
+	left: 20%;
+	top: 25px;
+	z-index: 2;
+	display: none;
+}
+
+#statistics {
+	font-style:italic;
+	font-weight:900;
+	font-size: 24px;
+}
+
+#date {
+	font-weight:700;
+}
+
+.statistics-list {
+	height: 400px;
+	overflow: auto;
+	border: 1px solid #999;
+}
+
+
+
+.list-head {
+	padding: 5px 5px;
+	text-align: center;
+	font-style:italic;
+	width: 250px;
+}
+
+.head-date {
+	display: inline-block;
+	width: 50%;
+	padding: 0 5%;
+	text-align: center;
+}
+
+.head-activity {
+	display: inline-block;
+	width: 40%;
+	font-style: italic;
+	text-align: center;
+}
+
+
+.list-data {
+	padding: 5px 5px;
+	border-top: 1px solid #999;
+	text-align: center;
+	overflow: hidden;
+	width: 250px;
+	font-size:0.875em;
+}
+
+.btn-close {
+	display: inline-block;
+	padding: 8px 15px;
+	margin-top: 25px;
+	float: right;
+	background: #333;
+	color: #d3d3d3;
+	border-radius: 5px;
+}
+
+.btn-close:hover {
+	cursor: pointer;
+	color: #333;
+	background: #d3d3d3;
+}
+
+.darken {
+	width: 100%;
+	min-height: 100%;
+	position: absolute;
+	left: 0;
+	top: 0;
+	z-index: 1;
+	background: rgba(0, 0, 0, 0.5);
+	cursor: pointer;
+	position: fixed;
+}
