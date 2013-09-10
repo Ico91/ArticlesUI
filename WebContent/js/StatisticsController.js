@@ -1,6 +1,8 @@
 function StatisticsController() {
 	this.init = function() {
 		$("#statisticsModal").load('statistics.html', function() {
+			$(this).show();
+			$('.darken').show();
 			bind();
 		});
 	};
@@ -29,10 +31,8 @@ function StatisticsController() {
 
 	function showStatistics(result, date) {
 		$("#user-statistics").find("li:gt(0)").remove();
-		console.log("tuk");
 		for ( var i = 0; i < result.length; i++) {
 			var li = $('#user-statistics li.list-head').clone();
-			console.log(li.html());
 			$(li).removeClass('list-head');
 			$(li).find('.head-date').text(result[i].activityDate);
 			$(li).find('.head-activity').text(result[i].userActivity);

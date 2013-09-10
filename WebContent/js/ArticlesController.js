@@ -6,7 +6,7 @@ function ArticlesController() {
 		$("#container").load('articles.html', function() {
 			articlesListController.init();
 			articleDetailsController.init();
-
+			$('.darken').hide();
 			bind();
 		});
 	};

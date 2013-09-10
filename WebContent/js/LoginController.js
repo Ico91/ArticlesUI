@@ -1,15 +1,14 @@
 function LoginController(mainController) {
 	var controller = mainController;
 
-	function init() {
-		$("#loginForm").load('login.html', function() {
-
+	this.init = function() {
+		$("#container").load('login.html', function() {
 			bind();
 		});
-	}
+	};
 
 	function bind() {
-		$('body').on('click', '.btnLogin', function(event) {
+		$('#login-btn').on('click', function(event) {
 			event.preventDefault();
 			login();
 		});
