@@ -1,3 +1,7 @@
+/**
+ * Manages operations on the currently opened article.
+ * @param articlesController - the context in which this controller works.
+ */
 function ArticleDetailsController(articlesController) {
 	var currentArticle = newArticle();
 	var articleTitleField = {};
@@ -5,13 +9,22 @@ function ArticleDetailsController(articlesController) {
 	var actionResult = {};
 	this.articlesController = articlesController;
 
+	/**
+	 * Loads the necessary html contents.
+	 */
 	this.init = function() {
 		$('#articleDetails').load('article_details.html', function() {
 			bind();
 		});
 	};
 
+	/**
+	 * Shows the specified article.
+	 * @param article - the article to display; 
+	 * if null is passed, displays a new, empty article.
+	 */
 	this.show = function(article) {
+		// checks whether currently opened article is modified
 		if(currentArticle.title != articleTitleField.val() || currentArticle.content != articleContentField.val())
 			showModal(article);
 		else {
@@ -19,12 +32,20 @@ function ArticleDetailsController(articlesController) {
 		}
 	};
 	
+	/**
+	 * Checks if the deleted article is the one currently shown and if true
+	 * shows a new empty article.
+	 */
 	this.articleDeleted = function(article) {
 		if(currentArticle['@id'] === article['@id']) {
 			visualize(null);
 		}
 	};
 	
+	/**
+	 * Displays the specified article in the appropriate text fields.
+	 * @param article
+	 */
 	function visualize(article) {
 		if(article != null)
 			currentArticle = article;
@@ -34,6 +55,9 @@ function ArticleDetailsController(articlesController) {
 		articleContentField.val(currentArticle.content);
 	}
 	
+	/**
+	 * Binds the necessary functions to the relevant controls
+	 */
 	function bind() {
 		articleTitleField = $('#articleTitle');
 		articleContentField = $('#articleContent');
@@ -48,6 +72,10 @@ function ArticleDetailsController(articlesController) {
 		});
 	}
 	
+	/**
+	 * Sends the appropriate request to the server for saving the currently opened article. 
+	 * @param article
+	 */
 	function save(article) {
 		var dataToSend = {
 			title : articleTitleField.val(),
@@ -86,6 +114,10 @@ function ArticleDetailsController(articlesController) {
 		};
 	};
 
+	/**
+	 * Validates the article text fields, returning false if they are empty.
+	 * @returns {Boolean}
+	 */
 	function validateFields() {
 		if(articleTitleField.val() == "") {
 			alert('Article title field is empty!');
@@ -99,6 +131,10 @@ function ArticleDetailsController(articlesController) {
 			return true;
 	}
 
+	/**
+	 * 
+	 * @returns Returns a new copy of empty article, without id. 
+	 */
 	function newArticle() {
 		return {
 			'@id' : null,
@@ -107,6 +143,10 @@ function ArticleDetailsController(articlesController) {
 		};
 	}
 	
+	/**
+	 * Displays a modal window asking the user for appropriate actions.
+	 * @param article
+	 */
 	function showModal(article) {
 		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened article is modified!<p>Do you want to continue without saving?</p></div>';
 		$('#articleDetails').append(modalHtml);
@@ -134,6 +174,11 @@ function ArticleDetailsController(articlesController) {
 		});
 	}
 
+	/**
+	 * Updates the browser's session storage with the last changes of
+	 * the article.
+	 * @param article
+	 */
 	function updateSessionStorage(article) {
 		var index = null;
 		var articles = $.parseJSON(sessionStorage.getItem('articles'));
@@ -159,6 +204,11 @@ function ArticleDetailsController(articlesController) {
 		articlesController.onSave();
 	}
 
+	/**
+	 * Displays a message to the user, indicating the result of the last action.
+	 * @param action
+	 * @param result
+	 */
 	function notificateUser(action, result) {
 		actionResult.css('opacity', 1);
 		actionResult.show('slow');

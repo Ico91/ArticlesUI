@@ -7,7 +7,6 @@ function ArticlesController() {
 			articlesListController.init();
 			articleDetailsController.init();
 			$('.darken').hide();
-			bind();
 		});
 	};
 	
@@ -26,8 +25,4 @@ function ArticlesController() {
 	this.onSave = function() {
 		articlesListController.refresh();
 	};
-	
-	function bind() {
-		// TODO: bind buttons
-	}
 }

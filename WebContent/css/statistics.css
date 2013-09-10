@@ -105,7 +105,7 @@ html,body {
 	left: 0;
 	top: 0;
 	z-index: 1;
-	background: rgba(0, 0, 0, 0.5);
+	background: rgba(0, 0, 0, 0.7);
 	cursor: pointer;
 	position: fixed;
 	opacity: 0;
