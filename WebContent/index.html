@@ -20,17 +20,13 @@
 	<script type="text/javascript" src="js/environment.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
-			$("#container").load('login.html', function() {
-				$('#login-btn').click(function(event) {
-					event.preventDefault();
-					articlesController = new ArticlesController();
-					articlesController.init();
-				});
-			});
-			
-			
+			var mainController = new MainController();
+			mainController.init();
 		});
 	</script>
+	<script type="text/javascript" src="js/MainController.js"></script>
+	<script type="text/javascript" src="js/LoginController.js"></script>
+	<script type="text/javascript" src="js/UserSessionController.js"></script>
 	<script type="text/javascript" src="js/ArticlesController.js"></script>
 	<script type="text/javascript" src="js/ArticlesListController.js"></script>
 	<script type="text/javascript" src="js/ArticleDetailsController.js"></script>
