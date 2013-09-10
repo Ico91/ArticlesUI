@@ -12,7 +12,7 @@ function ArticleDetailsController(articlesController) {
 	};
 
 	this.show = function(article) {
-		if(articleIsModified())
+		if(currentArticle.title != articleTitleField.val() || currentArticle.content != articleContentField.val())
 			showModal(article);
 		else {
 			visualize(article);
@@ -53,7 +53,7 @@ function ArticleDetailsController(articlesController) {
 			title : articleTitleField.val(),
 			content : articleContentField.val()
 		};
-		if(!articleExists()) {
+		if(currentArticle['@id'] != null) {
 			request('articles/' + currentArticle['@id'], 'POST', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
 				currentArticle.title = articleTitleField.val();
 				currentArticle.content = articleContentField.val();
@@ -85,14 +85,6 @@ function ArticleDetailsController(articlesController) {
 			});
 		};
 	};
-
-	function articleExists() {
-		return (currentArticle['@id'] == null);
-	}
-
-	function articleIsModified() {
-		return (currentArticle.title != articleTitleField.val() || currentArticle.content != articleContentField.val());
-	}
 
 	function validateFields() {
 		if(articleTitleField.val() == "") {
@@ -173,21 +165,21 @@ function ArticleDetailsController(articlesController) {
 		if(action === "save") {
 			if(result == true) {
 				actionResult.css('background', 'rgba(0, 204, 0, 1)');
-				actionResult.html('<p>Article saved successfully!</p>');
+				actionResult.text('Article saved successfully!');
 			}
 			else {
 				actionResult.css('background', 'rgba(255, 0, 30, 1)');
-				actionResult.html('<p>Article could not be saved!</p>');
+				actionResult.text('Article could not be saved!');
 			}
 		}
 		else {
 			if(result == true) {
 				actionResult.css('background', 'rgba(0, 204, 0, 1)');
-				actionResult.html('<p>Article updated successfully!</p>');
+				actionResult.text('Article updated successfully!');
 			}
 			else {
 				actionResult.css('background', 'rgba(255, 0, 30, 1)');
-				actionResult.html('<p>Article could not be updated!</p>');
+				actionResult.text('Article could not be updated!');
 			}
 		}
 
@@ -195,6 +187,6 @@ function ArticleDetailsController(articlesController) {
 		actionResult.animate({
 			opacity: 0,
 			height: "toggle"
-		}, 4000);
+		}, 2500);
 	}
 }

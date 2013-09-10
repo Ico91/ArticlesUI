@@ -27,9 +27,28 @@ function UserSessionController(context) {
 		request('users/logout', 'POST', null, null, function(result) {
 			mainController.init();
 		}, function(result) {
-			// TODO: error
-			var url = "http://localhost:8080/ArticlesUI/unauthorized.html";    
-			$(location).attr('href',url);
+			showModal();
+		});
+	}
+	
+	function showModal() {
+		var modalHtml = '<div id="dialog" title="Warning!"><p>Error has occurred.</p><p>Please, log in the system again.</p></div>';
+		$('#articleDetails').append(modalHtml);
+		$( "#dialog" ).dialog({
+			resizable: false,
+			closeOnEscape: false,
+			dialogClass: "no-close",
+			draggable: true,
+			hide: "explode",
+			height:300,
+			width: 350,
+			modal: true,
+			buttons: buttons = {
+					"Home" : function() {
+						mainController.init();
+						$(this).dialog("close");
+					}
+			}
 		});
 	}
 }

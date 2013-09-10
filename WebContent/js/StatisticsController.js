@@ -1,8 +1,12 @@
 function StatisticsController() {
 	this.init = function() {
 		$("#statisticsModal").load('statistics.html', function() {
-			$(this).show();
-			$('.darken').show();
+			$(this).show().animate({
+				opacity: 1
+			}, 500);
+			$('.darken').show().animate({
+				opacity: 1
+			}, 500);
 			bind();
 		});
 	};
@@ -22,11 +26,13 @@ function StatisticsController() {
 			dateFormat : 'yy/mm/dd',
 		});
 	
-		$('body').on('click', '.btn-close', function(event) {
+		$('.btn-close').on('click', function(event) {
 			event.preventDefault;
 			close();
 		});
-	
+		$('.darken').on('click', function(event) {
+			close();
+		});
 	}
 
 	function showStatistics(result, date) {
@@ -41,7 +47,15 @@ function StatisticsController() {
 	};
 
 	function close() {
-		$('#statisticsModal').hide();
-		$('.darken').hide();
+		$('#statisticsModal').animate({
+			opacity: 0
+		}, 500, function() {
+			$(this).hide();
+		});
+		$('.darken').animate({
+			opacity: 0
+		}, 500, function() {
+			$(this).hide();
+		});
 	};
 }
