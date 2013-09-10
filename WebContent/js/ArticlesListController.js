@@ -17,7 +17,7 @@ function ArticlesListController(articlesController) {
 		//	Handles Delete button
 		$('body').on('click', '.btnDelete', function(event) {
 			event.preventDefault();
-			showModal($(this).parent().index());
+			showModal($(this).parent().index() - 1);
 		});
 
 		//	Handles New article button 
@@ -29,7 +29,7 @@ function ArticlesListController(articlesController) {
 		//	Handle article selection
 		$('body').on('click', '.btn-article', function(event) {
 			event.preventDefault();
-			controller.onSelect(listOfArticles[$(this).parent().index()]);
+			controller.onSelect(listOfArticles[$(this).parent().index() - 1]);
 		});
 
 		//	Handle keyup on search field
@@ -120,24 +120,19 @@ function ArticlesListController(articlesController) {
 	};
 
 	function refreshList() {
-		var list = $('.list');
-		var htmlString = '<ol class="articles">';
-		
 		if (listOfArticles instanceof Array) {
-			for ( var i = 0; i < listOfArticles.length; i++) {
-				htmlString += '<li><a href="#" class="btn-article">'
-						+ listOfArticles[i].title
-						+ '</a><button class="btnDelete">Delete</button></li>';
+			$(".articles").find("li:gt(0)").remove();
+			
+			var listElement = $('.article').clone();
+			listElement.removeAttr('style');
+			listElement.removeClass('article');
+
+			for(var i = 0; i < listOfArticles.length; i ++) {				
+				listElement.find('.btn-article').text(listOfArticles[i].title);
+				listElement.appendTo('.articles');
+				listElement = listElement.clone();
 			}
 		}
-		else {
-			console.log("Article not in array");
-			htmlString += '<li><a href="#" class="btn-article">'
-				+ listOfArticles.title
-				+ '</a><button class="btnDelete">Delete</button></li>';
-		}
-
-		list.html(htmlString);
 	};
 
 	function search(term) {
