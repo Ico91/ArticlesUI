@@ -44,6 +44,7 @@ function LoginController(mainController) {
 				JSON.stringify(user),
 				"application/json; charset=utf-8",
 				function(result) {
+					sessionStorage.setItem("user", result.username);
 					controller.userLoggedIn(result);
 				},
 				function() {

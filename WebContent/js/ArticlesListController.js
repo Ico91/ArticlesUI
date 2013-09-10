@@ -5,7 +5,6 @@ function ArticlesListController(articlesController) {
 
 	this.init = function() {
 		this.loadArticles();
-
 		$('#articlesList').load('articles_list.html', function() {
 			bind();
 			console.log("init called");
@@ -90,7 +89,7 @@ function ArticlesListController(articlesController) {
 			},
 			function(response) {
 				// TODO: Show error message
-				console.log(result);
+				console.log(response);
 			}
 		);	
 	};
@@ -101,6 +100,7 @@ function ArticlesListController(articlesController) {
 			null, 
 			"application/json; charset=utf-8", 
 			function(response) {
+			console.log(response);
 				if (response != null) {
 					saveToSessionStorage(response.article);
 					loadFromSessionStorage();
@@ -110,6 +110,11 @@ function ArticlesListController(articlesController) {
 			function(response) {
 				// TODO: Show error message
 				console.log(response);
+				console.log(response.status + "!!!");
+				if(response.status == 403) {
+					sessionStorage.clear();
+					window.location.reload();
+				}
 			}
 		);
 	};
@@ -155,8 +160,7 @@ function ArticlesListController(articlesController) {
 				refreshList();
 			},
 			function(response) {
-				// TODO: Show error message
-				console.log(result);
+				//	TODO: Error
 			}
 		);
 	};
@@ -174,7 +178,7 @@ function ArticlesListController(articlesController) {
 	};
 	
 	function saveToSessionStorage(articles) {
-		sessionStorage.clear();
+		sessionStorage.removeItem("articles");
 		sessionStorage.setItem('articles', JSON.stringify(articles));
 	}
 

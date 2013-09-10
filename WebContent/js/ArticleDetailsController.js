@@ -182,7 +182,7 @@ function ArticleDetailsController(articlesController) {
 	function updateSessionStorage(article) {
 		var index = null;
 		var articles = $.parseJSON(sessionStorage.getItem('articles'));
-		sessionStorage.clear();
+		sessionStorage.removeItem('articles');
 		
 		for(var i = 0; i < articles.length; i++) {
 			if(articles[i]['@id'] == article['@id'])

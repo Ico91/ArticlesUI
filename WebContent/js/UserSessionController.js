@@ -29,6 +29,7 @@ function UserSessionController(context) {
 		});
 		
 		$('body').on('click', '#btn-logout', function(event) {
+			sessionStorage.clear();
 			event.preventDefault();
 			logout();
 		});

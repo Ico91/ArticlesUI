@@ -6,8 +6,14 @@ function MainController() {
 	 * Creates a new instance of the login controller
 	 */
 	this.init = function() {
-		var loginController = new LoginController(this);
-		loginController.init();
+		if(sessionStorage.getItem("user") == null) {
+			var loginController = new LoginController(this);
+			loginController.init();
+		}
+		else {
+			var userSessionController = new UserSessionController(this);
+			userSessionController.init();
+		}
 	};
 
 	/**
