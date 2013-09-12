@@ -181,22 +181,30 @@ function ArticleDetailsController(articlesController) {
 	 */
 	function updateSessionStorage(article) {
 		var index = null;
-		var articles = $.parseJSON(sessionStorage.getItem('articles'));
+		articles = [];
+		result = $.parseJSON(sessionStorage.getItem('articles'));
 		sessionStorage.removeItem('articles');
-		
-		for(var i = 0; i < articles.length; i++) {
-			if(articles[i]['@id'] == article['@id'])
-			{
-				index = i;
-				break;
+		if(result instanceof Array) {
+			articles = result;
+			for(var i = 0; i < articles.length; i++) {
+				if(articles[i]['@id'] == article['@id'])
+				{
+					index = i;
+					break;
+				}
+			}
+
+			if(index != null) {
+				articles[index].title = article.title;
+				articles[index].content = article.content;
+			}
+			else {
+				articles.push(article);
 			}
 		}
-
-		if(index != null) {
-			articles[index].title = article.title;
-			articles[index].content = article.content;
-		}
 		else {
+			if(result != null)
+				articles.push(result);
 			articles.push(article);
 		}
 
