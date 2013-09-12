@@ -39,7 +39,7 @@ function LoginController(mainController) {
 		};
 
 		request(
-				'users/login',
+				'session/login',
 				'POST',
 				JSON.stringify(user),
 				"application/json; charset=utf-8",

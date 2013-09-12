@@ -40,7 +40,7 @@ function UserSessionController(context) {
 	 * an occured error.
 	 */
 	function logout() {
-		request('users/logout', 'POST', null, null, function(result) {
+		request('session/logout', 'POST', null, null, function(result) {
 			mainController.init();
 		}, function(result) {
 			showModal();
