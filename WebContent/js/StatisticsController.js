@@ -28,7 +28,7 @@ function StatisticsController() {
 			onSelect : function(date) {
 				var datestr = "date=" + date;
 
-				request('users/statistics', 'GET', datestr, null, function(result) {
+				request('session/statistics', 'GET', datestr, null, function(result) {
 					showStatistics(result);
 				}, function(result) {
 					console.log("Error ");
