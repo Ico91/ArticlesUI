@@ -21,6 +21,11 @@ function MainController() {
 	 */
 	this.userLoggedIn = function(user) {
 		var userSessionController = new UserSessionController(this);
-		userSessionController.init();
+		var administratorSessionController = new AdministratorSessionController(this);
+		if (user.usertype == "ADMIN") {
+			administratorSessionController.init();
+		} else {
+			userSessionController.init();
+		}
 	};
 }
