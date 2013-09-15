@@ -6,9 +6,9 @@ function AdministratorSessionController(context) {
 		$('#container').load('administrator.html', function() {
 			bind();
 			$( "#tabs" ).tabs();
-			var userController = new UserController();
+			//var userController = new UserController();
 			var statisticsController = new StatisticsController();
-			userController.init();
+			//userController.init();
 			statisticsController.init();
 		});
 	};
@@ -16,15 +16,9 @@ function AdministratorSessionController(context) {
 	function bind() {
 		$('body').on('click', '#btn-logout', function(event) {
 			event.preventDefault();
-			logout();
+			mainController.logout();
 		});
 	}
 	
-	function logout() {
-		request('session/logout', 'POST', null, null, function(result) {
-			mainController.init();
-		}, function(result) {
-			showModal();
-		});
-	}
+	
 };

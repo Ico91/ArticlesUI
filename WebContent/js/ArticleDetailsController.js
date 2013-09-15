@@ -7,7 +7,6 @@ function ArticleDetailsController(articlesController) {
 	var articleTitleField = {};
 	var articleContentField = {};
 	var actionResult = {};
-	this.articlesController = articlesController;
 
 	/**
 	 * Loads the necessary html contents.
@@ -83,10 +82,7 @@ function ArticleDetailsController(articlesController) {
 		};
 		if(currentArticle['@id'] != null) {
 			request('articles/' + currentArticle['@id'], 'POST', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				currentArticle.title = articleTitleField.val();
-				currentArticle.content = articleContentField.val();
-				updateSessionStorage(currentArticle);
-				notificateUser("update", true);
+				articleSaved(dataToSend, "update", true);
 				visualize(article);
 			},
 			function(response) {
@@ -98,11 +94,7 @@ function ArticleDetailsController(articlesController) {
 		}
 		else {
 			request('articles/', 'PUT', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				currentArticle['@id'] = response['@id'];
-				currentArticle.title = response.title;
-				currentArticle.content = response.content;
-				updateSessionStorage(currentArticle);
-				notificateUser("save", true);
+				articleSaved(response, "save", true);
 				visualize(article);
 			},
 			function(response) {
@@ -113,6 +105,15 @@ function ArticleDetailsController(articlesController) {
 			});
 		};
 	};
+
+	function articleSaved(articleData, action, result) {
+		if(action === "save")
+			currentArticle['@id'] = articleData['@id'];
+		currentArticle.title = articleData.title;
+		currentArticle.content = articleData.content;
+		notificateUser(action, result);
+		articlesController.onSave();
+	}
 
 	/**
 	 * Validates the article text fields, returning false if they are empty.
@@ -174,43 +175,7 @@ function ArticleDetailsController(articlesController) {
 		});
 	}
 
-	/**
-	 * Updates the browser's session storage with the last changes of
-	 * the article.
-	 * @param article
-	 */
-	function updateSessionStorage(article) {
-		var index = null;
-		articles = [];
-		result = $.parseJSON(sessionStorage.getItem('articles'));
-		sessionStorage.removeItem('articles');
-		if(result instanceof Array) {
-			articles = result;
-			for(var i = 0; i < articles.length; i++) {
-				if(articles[i]['@id'] == article['@id'])
-				{
-					index = i;
-					break;
-				}
-			}
-
-			if(index != null) {
-				articles[index].title = article.title;
-				articles[index].content = article.content;
-			}
-			else {
-				articles.push(article);
-			}
-		}
-		else {
-			if(result != null)
-				articles.push(result);
-			articles.push(article);
-		}
-
-		sessionStorage.setItem('articles', JSON.stringify(articles));
-		articlesController.onSave();
-	}
+	
 
 	/**
 	 * Displays a message to the user, indicating the result of the last action.

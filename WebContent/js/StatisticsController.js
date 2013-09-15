@@ -9,13 +9,7 @@ function StatisticsController() {
 	 * Initialize modal window which displays user statistics
 	 */
 	this.init = function() {
-		$("#statisticsModal").load('statistics.html', function() {
-			$(this).show().animate({
-				opacity: 1
-			}, 500);
-			$('.darken').show().animate({
-				opacity: 1
-			}, 500);
+		$("#statistics").load('statistics.html', function() {
 			bind();
 		});
 	};
@@ -59,6 +53,7 @@ function StatisticsController() {
 		for ( var i = 0; i < result.length; i++) {
 			var li = $('#user-statistics li.list-head').clone();
 			$(li).removeClass('list-head');
+			$(li).addClass('list-data');
 			$(li).find('.head-date').text(result[i].activityDate);
 			$(li).find('.head-activity').text(result[i].userActivity);
 			$(li).appendTo('#user-statistics');
