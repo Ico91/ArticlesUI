@@ -34,8 +34,8 @@ function LoginController(mainController) {
 	 */
 	function login() {
 		var user = {
-			username : $("#username").val(),
-			password : $("#password").val(),
+			username : $("#input-username").val(),
+			password : $("#input-password").val(),
 		};
 
 		request(
