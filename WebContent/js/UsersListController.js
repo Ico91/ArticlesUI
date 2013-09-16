@@ -1,3 +1,7 @@
+/**
+ * Controls the list of all users
+ */
+
 function UsersListController(mainController) {
 	var timeout = null;
 	var usersList = [];
@@ -10,6 +14,9 @@ function UsersListController(mainController) {
 	var usersPerPage = 10;
 	var pagesContext = {};
 
+	/**
+	 * Binds the necessary functions to the relevant controls
+	 */
 	this.init = function() {
 		$('#usersList').load('users_list.html', function() {
 			bind();
@@ -17,6 +24,9 @@ function UsersListController(mainController) {
 		});
 	};
 
+	/**
+	 * Invoked by the users controller when saving an user.
+	 */
 	function bind() {
 		$('body').on('click', '.btnDelete', function(event) {
 			event.preventDefault();
@@ -72,6 +82,9 @@ function UsersListController(mainController) {
 		});
 	}
 
+	/**
+	 * Invoked when typing in the search box.
+	 */
 	function onSearch(term) {
 		$('#pages').pagination('selectPage', 1);
 		searchTerm.term = term;
@@ -79,6 +92,10 @@ function UsersListController(mainController) {
 		timeout = setTimeout(search, 1000);
 	}
 	
+	/**
+	 * Used to update the currently shown list of users,
+	 * based on searching mode or normal viewing mode.
+	 */
 	function updateUsersList() {
 		if(searchMode) {
 			searchTerm.page = currentPage - 1;
@@ -89,6 +106,10 @@ function UsersListController(mainController) {
 		}
 	}
 
+	/**
+	 * Sends a request to the server for the users of
+	 * the corresponding page, and shows them on success.
+	 */
 	function loadUsers() {
 		var page = currentPage - 1;
 		var requestData = {
@@ -109,6 +130,12 @@ function UsersListController(mainController) {
 				});
 	}
 
+	/**
+	 * Calculates the necessary pages, based on the currently showed
+	 * users per page and the total number of users, and redraws
+	 * the pages.
+	 * @param totalResults - total number of users
+	 */
 	function updatePages(totalResults) {
 		var pages = Math.ceil(totalResults / usersPerPage);
 		if(pagesContext.pages > pages)
@@ -117,6 +144,10 @@ function UsersListController(mainController) {
 		$('#pages').pagination('redraw');
 	}
 
+	/**
+	 * If necessary, converts the returned users from the server
+	 * to an array list. 
+	 */
 	function listUsers(response) {
 		usersList.length = 0;
 		if(response.user != null) {
@@ -131,6 +162,11 @@ function UsersListController(mainController) {
 		updatePages(response.totalResults);
 	}
 
+	/**
+	 * Sends a request to the server with the search term and
+	 * parameters for corresponding users to get. On success
+	 * shows the returned users.
+	 */
 	function search() {
 		var searchData = {
 			search : searchTerm.term,
@@ -150,6 +186,9 @@ function UsersListController(mainController) {
 		);
 	};
 
+	/**
+	 * Visualizes the returned from the server users.
+	 */
 	function show() {
 		$("#users").find("li:gt(0)").remove();
 		var listElement = $('#users li.user').clone();
@@ -169,6 +208,10 @@ function UsersListController(mainController) {
 		};
 	};
 
+	 /**
+	 * Displays a modal window asking the user to confirm the action.
+	 * @param index - of the deleted user.
+	 */
 	function showModal(index) {
 		var modalHtml = '<div id="dialog" title="Warning!">Are you sure you want to delete this user?</p></div>';
 		$('#userDetails').append(modalHtml);
@@ -192,6 +235,12 @@ function UsersListController(mainController) {
 		});
 	}
 	
+	/**
+	 * Invoked when the user confirms the action.
+	 * Sends a request to the server to delete the user.
+	 * @param index - of the deleted user
+	 * @param dialogContext - modal window which invoked the operation.
+	 */
 	function deleteUser(index) {
 		deletedUser = usersList[index];
 		request('users/' + indexToId(index), 
@@ -209,10 +258,16 @@ function UsersListController(mainController) {
 		);	
 	};
 
+	/**
+	 * Gets the user's id corresponding to it's index in the list.
+	 */
 	function indexToId(index) {
 		return usersList[index].userId;
 	}
 
+	/**
+	 * Invoked by the users controller when saving an user.
+	 */
 	this.refresh = function() {
 		updateUsersList();
 	};

@@ -1,3 +1,7 @@
+/**
+ * Manages operations on the currently opened user.
+ * @param userController - the context in which this controller works.
+ */
 function UserDetailsController(userController) {
 	var currentUser = newUser();
 	var userIdField = {};
@@ -7,27 +11,44 @@ function UserDetailsController(userController) {
 	var actionResult = {};
 	this.userController = userController;
 
+	/**
+	 * Loads the necessary html contents.
+	 */
 	this.init = function() {
 		$('#userDetails').load('user_details.html', function() {
 			bind();
 		});
 	};
 	
+	/**
+	 * Shows the specified user.
+	 * @param user - the user to display; 
+	 * if null is passed, displays a new, empty user.
+	 */
 	this.show = function(user) {
 		// checks whether currently opened user is modified
-		if(currentUser.username != usernameField.val() || currentUser.password != passwordField.val())
+		if(currentUser.username != usernameField.val() || currentUser.password != passwordField.val()
+				|| currentUser.userType != userTypeField.val())
 			showModal(user);
 		else {
 			visualize(user);
 		}
 	};
 	
+	/**
+	 * Checks if the deleted user is the one currently shown and if true
+	 * shows a new empty user.
+	 */
 	this.userDeleted = function(user) {
 		if(currentUser.userId === user.userId) {
 			visualize(null);
 		}
 	};
 	
+	/**
+	 * Displays the specified user in the appropriate text fields.
+	 * @param user - the user to display
+	 */
 	function visualize(user) {
 		if(user != null)
 			currentUser = user;
@@ -39,6 +60,9 @@ function UserDetailsController(userController) {
 		userTypeField.val(currentUser.userType);
 	}
 	
+	/**
+	 * Binds the necessary functions to the relevant controls
+	 */
 	function bind() {
 		userIdField = $('#userID');
 		usernameField = $('#username');
@@ -56,6 +80,10 @@ function UserDetailsController(userController) {
 		});
 	}
 	
+	/**
+	 * Sends the appropriate request to the server for saving the currently opened user. 
+	 * @param user - the user to be saved
+	 */
 	function save(user) {
 		var dataToSend = {
 			username : usernameField.val(),
@@ -89,6 +117,13 @@ function UserDetailsController(userController) {
 		};
 	};
 	
+	/**
+	 * Set that the currently opened user is the saved one. 
+	 * @param userData - the user that has been saved
+	 * @param action - if the action is to save a new user or
+	 * update an existing.
+	 * @param result
+	 */
 	function userSaved(userData, action, result) {
 		if(action === "save")
 			currentUser.userId = userData.userId;
@@ -99,7 +134,10 @@ function UserDetailsController(userController) {
 		userController.onSave();
 	}
 
-	
+	/**
+	 * Validates the user text fields, returning false if they are empty.
+	 * @returns {Boolean}
+	 */
 	function validateFields() {
 		if(usernameField.val() == "") {
 			alert('Username field is empty!');
@@ -112,6 +150,9 @@ function UserDetailsController(userController) {
 			return true;
 	}
 	
+	/**
+	 * @returns Returns a new copy of empty user.
+	 */
 	function newUser() {
 		return {
 			userId : "",
@@ -121,6 +162,10 @@ function UserDetailsController(userController) {
 		};
 	}
 	
+	/**
+	 * Displays a modal window asking the user for appropriate actions.
+	 * @param user
+	 */
 	function showModal(user) {
 		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened user is modified!<p>Do you want to continue without saving?</p></div>';
 		$('#userDetails').append(modalHtml);
@@ -148,6 +193,11 @@ function UserDetailsController(userController) {
 		});
 	};
 	
+	/**
+	 * Displays a message to the user, indicating the result of the last action.
+	 * @param action
+	 * @param result
+	 */
 	function notificateUser(action, result) {
 		actionResult.css('opacity', 1);
 		actionResult.show('slow');

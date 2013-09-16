@@ -44,6 +44,9 @@ function MainController() {
 		});
 	};
 	
+	 /**
+	 * Displays a modal window warning the user for an occured error.
+	 */
 	function showModal() {
 		var modalHtml = '<div id="dialog" title="Warning!"><p>Error has occurred.</p><p>Please, log in the system again.</p></div>';
 		$('#articleDetails').append(modalHtml);

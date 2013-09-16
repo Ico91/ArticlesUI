@@ -1,6 +1,14 @@
+/** 
+ * Controls the administration panel
+ * @param context - the main controller
+ * @returns
+ */
 function AdministratorSessionController(context) {
 	var mainController = context;
 	
+	/**
+	 * Load appropriate html
+	 */
 	this.init = function() {
 		
 		$('#container').load('administrator.html', function() {
@@ -13,6 +21,9 @@ function AdministratorSessionController(context) {
 		});
 	};
 	
+	/**
+	 * Add listeners to the buttons
+	 */
 	function bind() {
 		$('body').on('click', '#btn-logout', function(event) {
 			event.preventDefault();
