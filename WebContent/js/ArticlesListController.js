@@ -1,6 +1,7 @@
 function ArticlesListController(mainController) {
 	var timeout = null;
 	var articlesList = [];
+	var allArticles = false;
 	var searchMode = false;
 	var searchTerm = {
 		term : null,
@@ -13,7 +14,7 @@ function ArticlesListController(mainController) {
 	this.init = function() {
 		$('#articlesList').load('articles_list.html', function() {
 			bind();
-			loadArticles(0);
+			loadArticles();
 		});
 	};
 
@@ -26,6 +27,18 @@ function ArticlesListController(mainController) {
 		$('#btnNew').on('click', function(event) {
 			event.preventDefault();
 			mainController.onNew();
+		});
+
+		$('input[value="all"').on('click', function() {
+			allArticles = true;
+			currentPage = 1;
+			loadArticles();
+		});
+
+		$('input[value="own"').on('click', function() {
+			allArticles = false;
+			currentPage = 1;
+			loadArticles();
 		});
 
 		$('body').on('click', '.btn-article', function(event) {
@@ -93,7 +106,8 @@ function ArticlesListController(mainController) {
 		var page = currentPage - 1;
 		var requestData = {
 			from : page*articlesPerPage,
-			to : page*articlesPerPage + articlesPerPage
+			to : page*articlesPerPage + articlesPerPage,
+			all : allArticles
 		};
 		request('articles',
 				'GET', 
