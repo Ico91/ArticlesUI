@@ -6,9 +6,9 @@ function AdministratorSessionController(context) {
 		$('#container').load('administrator.html', function() {
 			bind();
 			$( "#tabs" ).tabs();
-			//var userController = new UserController();
+			var userController = new UserController();
 			var statisticsController = new StatisticsController();
-			//userController.init();
+			userController.init();
 			statisticsController.init();
 		});
 	};
