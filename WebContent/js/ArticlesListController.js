@@ -1,16 +1,19 @@
 function ArticlesListController(mainController) {
-	var timeout = null;
-	var articlesList = [];
-	var allArticles = false;
-	var searchMode = false;
+	var timeout = null; // used for search timer
+	var articlesList = []; // list of articles on the current page
+	var allArticles = false; // whether to search amongst all users' articles
+	var searchMode = false; // whether we're currently searching
 	var searchTerm = {
-		term : null,
-		page : 0
+		term : null, // what's been searched
+		page : 0 // which results to show
 	};
-	var currentPage = 1;
-	var articlesPerPage = 10;
-	var pagesContext = {};
+	var currentPage = 1; // currently viewed page
+	var articlesPerPage = 10; // articles per page to show
+	var pagesContext = {}; // object responsible for the pagination
 
+	/**
+	 * Loads the necessary html contents, and the initial articles list
+	 */
 	this.init = function() {
 		$('#articlesList').load('articles_list.html', function() {
 			bind();
@@ -18,6 +21,16 @@ function ArticlesListController(mainController) {
 		});
 	};
 
+	/**
+	 * Invoked by the articles controller when saving an article.
+	 */
+	this.refresh = function() {
+		updateArticlesList();
+	};
+	
+	/**
+	 * Binds the necessary functions to the relevant controls
+	 */
 	function bind() {
 		$('body').on('click', '.btnDelete', function(event) {
 			event.preventDefault();
@@ -85,18 +98,10 @@ function ArticlesListController(mainController) {
 		});
 	}
 
-	function goToFirstPage() {
-		currentPage = 1;
-		$('#pages').pagination('selectPage', 1);
-	}
-
-	function onSearch(term) {
-		goToFirstPage();
-		searchTerm.term = term;
-		searchTerm.page = 0;
-		timeout = setTimeout(search, 1000);
-	}
-
+	/**
+	 * Used to update the currently shown list of articles,
+	 * based on searching mode or normal viewing mode.
+	 */
 	function updateArticlesList() {
 		if(searchMode) {
 			searchTerm.page = currentPage - 1;
@@ -106,7 +111,11 @@ function ArticlesListController(mainController) {
 			loadArticles();
 		}
 	}
-
+	
+	/**
+	 * Sends a request to the server for the articles of
+	 * the corresponding page, and shows them on success.
+	 */
 	function loadArticles() {
 		var page = currentPage - 1;
 		var requestData = {
@@ -127,15 +136,11 @@ function ArticlesListController(mainController) {
 					console.log(response);
 				});
 	}
-
-	function updatePages(totalResults) {
-		var pages = Math.ceil(totalResults / articlesPerPage);
-		if(pagesContext.pages > pages && pagesContext.pages == currentPage)
-			$('#pages').pagination('prevPage');
-		pagesContext.pages = pages;
-		$('#pages').pagination('redraw');
-	}
-
+	
+	/**
+	 * If necessary, converts the returned articles from the server
+	 * to an array list. 
+	 */
 	function listArticles(response) {
 		articlesList.length = 0;
 		if(response.article != null) {
@@ -149,7 +154,67 @@ function ArticlesListController(mainController) {
 		show();
 		updatePages(response.totalResults);
 	}
+	
+	/**
+	 * Visualizes the returned from the server articles.
+	 */
+	function show() {
+		$(".articles").find("li:gt(0)").remove();	
+		var listElement = $('.article').clone();
+		listElement.removeAttr('style');
+		listElement.removeClass('article');
+		if (articlesList.length == 0) {
+			listElement.text('No results found!');
+			listElement.appendTo('.articles');
+			return;
+		}
+		if (articlesList instanceof Array) {
+			for(var i = 0; i < articlesList.length; i ++) {				
+				listElement.find('.btn-article').text(articlesList[i].title);
+				listElement.appendTo('.articles');
+				listElement = listElement.clone();
+			}
+		};
+	};
 
+	/**
+	 * Calculates the necessary pages, based on the currently showed
+	 * articles per page and the total number of articles, and redraws
+	 * the pages.
+	 * @param totalResults - total number of articles
+	 */
+	function updatePages(totalResults) {
+		var pages = Math.ceil(totalResults / articlesPerPage);
+		if(pagesContext.pages > pages && pagesContext.pages == currentPage)
+			$('#pages').pagination('prevPage');
+		pagesContext.pages = pages;
+		$('#pages').pagination('redraw');
+	}	
+	
+	/**
+	 * Used when switching between search and normal viewing mode,
+	 * and between all user's articles and user's own articles/
+	 */
+	function goToFirstPage() {
+		currentPage = 1;
+		$('#pages').pagination('selectPage', 1);
+	}
+
+	/**
+	 * Invoked when typing in the search box.
+	 */
+	function onSearch(term) {
+		goToFirstPage();
+		searchTerm.term = term;
+		searchTerm.page = 0;
+		timeout = setTimeout(search, 1000);
+	}
+
+	/**
+	 * Sends a request to the server with the search term and
+	 * parameters for corresponding articles to get. On success
+	 * shows the returned articles.
+	 */
 	function search() {
 		var searchData = {
 			search : searchTerm.term,
@@ -170,25 +235,11 @@ function ArticlesListController(mainController) {
 		);
 	};
 
-	function show() {
-		$(".articles").find("li:gt(0)").remove();	
-		var listElement = $('.article').clone();
-		listElement.removeAttr('style');
-		listElement.removeClass('article');
-		if (articlesList.length == 0) {
-			listElement.text('No results found!');
-			listElement.appendTo('.articles');
-			return;
-		}
-		if (articlesList instanceof Array) {
-			for(var i = 0; i < articlesList.length; i ++) {				
-				listElement.find('.btn-article').text(articlesList[i].title);
-				listElement.appendTo('.articles');
-				listElement = listElement.clone();
-			}
-		};
-	};
-
+	/**
+	 * /**
+	 * Displays a modal window asking the user to confirm the action.
+	 * @param index - of the deleted article.
+	 */
 	function showModal(index) {
 		var modalHtml = '<div id="dialog" title="Warning!">Are you sure you want to delete this article?</p></div>';
 		$('#articleDetails').append(modalHtml);
@@ -211,6 +262,12 @@ function ArticlesListController(mainController) {
 		});
 	}
 	
+	/**
+	 * Invoked when the user confirms the action.
+	 * Sends a request to the server to delete the article.
+	 * @param index - of the deleted article
+	 * @param dialogContext - modal window which invoked the operation.
+	 */
 	function deleteArticle(index, dialogContext) {
 		deletedArticle = articlesList[index];
 		request('articles/' + indexToId(index), 
@@ -229,11 +286,10 @@ function ArticlesListController(mainController) {
 		);	
 	};
 
+	/**
+	 * Gets the article's id corresponding to it's index in the list.
+	 */
 	function indexToId(index) {
 		return articlesList[index]['@id'];
 	}
-
-	this.refresh = function() {
-		updateArticlesList();
-	};
 }
