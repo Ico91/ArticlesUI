@@ -33,5 +33,7 @@ function UserSessionController(context) {
 			event.preventDefault();
 			mainController.logout();
 		});
+
+		$('.darken').hide();
 	}
 }

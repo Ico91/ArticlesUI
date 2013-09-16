@@ -31,13 +31,13 @@ function ArticlesListController(mainController) {
 
 		$('input[value="all"]').on('click', function() {
 			allArticles = true;
-			currentPage = 1;
+			goToFirstPage();
 			updateArticlesList();
 		});
 
 		$('input[value="own"]').on('click', function() {
 			allArticles = false;
-			currentPage = 1;
+			goToFirstPage();
 			updateArticlesList();
 		});
 
@@ -85,8 +85,13 @@ function ArticlesListController(mainController) {
 		});
 	}
 
-	function onSearch(term) {
+	function goToFirstPage() {
+		currentPage = 1;
 		$('#pages').pagination('selectPage', 1);
+	}
+
+	function onSearch(term) {
+		goToFirstPage();
 		searchTerm.term = term;
 		searchTerm.page = 0;
 		timeout = setTimeout(search, 1000);
@@ -125,7 +130,7 @@ function ArticlesListController(mainController) {
 
 	function updatePages(totalResults) {
 		var pages = Math.ceil(totalResults / articlesPerPage);
-		if(pagesContext.pages > pages)
+		if(pagesContext.pages > pages && pagesContext.pages == currentPage)
 			$('#pages').pagination('prevPage');
 		pagesContext.pages = pages;
 		$('#pages').pagination('redraw');
@@ -197,8 +202,7 @@ function ArticlesListController(mainController) {
 			modal: true,
 			buttons: buttons = {
 					"Delete" : function() {
-						deleteArticle(index);
-						$(this).dialog("close");
+						deleteArticle(index, this);
 					},
 					Cancel: function() {
 						$( this ).dialog( "close" );
@@ -207,7 +211,7 @@ function ArticlesListController(mainController) {
 		});
 	}
 	
-	function deleteArticle(index) {
+	function deleteArticle(index, dialogContext) {
 		deletedArticle = articlesList[index];
 		request('articles/' + indexToId(index), 
 			'DELETE', 
@@ -216,9 +220,10 @@ function ArticlesListController(mainController) {
 			function(response) {
 				updateArticlesList();
 				mainController.onDelete(deletedArticle);
+				$(dialogContext).dialog("close");
 			},
 			function(response) {
-				// TODO: Show error message
+				alert('Cannot delete article!');
 				console.log(response);
 			}
 		);	

@@ -9,11 +9,8 @@ function ArticlesController() {
 	 * Loads the necessary html contents
 	 */
 	this.init = function() {
-		$("#container").load('articles.html', function() {
-			articlesListController.init();
-			articleDetailsController.init();
-			$('.darken').hide();
-		});
+		articlesListController.init();
+		articleDetailsController.init();
 	};
 	/**
 	 * Invoked when creating a new article, tells the article details controller to show it.
