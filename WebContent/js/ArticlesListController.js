@@ -29,16 +29,16 @@ function ArticlesListController(mainController) {
 			mainController.onNew();
 		});
 
-		$('input[value="all"').on('click', function() {
+		$('input[value="all"]').on('click', function() {
 			allArticles = true;
 			currentPage = 1;
-			loadArticles();
+			updateArticlesList();
 		});
 
-		$('input[value="own"').on('click', function() {
+		$('input[value="own"]').on('click', function() {
 			allArticles = false;
 			currentPage = 1;
-			loadArticles();
+			updateArticlesList();
 		});
 
 		$('body').on('click', '.btn-article', function(event) {
@@ -149,7 +149,8 @@ function ArticlesListController(mainController) {
 		var searchData = {
 			search : searchTerm.term,
 			from : searchTerm.page * articlesPerPage,
-			to : searchTerm.page * articlesPerPage + articlesPerPage
+			to : searchTerm.page * articlesPerPage + articlesPerPage,
+			all : allArticles
 		};
 		request('articles', 
 			'GET', 
