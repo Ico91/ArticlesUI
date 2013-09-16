@@ -131,7 +131,7 @@ function DetailsController(userDetailsController) {
 		currentUser.password = userData.password;
 		currentUser.userType = userData.userType;
 		notificateUser(action, result);
-		userController.onSave();
+		userDetailsController.onSave();
 	}
 
 	/**

@@ -4,6 +4,8 @@
  */
 function UserDetailsController(userController) {
 	this.userController = userController;
+	var detailsController = new DetailsController(this);
+	var statisticsController = new StatisticsController();
 	
 	/**
 	 * Load appropriate html
@@ -11,23 +13,22 @@ function UserDetailsController(userController) {
 	this.init = function() {
 		
 		$('#userDetails').load('details.html', function() {
-			bind();
 			$( "#userTabs" ).tabs();
-			var detailsController = new DetailsController();
-			var statisticsController = new StatisticsController();
 			detailsController.init();
 			statisticsController.init();
 		});
 	};
 	
-	/**
-	 * Add listeners to the buttons
-	 */
-	function bind() {
-		$('body').on('click', '#btn-logout', function(event) {
-			event.preventDefault();
-			mainController.logout();
-		});
-	}
+	this.show = function(user) {
+		detailsController.show(user);
+	};
+	
+	this.userDeleted = function(user) {
+		detailsController.userDeleted(user);
+	};
+	
+	this.onSave = function() {
+		userController.onSave();
+	};
 	
 }
