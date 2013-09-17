@@ -1,15 +1,13 @@
-<form id="searchForm">
-	<p>Search:</p>
-	<input type="text" id="search" placeholder="Search...">
-	<input type="radio" name = "articles" value="all">All
-	<input type="radio" name = "articles" value="own" checked = 'checked'>My
-</form>
-<button id="btnNew">New</button>
+<p>Search:</p>
+<input type="text" id="search" placeholder="Search...">
+<input type="radio" name = "articles" value="all">All
+<input type="radio" name = "articles" value="own" checked = 'checked'>My
+<a id="btnNew" class="button">New</a>
 	<p>Articles:</p>
 <div class="list">
 
 <ol class="articles">
-<li style="display:none" class="article"><a href="#" class="btn-article"></a><button class="btnDelete">Delete</button></li>
+<li style="display:none" class="article"><a href="#" class="btn-article"></a><a id="btnDelete" class="button">Delete</a></li>
 </ol>
 </div>
-<div id="pages"></div>
+<div id="articles-pages"></div>

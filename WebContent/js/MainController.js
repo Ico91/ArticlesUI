@@ -36,8 +36,8 @@ function MainController() {
 	 * an occured error.
 	 */
 	this.logout = function() {
+		sessionStorage.clear();
 		request('session/logout', 'POST', null, null, function(result) {
-			sessionStorage.clear();
 			controller.init();
 		}, function(result) {
 			showModal();

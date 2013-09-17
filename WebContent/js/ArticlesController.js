@@ -2,13 +2,15 @@
  * Manages communication between the ArticlesListController & ArticleDetailsController
  */
 function ArticlesController() {
-	var articlesListController = new ArticlesListController(this);
-	var articleDetailsController = new ArticleDetailsController(this);
+	var articlesListController = {};
+	var articleDetailsController = {};
 	
 	/**
 	 * Loads the necessary html contents
 	 */
 	this.init = function() {
+		articlesListController = new ArticlesListController(this);
+		articleDetailsController = new ArticleDetailsController(this);
 		articlesListController.init();
 		articleDetailsController.init();
 	};
@@ -38,5 +40,13 @@ function ArticlesController() {
 	 */
 	this.onSave = function() {
 		articlesListController.refresh();
+	};
+	
+	/**
+	 * Invoked when pressing the logout button, tells the article details controller
+	 * to clear the fields, thus checking for a not saved article.
+	 */
+	this.onLogout = function(callback) {
+		articleDetailsController.show(null, callback);
 	};
 }

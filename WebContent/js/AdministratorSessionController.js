@@ -1,13 +1,13 @@
 function AdministratorSessionController(context) {
 	var mainController = context;
+	var userController = new UserController();
+	var statisticsController = new StatisticsController(this);
 	
 	this.init = function() {
 		
 		$('#container').load('administrator.html', function() {
 			bind();
 			$( "#tabs" ).tabs();
-			var userController = new UserController();
-			var statisticsController = new StatisticsController();
 			userController.init();
 			statisticsController.init();
 		});
