@@ -15,9 +15,9 @@
 	width: 95%;
 	height: 30px;
 	margin-top: 10px;
-	border-radius: 5px;
-	border: 1px solid #00E1FF;
 	padding: 5px;
+	border: none;
+	outline: none;
 }
 
 #username {
@@ -39,7 +39,7 @@
 }
 
 #types {
-	width: 95%;
+	width: 97%;
 	height: 40px;
 	margin-top: 10px;
 	border-radius: 5px;
@@ -58,8 +58,3 @@ textarea {
 	margin-left: 40%;
 }
 
-#action-result {
-	border-radius: 10px;
-	color: #DBDBDB;
-	padding: 5px 0 5px 10%;
-}

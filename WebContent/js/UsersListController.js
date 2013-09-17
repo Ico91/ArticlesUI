@@ -192,7 +192,7 @@ function UsersListController(mainController) {
 	function show() {
 		$("#users").find("li:gt(0)").remove();
 		var listElement = $('#users li.user').clone();
-		listElement.removeAttr('style').removeClass('user');
+		listElement.removeAttr('style');
 		
 		if (usersList.length == 0) {
 			listElement.text('No results found!');

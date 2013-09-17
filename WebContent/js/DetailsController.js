@@ -54,7 +54,7 @@ function DetailsController(userDetailsController) {
 			currentUser = user;
 		else 
 			currentUser = newUser();
-		userIdField.val(currentUser.userId);
+		userIdField.text(currentUser.userId);
 		usernameField.val(currentUser.username);
 		passwordField.val(currentUser.password);
 		userTypeField.val(currentUser.userType);
