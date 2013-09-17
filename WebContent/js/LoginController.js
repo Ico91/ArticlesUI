@@ -1,7 +1,6 @@
 /**
  * Controls the login form
  * 
- * @author Galina Hristova
  * @param mainController
  * @returns
  */

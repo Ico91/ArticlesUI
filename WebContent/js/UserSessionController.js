@@ -1,4 +1,5 @@
-/**
+/** 
+ * Controls the articles panel
  * @author Galina Hristova
  * @author Hristo
  * @param context
