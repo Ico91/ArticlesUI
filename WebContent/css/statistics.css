@@ -1,4 +1,4 @@
-#datepicker {
+.datepicker {
 	width: 40%;
 	display: inline-block;
 	margin-top: 15px;
@@ -21,9 +21,13 @@
 	opacity: 0;
 }
 
-#statistics {
+.statistics {
 	font-style:italic;
 	font-weight:bold;
+	font-size: 1.2em;
+}
+
+#statisticsModal .statistics {
 	font-size: 0.8em;
 }
 
@@ -39,7 +43,7 @@ legend {
 	margin-left: 5%;
 }
 
-#user-statistics {
+.user-statistics {
 	height: 350px;
 	overflow: auto;
 	border: 1px solid #999;

@@ -4,39 +4,45 @@
  * @author Galina Hristova
  * @returns
  */
-function StatisticsController(context, userId) {
+function StatisticsController(context) {
 	var statisticsList = [];
 	var dateStr = {};
 	var activity = 'ALL';
 	var pagesContext = {};
 	var currentPage = 1;
 	var elementsPerPage = 10;
-	var statisticsURL = {};
+	var statisticsURL = '';
+	var container = {};
 
 	/**
 	 * Initialize modal window which displays user statistics
 	 */
-	this.init = function() {
+	this.init = function(userId) {
+		dateStr = '';
+		activity = 'ALL';
 		if(context instanceof UserSessionController) {
 			statisticsURL = 'session/statistics';
+			container = '#userStatistics';
 		}
 		else if(context instanceof AdministratorSessionController) {
 			statisticsURL = 'statistics';
+			container = '#statistics';
 		}
-		else if(context instanceof UserController) {
-			statisticsURL = 'statistics/userId';
+		else if(context instanceof UserDetailsController) {
+			statisticsURL = 'statistics/' + userId;
+			container = '#userStatistics';
 		}
-		$("#statistics").load('statistics.html', function() {
+		$(container).load('statistics.html', function() {
 			bind();
 			loadStatistics();
 		});
 	};
-
+	
 	/**
 	 * Add listeners to buttons
 	 */
 	function bind() {
-		$("#datepicker").datepicker({
+		$(container + " .datepicker").datepicker({
 			dateFormat : 'yy/mm/dd',
 			onClose : function(date) {
 				dateStr = date;
@@ -53,13 +59,13 @@ function StatisticsController(context, userId) {
 			close();
 		});
 
-		$('#activity').change(function() {
+		$(container + ' .activity').change(function() {
 			activity = $(this).val();
 			goToFirstPage();
 			loadStatistics();
 		});
 
-		$('#statistics-pages').pagination({
+		$(container + ' .statistics-pages').pagination({
 			pages: 0,
 			cssStyle: 'light-theme',
 			onPageClick: function(page) {
@@ -81,10 +87,9 @@ function StatisticsController(context, userId) {
 
 		if(activity != 'ALL')
 			requestData.activity = activity;
-		if($('#datepicker').val() != '')
+		if($(container + ' .datepicker').val() != '')
 			requestData.date = dateStr;
 
-		console.log(requestData);
 		request(statisticsURL,
 				'GET',
 				requestData,
@@ -114,22 +119,24 @@ function StatisticsController(context, userId) {
 	}
 	
 	function show() {
-		$("#user-statistics").find("li:gt(1)").remove();
+		var list = $(container + " .user-statistics");
+		list.find("li:gt(1)").remove();
+		var listElement = {};
 		if ( (context instanceof UserSessionController) ){
-			$('#user-statistics').find('.list-head-admin').hide();
-			var listElement = $('#user-statistics li.list-head-user').clone();
+			list.find('.list-head-admin').hide();
+			listElement = $(container + ' .user-statistics li.list-head-user').clone();
 			listElement.removeClass('list-head-user');
 			listElement.addClass('list-data-user');
 		}
 		else{
-			$('#user-statistics').find('.list-head-user').hide();
-			var listElement = $('#user-statistics li.list-head-admin').clone();
+			list.find('.list-head-user').hide();
+			listElement = $(container + ' .user-statistics li.list-head-admin').clone();
 			listElement.removeClass('list-head-admin');
 			listElement.addClass('list-data-admin');
 		}
 		if (statisticsList.length == 0) {
 			listElement.text('No results found!');
-			listElement.appendTo('#user-statistics');
+			listElement.appendTo(container + " .user-statistics");
 			return;
 		}
 		if (statisticsList instanceof Array) {
@@ -137,7 +144,7 @@ function StatisticsController(context, userId) {
 				listElement.find('.head-userid').text(statisticsList[i].userId);
 				listElement.find('.head-date').text(statisticsList[i].activityDate);
 				listElement.find('.head-activity').text(statisticsList[i].userActivity);
-				listElement.appendTo('#user-statistics');
+				listElement.appendTo(container + " .user-statistics");
 				listElement = listElement.clone();			
 			}
 		};
@@ -146,13 +153,13 @@ function StatisticsController(context, userId) {
 	function updatePages(totalResults) {
 		var pages = Math.ceil(totalResults / elementsPerPage);
 		if(pagesContext.pages > pages && pagesContext.pages == currentPage)
-			$('#statistics-pages').pagination('prevPage');
+			$(container + ' .statistics-pages').pagination('prevPage');
 		pagesContext.pages = pages;
-		$('#statistics-pages').pagination('redraw');
+		$(container + ' .statistics-pages').pagination('redraw');
 	}	
 
 	function goToFirstPage() {
 		currentPage = 1;
-		$('#statistics-pages').pagination('selectPage', 1);
+		$(container + ' .statistics-pages').pagination('selectPage', 1);
 	}
 }

@@ -166,7 +166,7 @@ function ArticleDetailsController(articlesController) {
 	 * @param callback
 	 */
 	function showModal(article, callback) {
-		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened article is modified!<p>Do you want to continue without saving?</p></div>';
+		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened article is modified!<p>Save changes?</p></div>';
 		$('#articleDetails').append(modalHtml);
 		$( "#dialog" ).dialog({
 			resizable: false,
@@ -177,11 +177,11 @@ function ArticleDetailsController(articlesController) {
 			width: 350,
 			modal: true,
 			buttons: buttons = {
-					"Save" : function() {
+					"Yes" : function() {
 						save(article, callback);
 						$(this).dialog("close");
 					},
-					"Continue": function() {
+					"No": function() {
 						visualize(article);
 						if(callback != null)
 							callback();
