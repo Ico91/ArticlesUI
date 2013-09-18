@@ -41,6 +41,7 @@ function UserDetailsController(userController) {
 	};
 	
 	this.userDeleted = function(user) {
+		$(tabsContext).tabs('disable', 1).tabs('option', 'active', 0);
 		detailsController.userDeleted(user);
 	};
 	
