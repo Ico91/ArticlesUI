@@ -19,15 +19,19 @@ function ArticleDetailsController(articlesController) {
 
 	/**
 	 * Shows the specified article.
-	 * @param article - the article to display; 
+	 * @param article - the article to display;
 	 * if null is passed, displays a new, empty article.
+	 * @param callback
 	 */
-	this.show = function(article) {
+	this.show = function(article, callback) {
 		// checks whether currently opened article is modified
-		if(currentArticle.title != articleTitleField.val() || currentArticle.content != articleContentField.val())
-			showModal(article);
+		if(currentArticle.title != articleTitleField.val() || 
+			currentArticle.content != articleContentField.val())
+			showModal(article, callback);
 		else {
 			visualize(article);
+			if(callback != null)
+				callback();
 		}
 	};
 	
@@ -64,9 +68,6 @@ function ArticleDetailsController(articlesController) {
 		actionResult.hide();
 		$('#btnSave').click(function(event) {
 			event.preventDefault();
-			if(!validateFields()) {
-				return;
-			}
 			save(currentArticle);
 		});
 	}
@@ -74,15 +75,19 @@ function ArticleDetailsController(articlesController) {
 	/**
 	 * Sends the appropriate request to the server for saving the currently opened article. 
 	 * @param article
+	 * @param callback - method to be invoked on a successful save
 	 */
-	function save(article) {
+	function save(article, callback) {
+		if(!validateFields()) {
+			return;
+		}
 		var dataToSend = {
 			title : articleTitleField.val(),
 			content : articleContentField.val()
 		};
 		if(currentArticle['@id'] != null) {
 			request('articles/' + currentArticle['@id'], 'POST', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				articleSaved(dataToSend, "update", true);
+				articleSaved(dataToSend, "update", true, callback);
 				visualize(article);
 			},
 			function(response) {
@@ -94,7 +99,7 @@ function ArticleDetailsController(articlesController) {
 		}
 		else {
 			request('articles/', 'PUT', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				articleSaved(response, "save", true);
+				articleSaved(response, "save", true, callback);
 				visualize(article);
 			},
 			function(response) {
@@ -106,13 +111,24 @@ function ArticleDetailsController(articlesController) {
 		};
 	};
 
-	function articleSaved(articleData, action, result) {
+	/**
+	 * Invoked on successful server response.
+	 * @param articleData - data to update the current article
+	 * @param action - operation on the article (create or modify)
+	 * @param result - result of the operation
+	 * @param callback - method to be called 
+	 */
+	function articleSaved(articleData, action, result, callback) {
 		if(action === "save")
 			currentArticle['@id'] = articleData['@id'];
 		currentArticle.title = articleData.title;
 		currentArticle.content = articleData.content;
-		notificateUser(action, result);
-		articlesController.onSave();
+		if(callback != null)
+			callback();
+		if(sessionStorage.getItem('user') != null) {
+			notificateUser(action, result);
+			articlesController.onSave();
+		}
 	}
 
 	/**
@@ -147,9 +163,10 @@ function ArticleDetailsController(articlesController) {
 	/**
 	 * Displays a modal window asking the user for appropriate actions.
 	 * @param article
+	 * @param callback
 	 */
-	function showModal(article) {
-		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened article is modified!<p>Do you want to continue without saving?</p></div>';
+	function showModal(article, callback) {
+		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened article is modified!<p>Save changes?</p></div>';
 		$('#articleDetails').append(modalHtml);
 		$( "#dialog" ).dialog({
 			resizable: false,
@@ -160,12 +177,14 @@ function ArticleDetailsController(articlesController) {
 			width: 350,
 			modal: true,
 			buttons: buttons = {
-					"Save" : function() {
-						save(article);
+					"Yes" : function() {
+						save(article, callback);
 						$(this).dialog("close");
 					},
-					"Continue": function() {
+					"No": function() {
 						visualize(article);
+						if(callback != null)
+							callback();
 						$(this).dialog("close");
 					},
 					Cancel: function() {

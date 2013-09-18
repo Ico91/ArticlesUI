@@ -5,19 +5,28 @@
  */
 function AdministratorSessionController(context) {
 	var mainController = context;
+	var userController = new UserController();
+	var statisticsController = {};
 	
 	/**
 	 * Load appropriate html
 	 */
 	this.init = function() {
-		
+		var adminContext = this;
 		$('#container').load('administrator.html', function() {
 			bind();
-			$( "#tabs" ).tabs();
-			var userController = new UserController();
-			var statisticsController = new StatisticsController();
+			$( "#tabs" ).tabs({
+				activate: function( event, ui ) {
+					if(ui.newPanel.selector == '#tabs-statistics')
+					{
+						statisticsController = new StatisticsController(adminContext);
+						statisticsController.init();
+					}
+					if(ui.newPanel.selector != '#tabs-statistics')
+						statisticsController = null;
+				}
+			});
 			userController.init();
-			statisticsController.init();
 		});
 	};
 	
@@ -29,6 +38,7 @@ function AdministratorSessionController(context) {
 			event.preventDefault();
 			mainController.logout();
 		});
+
 	}
 	
 	

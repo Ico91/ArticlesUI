@@ -5,8 +5,9 @@
  * @param context
  * @returns
  */
-function UserSessionController(context) {
-	var mainController = context;
+function UserSessionController(mainController) {
+	var statisticsController = new StatisticsController(this);
+	var articlesController = new ArticlesController(this);
 	
 	/**
 	 * Load articles form
@@ -14,7 +15,6 @@ function UserSessionController(context) {
 	this.init = function() {
 		$('#container').load('articles.html', function() {
 			bind();
-			var articlesController = new ArticlesController();
 			articlesController.init();
 		});
 	};
@@ -23,18 +23,53 @@ function UserSessionController(context) {
 	 * Add listeners to the buttons
 	 */
 	function bind() {
-		$('body').on('click', '#btn-statistics', function(event) {
+		$('#btn-statistics').on('click', function(event) {
 			event.preventDefault();
-			var statisticsController = new StatisticsController();
 			statisticsController.init();
+			showModal();
 		});
 		
-		$('body').on('click', '#btn-logout', function(event) {
-			sessionStorage.clear();
+		$('#btn-logout').on('click', function(event) {
 			event.preventDefault();
-			mainController.logout();
+			articlesController.onLogout(mainController.logout);			
 		});
 
+		$('.darken').on('click', function() {
+			closeModal();
+		});
+		
+		$('.btn-close').on('click', function(event) {
+			event.preventDefault();
+			closeModal();
+		});
+		
 		$('.darken').hide();
 	}
+	
+	function showModal() {
+		$('.darken').show();
+		$('#statisticsModal').show();
+		$('.darken').animate({
+			opacity : 1
+		}, 500);
+		$('#statisticsModal').animate({
+			opacity : 1
+		}, 500);
+	}
+
+	/**
+	 * Close the modal window
+	 */
+	function closeModal() {
+		$('#statisticsModal').animate({
+			opacity: 0
+		}, 500, function() {
+			$(this).hide();
+		});
+		$('.darken').animate({
+			opacity: 0
+		}, 500, function() {
+			$(this).hide();
+		});
+	};
 }
