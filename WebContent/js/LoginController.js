@@ -20,7 +20,7 @@ function LoginController(mainController) {
 	 * Add listeners to the buttons
 	 */
 	function bind() {
-		$('#login-btn').on('click', function(event) {
+		$('#btnLogin').on('click', function(event) {
 			event.preventDefault();
 			login();
 		});
@@ -47,8 +47,9 @@ function LoginController(mainController) {
 					controller.userLoggedIn(result);
 				},
 				function() {
-					var container = $('#container');
-					var error = '<p class="error">Wrong username or password</p>';
+					var container = $('#loginForm');
+					var error = $('#error');
+					error.text("Wrong username or password.");
 					container.append(error);
 				});
 	}

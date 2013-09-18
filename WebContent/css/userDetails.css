@@ -1,17 +1,31 @@
 #userDetails {
-	width: 60%;
+	font-family: Georgia, Times, serif;
+	font-style: italic;
+	font-size: 20px;
+	font-weight: bold;
+	width : 60%;
 	height: auto;
 	float: right;
 	/*padding-top: 25px;*/
 	overflow: hidden;
 	color: #00E1FF;
+	width: 60%;
+	font-style: italic;
+	font-size: 20px;
 }
 
 #user {
 	margin: 0% 10%;
 }
 
+.layout-userID {
+	padding: 10px 0px 10px 0px;
+}
+
 #userID {
+	font-style: normal;
+	font-weight: normal;
+	font-family: Georgia, Times, serif;
 	width: 95%;
 	height: 30px;
 	margin-top: 10px;
@@ -20,16 +34,30 @@
 	outline: none;
 }
 
+.layout-username {
+	padding: 5px 0px;
+}
+
 #username {
+	font-style: normal;
+	font-weight: normal;
+	font-family: Georgia, Times, serif;
 	width: 95%;
 	height: 30px;
 	margin-top: 10px;
 	border-radius: 5px;
 	border: 1px solid #00E1FF;
 	padding: 5px;
+}
+
+.layout-password {
+	padding: 5px 0px;
 }
 
 #password {
+	font-style: normal;
+	font-weight: normal;
+	font-family: Georgia, Times, serif;
 	width: 95%;
 	height: 30px;
 	margin-top: 10px;
@@ -38,7 +66,14 @@
 	padding: 5px;
 }
 
+.layout-type {
+	padding: 5px 0px;
+}
+
 #types {
+	font-style: normal;
+	font-weight: normal;
+	font-family: Georgia, Times, serif;
 	width: 97%;
 	height: 40px;
 	margin-top: 10px;
@@ -46,7 +81,6 @@
 	border: 1px solid #00E1FF;
 	padding: 5px;
 }
-
 
 textarea {
 	resize: none;
@@ -57,4 +91,3 @@ textarea {
 	margin-top: 25px;
 	margin-left: 40%;
 }
-
