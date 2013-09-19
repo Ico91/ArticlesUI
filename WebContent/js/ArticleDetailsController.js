@@ -86,27 +86,35 @@ function ArticleDetailsController(articlesController) {
 			content : articleContentField.val()
 		};
 		if(currentArticle['@id'] != null) {
-			request('articles/' + currentArticle['@id'], 'POST', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				articleSaved(dataToSend, "update", true, callback);
-				visualize(article);
-			},
-			function(response) {
-				// TODO: create error flow
-				notificateUser("update", false);
-				console.log('Error saving article');
-				console.log(response);
+			ArticlesUI.request('articles/' + currentArticle['@id'], {
+				method: 'POST',
+				data: JSON.stringify(dataToSend),
+				success: function(response) {
+					articleSaved(dataToSend, "update", true, callback);
+					visualize(article);
+				},
+				error: function(response) {
+					// TODO: create error flow
+					notificateUser("update", false);
+					console.log('Error saving article');
+					console.log(response);
+				}
 			});
 		}
 		else {
-			request('articles/', 'PUT', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				articleSaved(response, "save", true, callback);
-				visualize(article);
-			},
-			function(response) {
-				// TODO: Create error flow
-				notificateUser("save", false);
-				console.log('Error saving article');
-				console.log(response);
+			ArticlesUI.request('articles/', {
+				method: 'PUT',
+				data: JSON.stringify(dataToSend),
+				success: function(response) {
+					articleSaved(response, "save", true, callback);
+					visualize(article);
+				},
+				error: function(response) {
+					// TODO: Create error flow
+					notificateUser("save", false);
+					console.log('Error saving article');
+					console.log(response);
+				}
 			});
 		};
 	};

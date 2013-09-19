@@ -37,10 +37,15 @@ function MainController() {
 	 */
 	this.logout = function() {
 		sessionStorage.clear();
-		request('session/logout', 'POST', null, null, function(result) {
-			controller.init();
-		}, function(result) {
-			showModal();
+		ArticlesUI.request('session/logout', {
+			method: 'POST',
+			success: function(response) {
+				window.location.reload(); 
+				//controller.init();
+			},
+			error: function(response) {
+				showModal();
+			}
 		});
 	};
 	

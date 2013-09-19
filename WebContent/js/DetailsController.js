@@ -92,27 +92,35 @@ function DetailsController(userDetailsController) {
 		};
 		
 		if(currentUser.userId != "") {
-			request('users/' + currentUser.userId, 'POST', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				userSaved(dataToSend, "update", true);
-				visualize(user);
-			},
-			function(response) {
-				// TODO: create error flow
-				notificateUser("update", false);
-				console.log('Error updating user');
-				console.log(response);
+			ArticlesUI.request('users/', {
+				method: 'POST',
+				data: JSON.stringify(dataToSend),
+				success: function(response) {
+					userSaved(dataToSend, "update", true);
+					visualize(user);
+				},
+				error: function(response) {
+					// TODO: create error flow
+					notificateUser("update", false);
+					console.log('Error updating user');
+					console.log(response);
+				}
 			});
 		}
 		else {
-			request('users/', 'PUT', JSON.stringify(dataToSend), "application/json; charset=utf-8", function(response) {
-				userSaved(response, "save", true);
-				visualize(user);
-			},
-			function(response) {
-				// TODO: Create error flow
-				notificateUser("save", false);
-				console.log('Error saving user');
-				console.log(response);
+			ArticlesUI.request('users/', {
+				method: 'PUT',
+				data: JSON.stringify(dataToSend),
+				success: function(response) {
+					userSaved(response, "save", true);
+					visualize(user);
+				},
+				error: function(response) {
+					// TODO: Create error flow
+					notificateUser("save", false);
+					console.log('Error saving user');
+					console.log(response);
+				}
 			});
 		};
 	};
@@ -167,7 +175,7 @@ function DetailsController(userDetailsController) {
 	 * @param user
 	 */
 	function showModal(user) {
-		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened user is modified!<p>Do you want to continue without saving?</p></div>';
+		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened user is modified!<p>Save changes?</p></div>';
 		$('#userDetails').append(modalHtml);
 		$( "#dialog" ).dialog({
 			resizable: false,
@@ -178,11 +186,11 @@ function DetailsController(userDetailsController) {
 			width: 350,
 			modal: true,
 			buttons: buttons = {
-					"Save" : function() {
+					"Yes" : function() {
 						save(user);
 						$(this).dialog("close");
 					},
-					"Continue": function() {
+					"No": function() {
 						visualize(user);
 						$(this).dialog("close");
 					},

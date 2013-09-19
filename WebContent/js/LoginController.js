@@ -37,21 +37,20 @@ function LoginController(mainController) {
 			password : $("#input-password").val(),
 		};
 
-		request(
-				'session/login',
-				'POST',
-				JSON.stringify(user),
-				"application/json; charset=utf-8",
-				function(result) {
-					sessionStorage.setItem("user", result);
-					controller.userLoggedIn(result);
-				},
-				function() {
-					var container = $('#loginForm');
-					var error = $('#error');
-					error.text("Wrong username or password.");
-					container.append(error);
-				});
+		ArticlesUI.request('session/login', {
+			method: 'POST',
+			data: JSON.stringify(user),
+			success: function(response) {
+				sessionStorage.setItem("user", response);
+				controller.userLoggedIn(response);
+			},
+			error: function(response) {
+				var container = $('#loginForm');
+				var error = $('#error');
+				error.text("Wrong username or password.");
+				container.append(error);
+			}
+		});
 	}
 
 }

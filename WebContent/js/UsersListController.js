@@ -2,26 +2,56 @@
  * Controls the list of all users
  */
 
-function UsersListController(mainController) {
+function UsersListController(context) {
 	var timeout = null;
 	var usersList = [];
 	var searchMode = false;
-	var searchTerm = {
-		term : null,
-		page : 0
-	};
-	var currentPage = 1;
-	var usersPerPage = 10;
-	var pagesContext = {};
+	var searchTerm = {};
+	var paginationController = {};
 
 	/**
 	 * Binds the necessary functions to the relevant controls
 	 */
 	this.init = function() {
+		var controller = this;
 		$('#usersList').load('users_list.html', function() {
 			bind();
-			loadUsers();
+			paginationController = new PaginationController(controller);
+			paginationController.init({
+				selector: "#users-pages",
+				url: "users"
+			});
 		});
+	};
+
+	/**
+	 * Invoked by the users controller when saving a user.
+	 */
+	this.refresh = function() {
+		updateUsersList(false);
+	};
+
+	/**
+	 * Visualizes the returned from the server users.
+	 */
+	this.show = function(response) {
+		listUsers(response);
+		$("#users").find("li:gt(0)").remove();
+		var listElement = $('#users li.user').clone();
+		listElement.removeAttr('style');
+		
+		if (usersList.length == 0) {
+			listElement.text('No results found!');
+			listElement.appendTo('.users');
+			return;
+		}
+		if (usersList instanceof Array) {
+			for(var i = 0; i < usersList.length; i ++) {
+				listElement.find('.btn-user').text(usersList[i].username);
+				listElement.appendTo('#users');
+				listElement = listElement.clone();
+			}
+		};
 	};
 
 	/**
@@ -35,12 +65,12 @@ function UsersListController(mainController) {
 
 		$('#btnNew').on('click', function(event) {
 			event.preventDefault();
-			mainController.onNew();
+			context.onNew();
 		});
 
 		$('body').on('click', '.btn-user', function(event) {
 			event.preventDefault();
-			mainController.onSelect(usersList[$(this).parent().index() - 1]);
+			context.onSelect(usersList[$(this).parent().index() - 1]);
 		});
 
 		//	Handle keyup on search field
@@ -68,80 +98,19 @@ function UsersListController(mainController) {
 				}
 			}
 		});
-
-		$('#pages').pagination({
-			pages: 0,
-			cssStyle: 'light-theme',
-			onPageClick: function(page) {
-				currentPage = page;
-				updateUsersList();
-			},
-			onInit: function() {
-				pagesContext = this;
-			}
-		});
 	}
 
-	/**
-	 * Invoked when typing in the search box.
-	 */
-	function onSearch(term) {
-		$('#pages').pagination('selectPage', 1);
-		searchTerm.term = term;
-		searchTerm.page = 0;
-		timeout = setTimeout(search, 1000);
-	}
-	
 	/**
 	 * Used to update the currently shown list of users,
 	 * based on searching mode or normal viewing mode.
 	 */
-	function updateUsersList() {
+	function updateUsersList(fromFirstPage) {
 		if(searchMode) {
-			searchTerm.page = currentPage - 1;
-			search(searchTerm);
+			search(fromFirstPage);
 		}
 		else {
-			loadUsers();
+			paginationController.reload(fromFirstPage);
 		}
-	}
-
-	/**
-	 * Sends a request to the server for the users of
-	 * the corresponding page, and shows them on success.
-	 */
-	function loadUsers() {
-		var page = currentPage - 1;
-		var requestData = {
-			from : page*usersPerPage,
-			to : page*usersPerPage + usersPerPage
-		};
-		request('users',
-				'GET', 
-				requestData, 
-				"application/json; charset=utf-8",
-				function(response) {
-					listUsers(response);
-				},
-				function(response) {
-					// TODO: create error flow
-					console.log('Error loading users!');
-					console.log(response);
-				});
-	}
-
-	/**
-	 * Calculates the necessary pages, based on the currently showed
-	 * users per page and the total number of users, and redraws
-	 * the pages.
-	 * @param totalResults - total number of users
-	 */
-	function updatePages(totalResults) {
-		var pages = Math.ceil(totalResults / usersPerPage);
-		if(pagesContext.pages > pages)
-			$('#pages').pagination('prevPage');
-		pagesContext.pages = pages;
-		$('#pages').pagination('redraw');
 	}
 
 	/**
@@ -158,8 +127,14 @@ function UsersListController(mainController) {
 				usersList.push(response.user);
 			}
 		}
-		show();
-		updatePages(response.totalResults);
+	}
+
+	/**
+	 * Invoked when typing in the search box.
+	 */
+	function onSearch(term) {
+		searchTerm = term;
+		timeout = setTimeout(search, 1000, true);
 	}
 
 	/**
@@ -167,45 +142,12 @@ function UsersListController(mainController) {
 	 * parameters for corresponding users to get. On success
 	 * shows the returned users.
 	 */
-	function search() {
-		var searchData = {
-			search : searchTerm.term,
-			from : searchTerm.page * usersPerPage,
-			to : searchTerm.page * usersPerPage + usersPerPage
-		};
-		request('users', 
-			'GET', 
-			searchData, 
-			"application/json; charset=utf-8", 
-			function(response) {
-				listUsers(response);
-			},
-			function(response) {
-				//	TODO: Error
+	function search(fromFirstPage) {
+		paginationController.reload(fromFirstPage, {
+			data : {
+				search: searchTerm
 			}
-		);
-	};
-
-	/**
-	 * Visualizes the returned from the server users.
-	 */
-	function show() {
-		$("#users").find("li:gt(0)").remove();
-		var listElement = $('#users li.user').clone();
-		listElement.removeAttr('style');
-		
-		if (usersList.length == 0) {
-			listElement.text('No results found!');
-			listElement.appendTo('.users');
-			return;
-		}
-		if (usersList instanceof Array) {
-			for(var i = 0; i < usersList.length; i ++) {
-				listElement.find('.btn-user').text(usersList[i].username);
-				listElement.appendTo('#users');
-				listElement = listElement.clone();
-			}
-		};
+		});
 	};
 
 	 /**
@@ -225,8 +167,7 @@ function UsersListController(mainController) {
 			modal: true,
 			buttons: buttons = {
 					"Delete" : function() {
-						deleteUser(index);
-						$(this).dialog("close");
+						deleteUser(index, this);
 					},
 					Cancel: function() {
 						$( this ).dialog( "close" );
@@ -234,25 +175,26 @@ function UsersListController(mainController) {
 			}
 		});
 	}
-	
+
 	/**
 	 * Invoked when the user confirms the action.
 	 * Sends a request to the server to delete the user.
 	 * @param index - of the deleted user
 	 * @param dialogContext - modal window which invoked the operation.
 	 */
-	function deleteUser(index) {
+	function deleteUser(index, dialogContext) {
 		deletedUser = usersList[index];
-		request('users/' + indexToId(index), 
+		ArticlesUI.request('users/' + indexToId(index), 
 			'DELETE', 
 			null, 
 			"application/json; charset=utf-8", 
 			function(response) {
-				updateUsersList();
-				mainController.onDelete(deletedUser);
+				updateUsersList(false);
+				context.onDelete(deletedUser);
+				$(dialogContext).dialog("close");
 			},
 			function(response) {
-				// TODO: Show error message
+				alert('Cannot delete user!');
 				console.log(response);
 			}
 		);	
@@ -264,11 +206,5 @@ function UsersListController(mainController) {
 	function indexToId(index) {
 		return usersList[index].userId;
 	}
-
-	/**
-	 * Invoked by the users controller when saving an user.
-	 */
-	this.refresh = function() {
-		updateUsersList();
-	};
+	
 };
