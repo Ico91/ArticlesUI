@@ -1,24 +1,23 @@
-function ArticlesListController(mainController) {
-	var timeout = null; // used for search timer
-	var articlesList = []; // list of articles on the current page
-	var allArticles = false; // whether to search amongst all users' articles
+function ArticlesListController(context) {
+	var timeout = null;
+	var articlesList = [];
+	var allArticles = false;
 	var searchMode = false; // whether we're currently searching
-	var searchTerm = {
-		term : null, // what's been searched
-		page : 0
-	// which results to show
-	};
-	var currentPage = 1; // currently viewed page
-	var articlesPerPage = 10; // articles per page to show
-	var pagesContext = {}; // object responsible for the pagination
+	var searchTerm = {};
+	var paginationController = {};
 
 	/**
 	 * Loads the necessary html contents, and the initial articles list
 	 */
 	this.init = function() {
+		var controller = this;
 		$('#articlesList').load('articles_list.html', function() {
 			bind();
-			loadArticles();
+			paginationController = new PaginationController(controller);
+			paginationController.init({
+				selector: "#articles-pages",
+				url: "articles"
+			});
 		});
 	};
 
@@ -26,7 +25,30 @@ function ArticlesListController(mainController) {
 	 * Invoked by the articles controller when saving an article.
 	 */
 	this.refresh = function() {
-		updateArticlesList();
+		updateArticlesList(false);
+	};
+	
+	/**
+	 * Visualizes the returned from the server articles.
+	 */
+	this.show = function(response) {
+		listArticles(response);
+		$(".articles").find("li:gt(0)").remove();
+		var listElement = $('.article').clone();
+		listElement.removeAttr('style');
+		listElement.removeClass('article');
+		if (articlesList.length == 0) {
+			listElement.text('No results found!');
+			listElement.appendTo('.articles');
+			return;
+		}
+		if (articlesList instanceof Array) {
+			for ( var i = 0; i < articlesList.length; i++) {
+				listElement.find('.btn-article').text(articlesList[i].title);
+				listElement.appendTo('.articles');
+				listElement = listElement.clone();
+			}
+		};
 	};
 
 	/**
@@ -40,27 +62,22 @@ function ArticlesListController(mainController) {
 
 		$('#btnNew').on('click', function(event) {
 			event.preventDefault();
-			mainController.onNew();
+			context.onNew();
 		});
 
 		$('input[value="all"]').on('click', function() {
 			allArticles = true;
-			goToFirstPage();
-			updateArticlesList();
+			updateArticlesList(true);
 		});
 
 		$('input[value="own"]').on('click', function() {
 			allArticles = false;
-			goToFirstPage();
-			updateArticlesList();
+			updateArticlesList(true);
 		});
 
-		$('body').on(
-				'click',
-				'.btn-article',
-				function(event) {
+		$('body').on('click', '.btn-article', function(event) {
 					event.preventDefault();
-					mainController.onSelect(articlesList[$(this).parent()
+					context.onSelect(articlesList[$(this).parent()
 							.index() - 1]);
 				});
 
@@ -86,52 +103,22 @@ function ArticlesListController(mainController) {
 				}
 			}
 		});
-
-		$('#articles-pages').pagination({
-			pages : 0,
-			cssStyle : 'light-theme',
-			onPageClick : function(page) {
-				currentPage = page;
-				updateArticlesList();
-			},
-			onInit : function() {
-				pagesContext = this;
-			}
-		});
 	}
 
 	/**
 	 * Used to update the currently shown list of articles, based on searching
 	 * mode or normal viewing mode.
 	 */
-	function updateArticlesList() {
+	function updateArticlesList(fromFirstPage) {
 		if (searchMode) {
-			searchTerm.page = currentPage - 1;
-			search(searchTerm);
+			search(fromFirstPage);
 		} else {
-			loadArticles();
+			paginationController.reload(fromFirstPage, {
+				data : {
+					all : allArticles
+				} 
+			});
 		}
-	}
-
-	/**
-	 * Sends a request to the server for the articles of the corresponding page,
-	 * and shows them on success.
-	 */
-	function loadArticles() {
-		var page = currentPage - 1;
-		var requestData = {
-			from : page * articlesPerPage,
-			to : page * articlesPerPage + articlesPerPage,
-			all : allArticles
-		};
-		request('articles', 'GET', requestData,
-				"application/json; charset=utf-8", function(response) {
-					listArticles(response);
-				}, function(response) {
-					// TODO: create error flow
-					console.log('Error loading articles!');
-					console.log(response);
-				});
 	}
 
 	/**
@@ -147,93 +134,33 @@ function ArticlesListController(mainController) {
 				articlesList.push(response.article);
 			}
 		}
-		show();
-		updatePages(response.totalResults);
-	}
-
-	/**
-	 * Visualizes the returned from the server articles.
-	 */
-	function show() {
-		$(".articles").find("li:gt(0)").remove();
-		var listElement = $('.article').clone();
-		listElement.removeAttr('style');
-		listElement.removeClass('article');
-		if (articlesList.length == 0) {
-			listElement.text('No results found!');
-			listElement.appendTo('.articles');
-			return;
-		}
-		if (articlesList instanceof Array) {
-			for ( var i = 0; i < articlesList.length; i++) {
-				listElement.find('.btn-article').text(articlesList[i].title);
-				listElement.appendTo('.articles');
-				listElement = listElement.clone();
-			}
-		}
-		;
-	}
-	;
-
-	/**
-	 * Calculates the necessary pages, based on the currently showed articles
-	 * per page and the total number of articles, and redraws the pages.
-	 * 
-	 * @param totalResults -
-	 *            total number of articles
-	 */
-	function updatePages(totalResults) {
-		var pages = Math.ceil(totalResults / articlesPerPage);
-		if (pagesContext.pages > pages && pagesContext.pages == currentPage)
-			$('#articles-pages').pagination('prevPage');
-		pagesContext.pages = pages;
-		$('#articles-pages').pagination('redraw');
-	}
-
-	/**
-	 * Used when switching between search and normal viewing mode, and between
-	 * all user's articles and user's own articles/
-	 */
-	function goToFirstPage() {
-		currentPage = 1;
-		$('#articles-pages').pagination('selectPage', 1);
 	}
 
 	/**
 	 * Invoked when typing in the search box.
 	 */
 	function onSearch(term) {
-		goToFirstPage();
-		searchTerm.term = term;
-		searchTerm.page = 0;
-		timeout = setTimeout(search, 1000);
+		searchTerm = term;
+		timeout = setTimeout(search, 1000, true);
 	}
 
 	/**
 	 * Sends a request to the server with the search term and parameters for
 	 * corresponding articles to get. On success shows the returned articles.
 	 */
-	function search() {
-		var searchData = {
-			search : searchTerm.term,
-			from : searchTerm.page * articlesPerPage,
-			to : searchTerm.page * articlesPerPage + articlesPerPage,
-			all : allArticles
-		};
-		request('articles', 'GET', searchData,
-				"application/json; charset=utf-8", function(response) {
-					listArticles(response);
-				}, function(response) {
-					// TODO: Error
-				});
-	}
-	;
+	function search(fromFirstPage) {
+		paginationController.reload(fromFirstPage, {
+			data : {
+				search: searchTerm,
+				all : allArticles
+			},
+		});
+	};
 
 	/**
 	 * /** Displays a modal window asking the user to confirm the action.
 	 * 
-	 * @param index -
-	 *            of the deleted article.
+	 * @param index - of the deleted article.
 	 */
 	function showModal(index) {
 		var modalHtml = '<div id="dialog" title="Warning!">Are you sure you want to delete this article?</p></div>';
@@ -268,17 +195,19 @@ function ArticlesListController(mainController) {
 	 */
 	function deleteArticle(index, dialogContext) {
 		deletedArticle = articlesList[index];
-		request('articles/' + indexToId(index), 'DELETE', null,
-				"application/json; charset=utf-8", function(response) {
-					updateArticlesList();
-					mainController.onDelete(deletedArticle);
-					$(dialogContext).dialog("close");
-				}, function(response) {
-					alert('Cannot delete article!');
-					console.log(response);
-				});
-	}
-	;
+		ArticlesUI.request('articles/' + indexToId(index), {
+			method: 'DELETE',
+			success: function(response) {
+				updateArticlesList();
+				context.onDelete(deletedArticle);
+				$(dialogContext).dialog("close");
+			},
+			error: function(response) {
+				alert('Cannot delete article!');
+				console.log(response);
+			}
+		});
+	};
 
 	/**
 	 * Gets the article's id corresponding to it's index in the list.

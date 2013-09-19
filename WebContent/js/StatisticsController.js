@@ -8,11 +8,9 @@ function StatisticsController(context) {
 	var statisticsList = [];
 	var dateStr = {};
 	var activity = 'ALL';
-	var pagesContext = {};
-	var currentPage = 1;
-	var elementsPerPage = 10;
 	var statisticsURL = '';
 	var container = {};
+	var paginationController = {};
 
 	/**
 	 * Initialize modal window which displays user statistics
@@ -20,6 +18,7 @@ function StatisticsController(context) {
 	this.init = function(userId) {
 		dateStr = '';
 		activity = 'ALL';
+		var controller = this;
 		if(context instanceof UserSessionController) {
 			statisticsURL = 'session/statistics';
 			container = '#userStatistics';
@@ -34,91 +33,20 @@ function StatisticsController(context) {
 		}
 		$(container).load('statistics.html', function() {
 			bind();
-			loadStatistics();
+			paginationController = new PaginationController(controller);
+			paginationController.init({
+					selector: container + ' .statistics-pages',
+					url: statisticsURL,
+					elementsPerPage: 5
+			});
 		});
 	};
-	
+
 	/**
-	 * Add listeners to buttons
+	 * Visualizes the returned from the server statistics.
 	 */
-	function bind() {
-		$(container + " .datepicker").datepicker({
-			dateFormat : 'yy/mm/dd',
-			onClose : function(date) {
-				dateStr = date;
-				goToFirstPage();
-				loadStatistics();
-			},
-		});
-	
-		$('.btn-close').on('click', function(event) {
-			event.preventDefault();
-			close();
-		});
-		$('.darken').on('click', function(event) {
-			close();
-		});
-
-		$(container + ' .activity').change(function() {
-			activity = $(this).val();
-			goToFirstPage();
-			loadStatistics();
-		});
-
-		$(container + ' .statistics-pages').pagination({
-			pages: 0,
-			cssStyle: 'light-theme',
-			onPageClick: function(page) {
-				currentPage = page;
-				loadStatistics();
-			},
-			onInit: function() {
-				pagesContext = this;
-			}
-		});
-	}
-
-	function loadStatistics() {
-		var page = currentPage - 1;
-		var requestData = {
-			from : page*elementsPerPage,
-			to : page*elementsPerPage + elementsPerPage,
-		};
-
-		if(activity != 'ALL')
-			requestData.activity = activity;
-		if($(container + ' .datepicker').val() != '')
-			requestData.date = dateStr;
-
-		request(statisticsURL,
-				'GET',
-				requestData,
-				"application/json; charset=utf-8",
-				function(result) {
-					listStatistics(result);
-				}, 
-				function(result) {
-					console.log("Error loading statistics");
-					console.log(result);
-				}
-		);
-	}
-
-	function listStatistics(response) {
-		statisticsList.length = 0;
-		if(response.userStatisticsDTO != null) {
-			if(response.userStatisticsDTO instanceof Array) {
-				statisticsList = response.userStatisticsDTO;
-			}
-			else {
-				statisticsList.push(response.userStatisticsDTO);
-			}
-		}
-		show();
-		updatePages(response.totalResults);
-	}
-	
-	function show() {
+	this.show = function(response) {
+		listStatistics(response);
 		var list = $(container + " .user-statistics");
 		list.find("li:gt(1)").remove();
 		var listElement = {};
@@ -141,7 +69,7 @@ function StatisticsController(context) {
 		}
 		if (statisticsList instanceof Array) {
 			for(var i = 0; i < statisticsList.length; i ++) {
-				listElement.find('.head-userid').text(statisticsList[i].userId);
+				listElement.find('.head-userid').text(statisticsList[i].username);
 				listElement.find('.head-date').text(statisticsList[i].activityDate);
 				listElement.find('.head-activity').text(statisticsList[i].userActivity);
 				listElement.appendTo(container + " .user-statistics");
@@ -150,16 +78,62 @@ function StatisticsController(context) {
 		};
 	};
 
-	function updatePages(totalResults) {
-		var pages = Math.ceil(totalResults / elementsPerPage);
-		if(pagesContext.pages > pages && pagesContext.pages == currentPage)
-			$(container + ' .statistics-pages').pagination('prevPage');
-		pagesContext.pages = pages;
-		$(container + ' .statistics-pages').pagination('redraw');
-	}	
+	/**
+	 * Add listeners to buttons
+	 */
+	function bind() {
+		$(container + " .datepicker").datepicker({
+			dateFormat : 'yy/mm/dd',
+			onClose : function(date) {
+				dateStr = date;
+				if(activity == 'ALL')
+					activity = '';
+				paginationController.reload(true, {
+					data : {
+						date : dateStr,
+						activity : activity
+					}
+				});
+			}
+		});
+	
+		$('.btn-close').on('click', function(event) {
+			event.preventDefault();
+			close();
+		});
+		$('.darken').on('click', function(event) {
+			close();
+		});
 
-	function goToFirstPage() {
-		currentPage = 1;
-		$(container + ' .statistics-pages').pagination('selectPage', 1);
+		$(container + ' .activity').change(function() {
+			if($(this).val() == 'ALL') {
+				activity = '';
+			}
+			else {
+				activity = $(this).val();
+			}
+			paginationController.reload(true, {
+				data : {
+					date : dateStr,
+					activity : activity
+				}
+			});
+		});
+	}
+
+	/**
+	 * If necessary, converts the returned statistics from the server to an array
+	 * list.
+	 */
+	function listStatistics(response) {
+		statisticsList.length = 0;
+		if(response.userStatisticsDTO != null) {
+			if(response.userStatisticsDTO instanceof Array) {
+				statisticsList = response.userStatisticsDTO;
+			}
+			else {
+				statisticsList.push(response.userStatisticsDTO);
+			}
+		}
 	}
 }
