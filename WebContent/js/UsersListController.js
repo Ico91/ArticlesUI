@@ -30,7 +30,7 @@ function UsersListController(mainController) {
 	function bind() {
 		$('body').on('click', '.btnDelete', function(event) {
 			event.preventDefault();
-			showModal($(this).parent().index() - 1);
+			showModal($(this).parent().index());
 		});
 
 		$('#btnNew').on('click', function(event) {
@@ -40,7 +40,7 @@ function UsersListController(mainController) {
 
 		$('body').on('click', '.btn-user', function(event) {
 			event.preventDefault();
-			mainController.onSelect(usersList[$(this).parent().index() - 1]);
+			mainController.onSelect(usersList[$(this).parent().index()]);
 		});
 
 		//	Handle keyup on search field
@@ -191,7 +191,8 @@ function UsersListController(mainController) {
 	 */
 	function show() {
 		$("#users").find("li:gt(0)").remove();
-		var listElement = $('#users li.user').clone();
+		var listElement = $('#users li.user');
+		
 		listElement.removeAttr('style');
 		
 		if (usersList.length == 0) {

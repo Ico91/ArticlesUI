@@ -1,7 +1,7 @@
 var ArticlesUI = {};
 
 ArticlesUI.Config = {
-	url : "http://localhost:8080/Articles/"
+	url : "http://192.168.1.107:8080/Articles/"
 };
 
 function request(relativeURL, method, dataToSend, contentType, successCallback, errorCallback) {

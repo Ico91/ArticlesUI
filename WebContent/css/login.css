@@ -64,6 +64,7 @@ form.login {
 	-moz-box-shadow: 0px 0px 8px #f0f0f0;
 	-webkit-box-shadow: 0px 0px 8px #f0f0f0;
 	box-shadow: 0px 0px 8px #f0f0f0;
+	outline:none;
 }
 .form_wrapper #input-username:focus,
 .form_wrapper #input-password:focus {

@@ -6,7 +6,7 @@
 	background: #d3d3d3;
 	color: #333;
 	border-radius: 5px;
-	border-color: #333; 
+	border-color: #333;
 }
 
 #btn-logout:hover {
@@ -17,6 +17,60 @@
 .logout-position {
 	position: absolute;
 	z-index: 999;
-	top: 25px;
+	top: 13px;
 	right: 0px;
+}
+
+.ui-widget-content {
+	border:none!important;	
+}
+
+.ui-tabs {
+	padding:0px!important;
+}
+
+.ui-corner-all, .ui-corner-bottom, .ui-corner-right, .ui-corner-br, ui-corner-left {
+	border-bottom-right-radius:0px!important;
+	border-bottom-left-radius:0px!important;
+}
+
+.ui-widget-header {
+	border:none!important;
+	background: #444!important;
+}
+
+.ui-tabs .ui-tabs-panel {
+	background: #f4f4f4 url(../images/bg.gif) repeat top left !important;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a {
+	border: solid 1px #E5E5E5;
+	background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF),
+		color-stop(4%, #EEEEEE), to(#FFFFFF));
+	background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+	-moz-box-shadow: 0px 0px 8px #f0f0f0;
+	-webkit-box-shadow: 0px 0px 8px #f0f0f0;
+	box-shadow: 0px 0px 8px #f0f0f0;
+	outline: none;
+}
+
+.ui-tabs .ui-tabs-nav li.ui-tabs-active a:focus {
+	outline: none;
+}
+
+.ui-widget {
+	font-family: Georgia, Times, serif !important;
+	font-style: italic !important;
+	font-size: 20px !important;
+}
+
+.ui-widget textarea,.ui-widget select {
+	font-family: Georgia, Times, serif !important;
+	font-style: normal !important;
+	font-weight: normal !important;
+}
+
+.ui-widget input,.ui-widget button {
+	font-family: Georgia, Times, serif !important;
+	font-style: italic !important;
 }

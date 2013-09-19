@@ -1,28 +1,41 @@
-#userDetails {
-	font-family: Georgia, Times, serif;
-	font-style: italic;
-	font-size: 20px;
-	font-weight: bold;
-	width : 60%;
-	height: auto;
-	float: right;
-	/*padding-top: 25px;*/
-	overflow: hidden;
-	color: #00E1FF;
-	width: 60%;
-	font-style: italic;
-	font-size: 20px;
-}
-
 #user {
 	margin: 0% 10%;
+}
+
+.ui-tabs .ui-tabs-panel .tabs-details {
+	background: #fff !important;
+	-webkit-box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+	-moz-box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+	box-shadow: inset 0px 0px 10px 0px rgba(0, 0, 0, 0.75);
+	border-bottom-right-radius: 8px !important;
+	border-bottom-left-radius: 8px !important;
+}
+
+.user-form textarea {
+	resize: none;
+	width: 95%;
+	height: 30px;
+	margin-top: 10px;
+	border: solid 1px #E5E5E5;
+	padding: 5px;
+	outline: none;
+	background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF),
+		color-stop(4%, #EEEEEE), to(#FFFFFF));
+	background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+	-moz-box-shadow: 0px 0px 8px #f0f0f0;
+	-webkit-box-shadow: 0px 0px 8px #f0f0f0;
+	box-shadow: 0px 0px 8px #f0f0f0;
+}
+
+.user-form textarea:focus {
+	background: #feffef;
 }
 
 .layout-userID {
 	padding: 10px 0px 10px 0px;
 }
 
-#userID {
+.user-form #userID {
 	font-style: normal;
 	font-weight: normal;
 	font-family: Georgia, Times, serif;
@@ -38,55 +51,36 @@
 	padding: 5px 0px;
 }
 
-#username {
-	font-style: normal;
-	font-weight: normal;
-	font-family: Georgia, Times, serif;
-	width: 95%;
-	height: 30px;
-	margin-top: 10px;
-	border-radius: 5px;
-	border: 1px solid #00E1FF;
-	padding: 5px;
-}
-
 .layout-password {
 	padding: 5px 0px;
-}
-
-#password {
-	font-style: normal;
-	font-weight: normal;
-	font-family: Georgia, Times, serif;
-	width: 95%;
-	height: 30px;
-	margin-top: 10px;
-	border-radius: 5px;
-	border: 1px solid #00E1FF;
-	padding: 5px;
 }
 
 .layout-type {
 	padding: 5px 0px;
 }
 
-#types {
+.user-form #types {
 	font-style: normal;
 	font-weight: normal;
 	font-family: Georgia, Times, serif;
 	width: 97%;
 	height: 40px;
 	margin-top: 10px;
-	border-radius: 5px;
-	border: 1px solid #00E1FF;
+	border: solid 1px #E5E5E5;
 	padding: 5px;
+	outline: none;
+	background: -webkit-gradient(linear, left top, left 25, from(#FFFFFF),
+		color-stop(4%, #EEEEEE), to(#FFFFFF));
+	background: -moz-linear-gradient(top, #FFFFFF, #EEEEEE 1px, #FFFFFF 25px);
+	-moz-box-shadow: 0px 0px 8px #f0f0f0;
+	-webkit-box-shadow: 0px 0px 8px #f0f0f0;
+	box-shadow: 0px 0px 8px #f0f0f0;
+	appearance:none;
+-moz-appearance:none; /* Firefox */
+-webkit-appearance:none; /* Safari and Chrome */
 }
 
-textarea {
-	resize: none;
-}
-
-#btnSave {
+.user-save #btnSave {
 	display: inline-block;
 	margin-top: 25px;
 	margin-left: 40%;
