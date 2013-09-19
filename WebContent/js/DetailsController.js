@@ -92,7 +92,7 @@ function DetailsController(userDetailsController) {
 		};
 		
 		if(currentUser.userId != "") {
-			ArticlesUI.request('users/', {
+			ArticlesUI.request('users/' + currentUser.userId, {
 				method: 'POST',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {

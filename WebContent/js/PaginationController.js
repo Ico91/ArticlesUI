@@ -113,7 +113,6 @@ function PaginationController(context) {
 		if(pagesContext.pages > pages && pagesContext.pages == options.currentPage)
 			$(options.selector).pagination('prevPage');
 		pagesContext.pages = pages;
-		console.log(pagesContext.pages);
 		$(options.selector).pagination('redraw');
 	}
 }

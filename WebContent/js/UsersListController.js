@@ -184,17 +184,19 @@ function UsersListController(context) {
 	 */
 	function deleteUser(index, dialogContext) {
 		deletedUser = usersList[index];
-		ArticlesUI.request('users/' + indexToId(index), 'DELETE', null,
-				"application/json; charset=utf-8", function(response) {
-					updateUsersList(false);
-					context.onDelete(deletedUser);
-					$(dialogContext).dialog("close");
-				}, function(response) {
-					alert('Cannot delete user!');
-					console.log(response);
-				});
-	}
-	;
+		ArticlesUI.request('users/' + indexToId(index), {
+			method: 'DELETE',
+			success: function(response) {
+				updateUsersList(false);
+				context.onDelete(deletedUser);
+				$(dialogContext).dialog("close");
+			},
+			error: function(response) {
+				alert('Cannot delete user!');
+				console.log(response);
+			}
+		});
+	};
 
 	/**
 	 * Gets the user's id corresponding to it's index in the list.
