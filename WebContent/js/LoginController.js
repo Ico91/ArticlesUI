@@ -41,7 +41,7 @@ function LoginController(mainController) {
 			method: 'POST',
 			data: JSON.stringify(user),
 			success: function(response) {
-				sessionStorage.setItem("user", response);
+				sessionStorage.setItem("user", JSON.stringify(response));
 				controller.userLoggedIn(response);
 			},
 			error: function(response) {

@@ -12,8 +12,14 @@ function MainController() {
 			loginController.init();
 		}
 		else {
-			var userSessionController = new UserSessionController(this);
-			userSessionController.init();
+			var user = $.parseJSON(sessionStorage.getItem("user"));
+			if(user.usertype == "ADMIN") {
+				var adminSessionController = new AdministratorSessionController(this);
+				adminSessionController.init();
+			} else {
+				var userSessionController = new UserSessionController(this);
+				userSessionController.init();
+			}
 		}
 	};
 
