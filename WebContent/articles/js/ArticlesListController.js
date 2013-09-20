@@ -11,7 +11,7 @@ function ArticlesListController(context) {
 	 */
 	this.init = function() {
 		var controller = this;
-		$('#articlesList').load('articles_list.html', function() {
+		$('#articlesList').load('articles/html/articles_list.html', function() {
 			bind();
 			paginationController = new PaginationController(controller);
 			paginationController.init({
@@ -195,7 +195,7 @@ function ArticlesListController(context) {
 	 */
 	function deleteArticle(index, dialogContext) {
 		deletedArticle = articlesList[index];
-		ArticlesUI.request('articles/' + indexToId(index), {
+		ArticlesRequest.request('articles/' + indexToId(index), {
 			method: 'DELETE',
 			success: function(response) {
 				updateArticlesList();

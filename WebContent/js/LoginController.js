@@ -37,7 +37,7 @@ function LoginController(mainController) {
 			password : $("#input-password").val(),
 		};
 
-		ArticlesUI.request('session/login', {
+		ArticlesRequest.request('session/login', {
 			method: 'POST',
 			data: JSON.stringify(user),
 			success: function(response) {

@@ -14,7 +14,7 @@ function UsersListController(context) {
 	 */
 	this.init = function() {
 		var controller = this;
-		$('#usersList').load('users_list.html', function() {
+		$('#usersList').load('users/html/users_list.html', function() {
 			bind();
 			paginationController = new PaginationController(controller);
 			paginationController.init({
@@ -184,7 +184,7 @@ function UsersListController(context) {
 	 */
 	function deleteUser(index, dialogContext) {
 		deletedUser = usersList[index];
-		ArticlesUI.request('users/' + indexToId(index), {
+		ArticlesRequest.request('users/' + indexToId(index), {
 			method: 'DELETE',
 			success: function(response) {
 				updateUsersList(false);

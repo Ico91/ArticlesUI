@@ -31,13 +31,12 @@ function StatisticsController(context) {
 			statisticsURL = 'statistics/' + userId;
 			container = '#userStatistics';
 		}
-		$(container).load('statistics.html', function() {
+		$(container).load('statistics/html/statistics.html', function() {
 			bind();
 			paginationController = new PaginationController(controller);
 			paginationController.init({
 					selector: container + ' .statistics-pages',
-					url: statisticsURL,
-					elementsPerPage: 5
+					url: statisticsURL
 			});
 		});
 	};

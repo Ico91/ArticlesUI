@@ -1,11 +1,11 @@
-function ArticlesUI() {
+function ArticlesRequest() {
 }
 
-ArticlesUI.config = {
+ArticlesRequest.config = {
 		domain : "http://localhost:8080/Articles/"
 };
 
-ArticlesUI.request = function(relativeURL, options) {
+ArticlesRequest.request = function(relativeURL, options) {
 	var requestOpt = $.extend({
 		method : 'GET',
 		data: null,
@@ -19,7 +19,7 @@ ArticlesUI.request = function(relativeURL, options) {
 	}, options || {});
 	
 	$.ajax({
-		url: ArticlesUI.config["domain"] + relativeURL,
+		url: ArticlesRequest.config["domain"] + relativeURL,
 		method: requestOpt.method,
 		data: requestOpt.data,
 		contentType: requestOpt.contentType,

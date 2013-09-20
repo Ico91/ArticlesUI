@@ -13,7 +13,7 @@ function UserSessionController(mainController) {
 	 * Load articles form
 	 */
 	this.init = function() {
-		$('#container').load('articles.html', function() {
+		$('#container').load('articles/html/articles.html', function() {
 			bind();
 			articlesController.init();
 		});

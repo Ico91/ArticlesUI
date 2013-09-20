@@ -88,7 +88,7 @@ function PaginationController(context) {
 	 * Sends a request to the server, to load the specified contents.
 	 */
 	function loadContents() {
-		ArticlesUI.request(options.url, {
+		ArticlesRequest.request(options.url, {
 			data: options.data,
 			success: function(response) {
 				context.show(response);

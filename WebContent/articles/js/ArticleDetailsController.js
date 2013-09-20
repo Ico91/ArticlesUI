@@ -12,7 +12,7 @@ function ArticleDetailsController(articlesController) {
 	 * Loads the necessary html contents.
 	 */
 	this.init = function() {
-		$('#articleDetails').load('article_details.html', function() {
+		$('#articleDetails').load('articles/html/article_details.html', function() {
 			bind();
 		});
 	};
@@ -86,7 +86,7 @@ function ArticleDetailsController(articlesController) {
 			content : articleContentField.val()
 		};
 		if(currentArticle['@id'] != null) {
-			ArticlesUI.request('articles/' + currentArticle['@id'], {
+			ArticlesRequest.request('articles/' + currentArticle['@id'], {
 				method: 'POST',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {
@@ -102,7 +102,7 @@ function ArticleDetailsController(articlesController) {
 			});
 		}
 		else {
-			ArticlesUI.request('articles/', {
+			ArticlesRequest.request('articles/', {
 				method: 'PUT',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {

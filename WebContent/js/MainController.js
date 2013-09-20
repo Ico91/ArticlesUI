@@ -37,7 +37,7 @@ function MainController() {
 	 */
 	this.logout = function() {
 		sessionStorage.clear();
-		ArticlesUI.request('session/logout', {
+		ArticlesRequest.request('session/logout', {
 			method: 'POST',
 			success: function(response) {
 				window.location.reload(); 
