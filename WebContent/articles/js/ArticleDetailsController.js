@@ -86,7 +86,7 @@ function ArticleDetailsController(articlesController) {
 			content : articleContentField.val()
 		};
 		if(currentArticle['@id'] != null) {
-			ArticlesRequest.request('articles/' + currentArticle['@id'], {
+			ServerRequest.request('articles/' + currentArticle['@id'], {
 				method: 'POST',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {
@@ -102,7 +102,7 @@ function ArticleDetailsController(articlesController) {
 			});
 		}
 		else {
-			ArticlesRequest.request('articles/', {
+			ServerRequest.request('articles/', {
 				method: 'PUT',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {

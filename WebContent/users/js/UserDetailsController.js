@@ -8,16 +8,24 @@ function UserDetailsController(userController) {
 	var statisticsController = new StatisticsController(this);
 	var tabsContext = {};
 	var userIdStatistics = {};
+	var statisticsConfig = {
+		url: 'statistics',
+		container: '.userTabs .tabs-userStatistics #userStatistics'
+	};
+	
+	this.statisticsElements = {
+			element: "list-head-user"
+		};
 	
 	/**
 	 * Load appropriate html
 	 */
 	this.init = function() {
-		$('#userDetails').load('session/html/details.html', function() {
+		$('#userDetails').load('users/html/user_details.html', function() {
 			tabsContext = $( "#userTabs" ).tabs({
-				activate: function( event, ui ) {
+				activate: function( event, ui ) {					
 					if(ui.newPanel.selector == '#tabs-userStatistics' && userIdStatistics != null)
-						statisticsController.init(userIdStatistics);
+						statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
 				},
 				create: function( event, ui ) {
 					$(this).tabs('disable', 1);
@@ -35,7 +43,7 @@ function UserDetailsController(userController) {
 			console.log(tabsContext);
 			$(tabsContext).tabs('enable', 1);
 			userIdStatistics = user.userId;
-			statisticsController.init(user.userId); 
+			statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container); 
 		}
 		detailsController.show(user);
 	};

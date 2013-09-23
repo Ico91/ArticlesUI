@@ -184,7 +184,7 @@ function UsersListController(context) {
 	 */
 	function deleteUser(index, dialogContext) {
 		deletedUser = usersList[index];
-		ArticlesRequest.request('users/' + indexToId(index), {
+		ServerRequest.request('users/' + indexToId(index), {
 			method: 'DELETE',
 			success: function(response) {
 				updateUsersList(false);

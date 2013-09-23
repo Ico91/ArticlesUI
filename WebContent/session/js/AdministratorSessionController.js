@@ -7,6 +7,14 @@ function AdministratorSessionController(context) {
 	var mainController = context;
 	var userController = new UserController();
 	var statisticsController = {};
+	var statisticsConfig = {
+		url: 'statistics',
+		container: '#statistics'
+	};
+	
+	this.statisticsElements = {
+			element: "list-head-admin"
+		};
 	
 	/**
 	 * Load appropriate html
@@ -20,7 +28,7 @@ function AdministratorSessionController(context) {
 					if(ui.newPanel.selector == '#tabs-statistics')
 					{
 						statisticsController = new StatisticsController(adminContext);
-						statisticsController.init();
+						statisticsController.init(statisticsConfig.url, statisticsConfig.container);
 					}
 					if(ui.newPanel.selector != '#tabs-statistics')
 						statisticsController = null;

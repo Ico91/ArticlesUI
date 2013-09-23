@@ -15,7 +15,7 @@ function DetailsController(userDetailsController) {
 	 * Loads the necessary html contents.
 	 */
 	this.init = function() {
-		$('#details').load('users/html/user_details.html', function() {
+		$('#details').load('users/html/details.html', function() {
 			bind();
 		});
 	};
@@ -92,7 +92,7 @@ function DetailsController(userDetailsController) {
 		};
 		
 		if(currentUser.userId != "") {
-			ArticlesRequest.request('users/' + currentUser.userId, {
+			ServerRequest.request('users/' + currentUser.userId, {
 				method: 'POST',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {
@@ -108,7 +108,7 @@ function DetailsController(userDetailsController) {
 			});
 		}
 		else {
-			ArticlesRequest.request('users/', {
+			ServerRequest.request('users/', {
 				method: 'PUT',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {

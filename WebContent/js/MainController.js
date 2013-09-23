@@ -43,7 +43,7 @@ function MainController() {
 	 */
 	this.logout = function() {
 		sessionStorage.clear();
-		ArticlesRequest.request('session/logout', {
+		ServerRequest.request('session/logout', {
 			method: 'POST',
 			success: function(response) {
 				window.location.reload(); 

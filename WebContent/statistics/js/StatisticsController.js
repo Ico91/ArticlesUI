@@ -11,26 +11,17 @@ function StatisticsController(context) {
 	var statisticsURL = '';
 	var container = {};
 	var paginationController = {};
+	var controller = context;
 
 	/**
 	 * Initialize modal window which displays user statistics
 	 */
-	this.init = function(userId) {
+	this.init = function(url, element) {
 		dateStr = '';
 		activity = 'ALL';
 		var controller = this;
-		if(context instanceof UserSessionController) {
-			statisticsURL = 'session/statistics';
-			container = '#userStatistics';
-		}
-		else if(context instanceof AdministratorSessionController) {
-			statisticsURL = 'statistics';
-			container = '#statistics';
-		}
-		else if(context instanceof UserDetailsController) {
-			statisticsURL = 'statistics/' + userId;
-			container = '#userStatistics';
-		}
+		statisticsURL = url;
+		container = element;
 		$(container).load('statistics/html/statistics.html', function() {
 			bind();
 			paginationController = new PaginationController(controller);
@@ -49,18 +40,11 @@ function StatisticsController(context) {
 		var list = $(container + " .user-statistics");
 		list.find("li:gt(1)").remove();
 		var listElement = {};
-		if ( (context instanceof UserSessionController) ){
-			list.find('.list-head-admin').hide();
-			listElement = $(container + ' .user-statistics li.list-head-user').clone();
-			listElement.removeClass('list-head-user');
-			listElement.addClass('list-data-user');
-		}
-		else{
-			list.find('.list-head-user').hide();
-			listElement = $(container + ' .user-statistics li.list-head-admin').clone();
-			listElement.removeClass('list-head-admin');
-			listElement.addClass('list-data-admin');
-		}
+		listElement = $(container + ' .user-statistics li.' + controller.statisticsElements.element).clone();
+		listElement.removeAttr('style');
+		listElement.removeClass(controller.statisticsElements.element);
+		listElement.addClass('list-data-user');
+		
 		if (statisticsList.length == 0) {
 			listElement.text('No results found!');
 			listElement.appendTo(container + " .user-statistics");

@@ -10,14 +10,7 @@
 .articles-main {
 	width: 100%;
 	min-height: 100%;
-}
-
-#articleDetails {
-	width: 64%;
-}
-
-#articlesList {
-	width: 35%;
+	background: #f4f4f4 url(../images/bg.gif) repeat top left;
 }
 
 .articles-head #btn-statistics {
@@ -71,14 +64,14 @@
 	display: none;
 }
 
-/*.articleDetails {
+.articleDetails {
 	font: italic 200 24px Georgia, Times, serif;
 	display: inline-block;
 	font-weight: bold;
 	height: auto;
 	float: right;
 	overflow: hidden;
-	width: 60%;
+	width: 64%;
 }
 
 .articlesList {
@@ -90,11 +83,9 @@
 	display: inline-block;
 }
 
-.articlesList #searchForm {
-	padding: 0px 20px 0px 0px;
-}
 
-.articlesList #search {
+.articlesList #searchBox {
+	padding: 0px 20px 0px 0px;
 	font: 200 18px Georgia, Times, serif;
 }
 
@@ -102,6 +93,6 @@
 	display: none;
 }
 
-.articlesList #pages {
+.articlesList #articles-pages {
 	margin: 30px 0px 0px 0px;
-}*/
+}

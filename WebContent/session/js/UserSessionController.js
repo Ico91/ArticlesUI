@@ -8,6 +8,14 @@
 function UserSessionController(mainController) {
 	var statisticsController = new StatisticsController(this);
 	var articlesController = new ArticlesController(this);
+	var statisticsConfig = {
+		url: 'session/statistics',
+		container: '#userStatistics'
+	};
+	
+	this.statisticsElements = {
+		element: "list-head-user"
+	};
 	
 	/**
 	 * Load articles form
@@ -25,7 +33,7 @@ function UserSessionController(mainController) {
 	function bind() {
 		$('#btn-statistics').on('click', function(event) {
 			event.preventDefault();
-			statisticsController.init();
+			statisticsController.init(statisticsConfig.url, statisticsConfig.container);
 			showModal();
 		});
 		

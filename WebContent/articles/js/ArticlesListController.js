@@ -34,9 +34,8 @@ function ArticlesListController(context) {
 	this.show = function(response) {
 		listArticles(response);
 		$(".articles").find("li:gt(0)").remove();
-		var listElement = $('.article').clone();
+		var listElement = $('.article');
 		listElement.removeAttr('style');
-		listElement.removeClass('article');
 		if (articlesList.length == 0) {
 			listElement.text('No results found!');
 			listElement.appendTo('.articles');
@@ -48,7 +47,7 @@ function ArticlesListController(context) {
 				listElement.appendTo('.articles');
 				listElement = listElement.clone();
 			}
-		};
+		};		
 	};
 
 	/**
@@ -57,7 +56,7 @@ function ArticlesListController(context) {
 	function bind() {
 		$('body').on('click', '#btnDelete', function(event) {
 			event.preventDefault();
-			showModal($(this).parent().index() - 1);
+			showModal($(this).parent().index());
 		});
 
 		$('#btnNew').on('click', function(event) {
@@ -65,7 +64,7 @@ function ArticlesListController(context) {
 			context.onNew();
 		});
 
-		$('input[value="all"]').on('click', function() {
+		/*$('input[value="all"]').on('click', function() {
 			allArticles = true;
 			updateArticlesList(true);
 		});
@@ -73,12 +72,12 @@ function ArticlesListController(context) {
 		$('input[value="own"]').on('click', function() {
 			allArticles = false;
 			updateArticlesList(true);
-		});
+		});*/
 
 		$('body').on('click', '.btn-article', function(event) {
 					event.preventDefault();
 					context.onSelect(articlesList[$(this).parent()
-							.index() - 1]);
+							.index()]);
 				});
 
 		// Handle keyup on search field
@@ -195,7 +194,7 @@ function ArticlesListController(context) {
 	 */
 	function deleteArticle(index, dialogContext) {
 		deletedArticle = articlesList[index];
-		ArticlesRequest.request('articles/' + indexToId(index), {
+		ServerRequest.request('articles/' + indexToId(index), {
 			method: 'DELETE',
 			success: function(response) {
 				updateArticlesList();

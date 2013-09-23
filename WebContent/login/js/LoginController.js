@@ -11,7 +11,7 @@ function LoginController(mainController) {
 	 * Load the login form
 	 */
 	this.init = function() {
-		$("#container").load('login.html', function() {
+		$("#container").load('login/html/login.html', function() {
 			bind();
 		});
 	};
@@ -37,7 +37,7 @@ function LoginController(mainController) {
 			password : $("#input-password").val(),
 		};
 
-		ArticlesRequest.request('session/login', {
+		ServerRequest.request('session/login', {
 			method: 'POST',
 			data: JSON.stringify(user),
 			success: function(response) {
