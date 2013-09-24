@@ -1,4 +1,3 @@
-/* Head section + buttons */
 .articles-head {
 	width: 100%;
 	border-bottom: 2px solid #333;
@@ -10,17 +9,34 @@
 .articles-main {
 	width: 100%;
 	min-height: 100%;
-	background: #f4f4f4 url(images/bg.gif) repeat top left;
+	background: #f4f4f4 url(/ArticlesUI/images/bg.gif) repeat top left;
 }
 
 .articles-head #btn-statistics {
 	margin-left: 10px;
 }
 
-.no-close .ui-dialog-titlebar-close {
-	display: none;
+#articleTitle {
+	width: 95%;
+	height: 30px;
+	margin-top: 10px;
+	border-radius: 5px;
+	padding: 5px;
 }
 
-.no-close .ui-dialog-titlebar-close {
-	display: none;
+.layout-articleContent {
+	margin-top: 20px;
+}
+
+#articleContent {
+	width: 95%;
+	height: 300px;
+	margin-top: 15px;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.articlesList #search {
+	font: italic 200 24px Georgia, Times, serif;
+	font-style: italic;
 }
