@@ -21,7 +21,7 @@ function AdministratorSessionController(context) {
 	 */
 	this.init = function() {
 		var adminContext = this;
-		$('#container').load('session/administrator/administrator.html', function() {
+		$('#container').load('app/session/administrator/administrator.html', function() {
 			bind();
 			$( "#tabs" ).tabs({
 				activate: function( event, ui ) {

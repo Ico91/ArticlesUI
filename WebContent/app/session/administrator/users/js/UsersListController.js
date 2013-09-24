@@ -14,7 +14,7 @@ function UsersListController(context) {
 	 */
 	this.init = function() {
 		var controller = this;
-		$('#usersList').load('session/administrator/users/html/users_list.html', function() {
+		$('#usersList').load('app/session/administrator/users/html/users_list.html', function() {
 			bind();
 			paginationController = new PaginationController(controller);
 			paginationController.init({

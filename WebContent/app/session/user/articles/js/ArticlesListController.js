@@ -11,7 +11,7 @@ function ArticlesListController(context) {
 	 */
 	this.init = function() {
 		var controller = this;
-		$('#articlesList').load('session/user/articles/html/articles_list.html', function() {
+		$('#articlesList').load('app/session/user/articles/html/articles_list.html', function() {
 			bind();
 			paginationController = new PaginationController(controller);
 			paginationController.init({

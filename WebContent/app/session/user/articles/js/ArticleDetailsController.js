@@ -12,7 +12,7 @@ function ArticleDetailsController(articlesController) {
 	 * Loads the necessary html contents.
 	 */
 	this.init = function() {
-		$('#articleDetails').load('session/user/articles/html/article_details.html', function() {
+		$('#articleDetails').load('app/session/user/articles/html/article_details.html', function() {
 			bind();
 		});
 	};

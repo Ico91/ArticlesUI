@@ -1,0 +1,8 @@
+.user-main {
+	width: 100%;
+	min-height: 100%;
+}
+
+.no-close .ui-dialog-titlebar-close {
+	display: none;
+}

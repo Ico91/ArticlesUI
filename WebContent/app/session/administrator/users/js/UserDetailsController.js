@@ -21,7 +21,7 @@ function UserDetailsController(userController) {
 	 * Load appropriate html
 	 */
 	this.init = function() {
-		$('#userDetails').load('session/administrator/users/html/user_details.html', function() {
+		$('#userDetails').load('app/session/administrator/users/html/user_details.html', function() {
 			tabsContext = $( "#userTabs" ).tabs({
 				activate: function( event, ui ) {					
 					if(ui.newPanel.selector == '#tabs-userStatistics' && userIdStatistics != null)
