@@ -17,14 +17,6 @@ function ArticlesListController(context) {
 			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
 		});
 	};
-	
-	function paginationInit() {
-		paginationController = new PaginationController(controller);
-		paginationController.init({
-			selector: "#articles-pages",
-			url: "articles"
-		});
-	}
 
 	/**
 	 * Invoked by the articles controller when saving an article.
@@ -218,5 +210,13 @@ function ArticlesListController(context) {
 	 */
 	function indexToId(index) {
 		return articlesList[index]['@id'];
+	}
+	
+	function paginationInit() {
+		paginationController = new PaginationController(controller);
+		paginationController.init({
+			selector: "#articles-pages",
+			url: "articles"
+		});
 	}
 }

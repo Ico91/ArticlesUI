@@ -14,15 +14,6 @@ function ArticlesController() {
 		ServerRequest.getScript("app/session/user/articles/js/ArticleDetailsController.js", articleDetailsInit);
 	};
 	
-	function articlesListInit() {
-		articlesListController = new ArticlesListController(controller);
-		articlesListController.init();
-	}
-	
-	function articleDetailsInit() {
-		articleDetailsController = new ArticleDetailsController(controller);
-		articleDetailsController.init();
-	}
 	/**
 	 * Invoked when creating a new article, tells the article details controller to show it.
 	 */
@@ -58,4 +49,14 @@ function ArticlesController() {
 	this.onLogout = function(callback) {
 		articleDetailsController.show(null, callback);
 	};
+	
+	function articlesListInit() {
+		articlesListController = new ArticlesListController(controller);
+		articlesListController.init();
+	}
+	
+	function articleDetailsInit() {
+		articleDetailsController = new ArticleDetailsController(controller);
+		articleDetailsController.init();
+	}
 }

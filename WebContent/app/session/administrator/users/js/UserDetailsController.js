@@ -37,11 +37,6 @@ function UserDetailsController(userController) {
 		});
 	};
 	
-	function detailsInit() {
-		detailsController = new DetailsController(controller);
-		detailsController.init();
-	}
-	
 	this.show = function(user) {
 		if(user == null) {
 			$(tabsContext).tabs('disable', 1).tabs('option', 'active', 0);
@@ -62,6 +57,11 @@ function UserDetailsController(userController) {
 	this.onSave = function() {
 		userController.onSave();
 	};
+	
+	function detailsInit() {
+		detailsController = new DetailsController(controller);
+		detailsController.init();
+	}
 	
 	function statisticsInit() {
 		statisticsController = new StatisticsController(controller);

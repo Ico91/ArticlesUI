@@ -19,14 +19,6 @@ function UsersListController(context) {
 			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
 		});
 	};
-	
-	function paginationInit() {
-		paginationController = new PaginationController(controller);
-		paginationController.init({
-			selector : "#users-pages",
-			url : "users"
-		});
-	}
 
 	/**
 	 * Invoked by the users controller when saving a user.
@@ -209,4 +201,11 @@ function UsersListController(context) {
 		return usersList[index].userId;
 	}
 
+	function paginationInit() {
+		paginationController = new PaginationController(controller);
+		paginationController.init({
+			selector : "#users-pages",
+			url : "users"
+		});
+	}
 };

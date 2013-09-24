@@ -40,17 +40,6 @@ function AdministratorSessionController(context) {
 		});
 	};
 	
-	function userInit() {
-		console.log("init usercontroller");
-		userController = new UserController();
-		userController.init();
-	}
-	
-	function statisticsInit() {
-		statisticsController = new StatisticsController(adminContext);
-		statisticsController.init(statisticsConfig.url, statisticsConfig.container);
-	}
-	
 	/**
 	 * Add listeners to the buttons
 	 */
@@ -62,5 +51,13 @@ function AdministratorSessionController(context) {
 
 	}
 	
+	function userInit() {
+		userController = new UserController();
+		userController.init();
+	}
 	
+	function statisticsInit() {
+		statisticsController = new StatisticsController(adminContext);
+		statisticsController.init(statisticsConfig.url, statisticsConfig.container);
+	}
 };

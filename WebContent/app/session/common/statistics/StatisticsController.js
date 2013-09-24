@@ -29,14 +29,6 @@ function StatisticsController(context) {
 			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
 		});
 	};
-	
-	function paginationInit() {
-		paginationController = new PaginationController(thisController);
-		paginationController.init({
-				selector: container + ' .statistics-pages',
-				url: statisticsURL
-		});
-	}
 
 	/**
 	 * Visualizes the returned from the server statistics.
@@ -124,5 +116,13 @@ function StatisticsController(context) {
 				statisticsList.push(response.userStatisticsDTO);
 			}
 		}
+	}
+	
+	function paginationInit() {
+		paginationController = new PaginationController(thisController);
+		paginationController.init({
+				selector: container + ' .statistics-pages',
+				url: statisticsURL
+		});
 	}
 }

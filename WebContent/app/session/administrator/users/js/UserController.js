@@ -15,16 +15,6 @@ function UserController() {
 		ServerRequest.getScript("app/session/administrator/users/js/UserDetailsController.js", userDetailsInit);
 	};
 	
-	function usersListInit() {
-		usersListController =  new UsersListController(controller);
-		usersListController.init();
-	}
-	
-	function userDetailsInit() {
-		userDetailsController = new UserDetailsController(controller);
-		userDetailsController.init();
-	}
-	
 	/**
 	 * Invoked when creating a new user, tells the UserDetailsController to show it.
 	 */
@@ -52,4 +42,14 @@ function UserController() {
 	this.onSave = function() {
 		usersListController.refresh();
 	};
+	
+	function usersListInit() {
+		usersListController =  new UsersListController(controller);
+		usersListController.init();
+	}
+	
+	function userDetailsInit() {
+		userDetailsController = new UserDetailsController(controller);
+		userDetailsController.init();
+	}
 }

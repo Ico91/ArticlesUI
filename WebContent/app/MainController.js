@@ -17,21 +17,6 @@ function MainController() {
 		}
 
 	};
-	
-	function loginInit() {
-		var loginController = new LoginController(controller);
-		loginController.init();
-	}
-	
-	function administratorInit() {
-		var adminSessionController = new AdministratorSessionController(controller);
-		adminSessionController.init();
-	}
-	
-	function userInit() {
-		var userSessionController = new UserSessionController(controller);
-		userSessionController.init();
-	}
 
 	/**
 	 * Invoked when the user successfully logs in
@@ -85,5 +70,20 @@ function MainController() {
 				}
 			}
 		});
+	}
+	
+	function loginInit() {
+		var loginController = new LoginController(controller);
+		loginController.init();
+	}
+	
+	function administratorInit() {
+		var adminSessionController = new AdministratorSessionController(controller);
+		adminSessionController.init();
+	}
+	
+	function userInit() {
+		var userSessionController = new UserSessionController(controller);
+		userSessionController.init();
 	}
 }
