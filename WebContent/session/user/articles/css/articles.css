@@ -10,7 +10,7 @@
 .articles-main {
 	width: 100%;
 	min-height: 100%;
-	background: #f4f4f4 url(../images/bg.gif) repeat top left;
+	background: #f4f4f4 url(images/bg.gif) repeat top left;
 }
 
 .articles-head #btn-statistics {

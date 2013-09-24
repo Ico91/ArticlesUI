@@ -22,7 +22,7 @@ function StatisticsController(context) {
 		var controller = this;
 		statisticsURL = url;
 		container = element;
-		$(container).load('statistics/html/statistics.html', function() {
+		$(container).load('session/common/statistics/statistics.html', function() {
 			bind();
 			paginationController = new PaginationController(controller);
 			paginationController.init({

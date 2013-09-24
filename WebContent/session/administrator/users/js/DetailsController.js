@@ -15,7 +15,7 @@ function DetailsController(userDetailsController) {
 	 * Loads the necessary html contents.
 	 */
 	this.init = function() {
-		$('#details').load('users/html/details.html', function() {
+		$('#details').load('session/administrator/users/html/details.html', function() {
 			bind();
 		});
 	};

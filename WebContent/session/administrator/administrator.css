@@ -40,7 +40,7 @@
 }
 
 .ui-tabs .ui-tabs-panel {
-	background: #f4f4f4 url(../images/bg.gif) repeat top left !important;
+	background: #f4f4f4 url(images/bg.gif) repeat top left !important;
 }
 
 .ui-tabs .ui-tabs-nav li.ui-tabs-active a {

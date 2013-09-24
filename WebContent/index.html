@@ -4,16 +4,16 @@
 <meta charset="UTF-8">
 <title>Articles</title>
 <link rel="stylesheet" href="css/index.css">
-<link rel="stylesheet" href="login/css/login.css">
-<link rel="stylesheet" href="session/css/administrator.css">
-<link rel="stylesheet" href="articles/css/articles.css">
-<link rel="stylesheet" href="articles/css/articleDetails.css">
-<link rel="stylesheet" href="articles/css/articlesList.css">
-<link rel="stylesheet" href="statistics/css/statistics.css">
-<link rel="stylesheet" href="users/css/user.css">
-<link rel="stylesheet" href="users/css/userDetails.css">
-<link rel="stylesheet" href="users/css/usersList.css">
-<link rel="stylesheet" href="pagination/css/simplePagination.css">
+<link rel="stylesheet" href="login/login.css">
+<link rel="stylesheet" href="session/administrator/administrator.css">
+<link rel="stylesheet" href="session/user/articles/css/articles.css">
+<link rel="stylesheet" href="session/user/articles/css/articleDetails.css">
+<link rel="stylesheet" href="session/user/articles/css/articlesList.css">
+<link rel="stylesheet" href="session/common/statistics/statistics.css">
+<link rel="stylesheet" href="session/administrator/users/css/user.css">
+<link rel="stylesheet" href="session/administrator/users/css/userDetails.css">
+<link rel="stylesheet" href="session/administrator/users/css/usersList.css">
+<link rel="stylesheet" href="session/common/pagination/simplePagination.css">
 <link rel="stylesheet" href="css/jquery-ui.css" />
 <script src="jquery/jquery-2.0.3.min.js"></script>
 <script src="jquery/jquery-ui-1.10.3.custom.js"></script>
@@ -21,7 +21,7 @@
 </head>
 <body>
 	<div id="container"></div>
-	<script type="text/javascript" src="js/ServerRequest.js"></script>
+	<script type="text/javascript" src="session/common/ServerRequest.js"></script>
 	<script type="text/javascript" src="jquery/jquery.simplePagination.js"></script>
 	<script type="text/javascript">
 		$(document).ready(function() {
@@ -29,18 +29,18 @@
 			mainController.init();
 		});
 	</script>
-	<script type="text/javascript" src="js/MainController.js"></script>
-	<script type="text/javascript" src="login/js/LoginController.js"></script>
-	<script type="text/javascript" src="session/js/UserSessionController.js"></script>
-	<script type="text/javascript" src="session/js/AdministratorSessionController.js"></script>
-	<script type="text/javascript" src="pagination/js/PaginationController.js"></script>
-	<script type="text/javascript" src="statistics/js/StatisticsController.js"></script>
-	<script type="text/javascript" src="articles/js/ArticlesController.js"></script>
-	<script type="text/javascript" src="articles/js/ArticlesListController.js"></script>
-	<script type="text/javascript" src="articles/js/ArticleDetailsController.js"></script>
-	<script type="text/javascript" src="users/js/UserController.js"></script>
-	<script type="text/javascript" src="users/js/UsersListController.js"></script>
-	<script type="text/javascript" src="users/js/UserDetailsController.js"></script>
-	<script type="text/javascript" src="users/js/DetailsController.js"></script>
+	<script type="text/javascript" src="MainController.js"></script>
+	<script type="text/javascript" src="login/LoginController.js"></script>
+	<script type="text/javascript" src="session/user/UserSessionController.js"></script>
+	<script type="text/javascript" src="session/administrator/AdministratorSessionController.js"></script>
+	<script type="text/javascript" src="session/common/pagination/PaginationController.js"></script>
+	<script type="text/javascript" src="session/common/statistics/StatisticsController.js"></script>
+	<script type="text/javascript" src="session/user/articles/js/ArticlesController.js"></script>
+	<script type="text/javascript" src="session/user/articles/js/ArticlesListController.js"></script>
+	<script type="text/javascript" src="session/user/articles/js/ArticleDetailsController.js"></script>
+	<script type="text/javascript" src="session/administrator/users/js/UserController.js"></script>
+	<script type="text/javascript" src="session/administrator/users/js/UsersListController.js"></script>
+	<script type="text/javascript" src="session/administrator/users/js/UserDetailsController.js"></script>
+	<script type="text/javascript" src="session/administrator/users/js/DetailsController.js"></script>
 </body>
 </html>

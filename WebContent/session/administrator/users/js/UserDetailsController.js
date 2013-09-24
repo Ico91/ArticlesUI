@@ -21,7 +21,7 @@ function UserDetailsController(userController) {
 	 * Load appropriate html
 	 */
 	this.init = function() {
-		$('#userDetails').load('users/html/user_details.html', function() {
+		$('#userDetails').load('session/administrator/users/html/user_details.html', function() {
 			tabsContext = $( "#userTabs" ).tabs({
 				activate: function( event, ui ) {					
 					if(ui.newPanel.selector == '#tabs-userStatistics' && userIdStatistics != null)
@@ -40,7 +40,6 @@ function UserDetailsController(userController) {
 			$(tabsContext).tabs('disable', 1).tabs('option', 'active', 0);
 		}
 		else {
-			console.log(tabsContext);
 			$(tabsContext).tabs('enable', 1);
 			userIdStatistics = user.userId;
 			statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container); 

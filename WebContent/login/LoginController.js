@@ -11,7 +11,7 @@ function LoginController(mainController) {
 	 * Load the login form
 	 */
 	this.init = function() {
-		$("#container").load('login/html/login.html', function() {
+		$("#container").load('login/login.html', function() {
 			bind();
 		});
 	};
