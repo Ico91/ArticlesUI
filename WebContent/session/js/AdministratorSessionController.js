@@ -30,7 +30,7 @@ function AdministratorSessionController(context) {
 						statisticsController = new StatisticsController(adminContext);
 						statisticsController.init(statisticsConfig.url, statisticsConfig.container);
 					}
-					if(ui.newPanel.selector != '#tabs-statistics')
+					else
 						statisticsController = null;
 				}
 			});
@@ -44,7 +44,7 @@ function AdministratorSessionController(context) {
 	function bind() {
 		$('body').on('click', '#btn-logout', function(event) {
 			event.preventDefault();
-			mainController.logout();
+			userController.onLogout(mainController.logout);
 		});
 
 	}

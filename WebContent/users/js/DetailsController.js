@@ -25,13 +25,15 @@ function DetailsController(userDetailsController) {
 	 * @param user - the user to display; 
 	 * if null is passed, displays a new, empty user.
 	 */
-	this.show = function(user) {
+	this.show = function(user, callback) {
 		// checks whether currently opened user is modified
 		if(currentUser.username != usernameField.val() || currentUser.password != passwordField.val()
 				|| currentUser.userType != userTypeField.val())
-			showModal(user);
+			showModal(user, callback);
 		else {
 			visualize(user);
+			if(callback != null)
+				callback();
 		}
 	};
 	
@@ -68,9 +70,6 @@ function DetailsController(userDetailsController) {
 		usernameField = $('#username');
 		passwordField = $('#password');
 		userTypeField = $('#types');
-	
-		actionResult = $('#action-result');
-		actionResult.hide();
 		$('#btnSave').click(function(event) {
 			event.preventDefault();
 			if(!validateFields()) {
@@ -84,7 +83,7 @@ function DetailsController(userDetailsController) {
 	 * Sends the appropriate request to the server for saving the currently opened user. 
 	 * @param user - the user to be saved
 	 */
-	function save(user) {
+	function save(user, callback) {
 		var dataToSend = {
 			username : usernameField.val(),
 			password : passwordField.val(),
@@ -96,12 +95,11 @@ function DetailsController(userDetailsController) {
 				method: 'POST',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {
-					userSaved(dataToSend, "update", true);
+					userSaved(dataToSend, "update", callback);
 					visualize(user);
 				},
 				error: function(response) {
 					// TODO: create error flow
-					notificateUser("update", false);
 					console.log('Error updating user');
 					console.log(response);
 				}
@@ -112,12 +110,11 @@ function DetailsController(userDetailsController) {
 				method: 'PUT',
 				data: JSON.stringify(dataToSend),
 				success: function(response) {
-					userSaved(response, "save", true);
+					userSaved(response, "save", callback);
 					visualize(user);
 				},
 				error: function(response) {
 					// TODO: Create error flow
-					notificateUser("save", false);
 					console.log('Error saving user');
 					console.log(response);
 				}
@@ -132,14 +129,17 @@ function DetailsController(userDetailsController) {
 	 * update an existing.
 	 * @param result
 	 */
-	function userSaved(userData, action, result) {
+	function userSaved(userData, action, callback) {
 		if(action === "save")
 			currentUser.userId = userData.userId;
 		currentUser.username = userData.username;
 		currentUser.password = userData.password;
 		currentUser.userType = userData.userType;
-		notificateUser(action, result);
-		userDetailsController.onSave();
+		if(callback != null)
+			callback();
+		if(sessionStorage.getItem('user') != null) {
+			userDetailsController.onSave();
+		}
 	}
 
 	/**
@@ -174,7 +174,7 @@ function DetailsController(userDetailsController) {
 	 * Displays a modal window asking the user for appropriate actions.
 	 * @param user
 	 */
-	function showModal(user) {
+	function showModal(user, callback) {
 		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened user is modified!<p>Save changes?</p></div>';
 		$('#userDetails').append(modalHtml);
 		$( "#dialog" ).dialog({
@@ -187,11 +187,13 @@ function DetailsController(userDetailsController) {
 			modal: true,
 			buttons: buttons = {
 					"Yes" : function() {
-						save(user);
+						save(user, callback);
 						$(this).dialog("close");
 					},
 					"No": function() {
 						visualize(user);
+						if(callback != null)
+							callback();
 						$(this).dialog("close");
 					},
 					Cancel: function() {
@@ -200,41 +202,5 @@ function DetailsController(userDetailsController) {
 			}
 		});
 	};
-	
-	/**
-	 * Displays a message to the user, indicating the result of the last action.
-	 * @param action
-	 * @param result
-	 */
-	function notificateUser(action, result) {
-		actionResult.css('opacity', 1);
-		actionResult.show('slow');
-		if(action === "save") {
-			if(result == true) {
-				actionResult.css('background', 'rgba(0, 204, 0, 1)');
-				actionResult.text('User saved successfully!');
-			}
-			else {
-				actionResult.css('background', 'rgba(255, 0, 30, 1)');
-				actionResult.text('User could not be saved!');
-			}
-		}
-		else {
-			if(result == true) {
-				actionResult.css('background', 'rgba(0, 204, 0, 1)');
-				actionResult.text('User updated successfully!');
-			}
-			else {
-				actionResult.css('background', 'rgba(255, 0, 30, 1)');
-				actionResult.text('User could not be updated!');
-			}
-		}
-
-		
-		actionResult.animate({
-			opacity: 0,
-			height: "toggle"
-		}, 2500);
-	}
 	
 }

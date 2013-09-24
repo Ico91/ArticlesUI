@@ -142,8 +142,7 @@ function UsersListController(context) {
 				search : searchTerm
 			}
 		});
-	}
-	;
+	};
 
 	/**
 	 * Displays a modal window asking the user to confirm the action.

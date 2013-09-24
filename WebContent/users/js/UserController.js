@@ -41,4 +41,12 @@ function UserController() {
 	this.onSave = function() {
 		usersListController.refresh();
 	};
+	
+	/**
+	 * Invoked when pressing the logout button, tells the user details controller
+	 * to clear the fields, thus checking for a not saved user.
+	 */
+	this.onLogout = function(callback) {
+		userDetailsController.show(null, callback);
+	};
 }

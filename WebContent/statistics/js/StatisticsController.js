@@ -11,7 +11,6 @@ function StatisticsController(context) {
 	var statisticsURL = '';
 	var container = {};
 	var paginationController = {};
-	var controller = context;
 
 	/**
 	 * Initialize modal window which displays user statistics
@@ -40,9 +39,9 @@ function StatisticsController(context) {
 		var list = $(container + " .user-statistics");
 		list.find("li:gt(1)").remove();
 		var listElement = {};
-		listElement = $(container + ' .user-statistics li.' + controller.statisticsElements.element).clone();
+		listElement = $(container + ' .user-statistics li.' + context.statisticsElements.element).clone();
 		listElement.removeAttr('style');
-		listElement.removeClass(controller.statisticsElements.element);
+		listElement.removeClass(context.statisticsElements.element);
 		listElement.addClass('list-data-user');
 		
 		if (statisticsList.length == 0) {

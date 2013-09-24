@@ -35,17 +35,16 @@ function UserDetailsController(userController) {
 		});
 	};
 	
-	this.show = function(user) {
+	this.show = function(user, callback) {
 		if(user == null) {
 			$(tabsContext).tabs('disable', 1).tabs('option', 'active', 0);
 		}
 		else {
-			console.log(tabsContext);
 			$(tabsContext).tabs('enable', 1);
 			userIdStatistics = user.userId;
 			statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container); 
 		}
-		detailsController.show(user);
+		detailsController.show(user, callback);
 	};
 	
 	this.userDeleted = function(user) {
