@@ -11,6 +11,7 @@ function LoginController(mainController) {
 	 * Load the login form
 	 */
 	this.init = function() {
+		ServerRequest.getCss("app/login/login.css");
 		$("#container").load('app/login/login.html', function() {
 			bind();
 		});

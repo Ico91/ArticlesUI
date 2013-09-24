@@ -1,4 +1,5 @@
 function ArticlesListController(context) {
+	var controller = this;
 	var timeout = null;
 	var articlesList = [];
 	var allArticles = false;
@@ -10,16 +11,20 @@ function ArticlesListController(context) {
 	 * Loads the necessary html contents, and the initial articles list
 	 */
 	this.init = function() {
-		var controller = this;
+		
 		$('#articlesList').load('app/session/user/articles/html/articles_list.html', function() {
 			bind();
-			paginationController = new PaginationController(controller);
-			paginationController.init({
-				selector: "#articles-pages",
-				url: "articles"
-			});
+			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
 		});
 	};
+	
+	function paginationInit() {
+		paginationController = new PaginationController(controller);
+		paginationController.init({
+			selector: "#articles-pages",
+			url: "articles"
+		});
+	}
 
 	/**
 	 * Invoked by the articles controller when saving an article.

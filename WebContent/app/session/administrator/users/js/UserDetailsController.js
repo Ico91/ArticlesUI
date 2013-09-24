@@ -4,8 +4,9 @@
  */
 function UserDetailsController(userController) {
 	this.userController = userController;
-	var detailsController = new DetailsController(this);
-	var statisticsController = new StatisticsController(this);
+	var controller = this;
+	var detailsController = {};
+	var statisticsController = {};
 	var tabsContext = {};
 	var userIdStatistics = {};
 	var statisticsConfig = {
@@ -25,15 +26,21 @@ function UserDetailsController(userController) {
 			tabsContext = $( "#userTabs" ).tabs({
 				activate: function( event, ui ) {					
 					if(ui.newPanel.selector == '#tabs-userStatistics' && userIdStatistics != null)
-						statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
+						ServerRequest.getScript("app/session/common/statistics/StatisticsController.js", statisticsInit);
 				},
 				create: function( event, ui ) {
 					$(this).tabs('disable', 1);
 				}
 			});
-			detailsController.init();
+			
+			ServerRequest.getScript("app/session/administrator/users/js/DetailsController.js", detailsInit);
 		});
 	};
+	
+	function detailsInit() {
+		detailsController = new DetailsController(controller);
+		detailsController.init();
+	}
 	
 	this.show = function(user) {
 		if(user == null) {
@@ -42,7 +49,7 @@ function UserDetailsController(userController) {
 		else {
 			$(tabsContext).tabs('enable', 1);
 			userIdStatistics = user.userId;
-			statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container); 
+			ServerRequest.getScript("app/session/common/statistics/StatisticsController.js", statisticsInit);
 		}
 		detailsController.show(user);
 	};
@@ -55,5 +62,10 @@ function UserDetailsController(userController) {
 	this.onSave = function() {
 		userController.onSave();
 	};
+	
+	function statisticsInit() {
+		statisticsController = new StatisticsController(controller);
+		statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
+	}
 	
 }

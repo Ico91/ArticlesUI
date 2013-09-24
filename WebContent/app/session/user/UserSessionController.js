@@ -6,8 +6,9 @@
  * @returns
  */
 function UserSessionController(mainController) {
-	var statisticsController = new StatisticsController(this);
-	var articlesController = new ArticlesController(this);
+	var controller = this;
+	var statisticsController = {};
+	var articlesController = {};
 	var statisticsConfig = {
 		url: 'session/statistics',
 		container: '#userStatistics'
@@ -21,9 +22,12 @@ function UserSessionController(mainController) {
 	 * Load articles form
 	 */
 	this.init = function() {
+		ServerRequest.getCss("app/session/user/articles/css/articles.css");
+		ServerRequest.getCss("app/session/common/pagination/simplePagination.css");
+		ServerRequest.getCss("app/session/common/statistics/statistics.css");
 		$('#container').load('app/session/user/articles/html/articles.html', function() {
 			bind();
-			articlesController.init();
+			ServerRequest.getScript("app/session/user/articles/js/ArticlesController.js", articlesInit);
 		});
 	};
 	
@@ -33,7 +37,7 @@ function UserSessionController(mainController) {
 	function bind() {
 		$('#btn-statistics').on('click', function(event) {
 			event.preventDefault();
-			statisticsController.init(statisticsConfig.url, statisticsConfig.container);
+			ServerRequest.getScript("app/session/common/statistics/StatisticsController.js", statisticsInit);
 			showModal();
 		});
 		
@@ -52,7 +56,7 @@ function UserSessionController(mainController) {
 		});
 		
 		$('.darken').hide();
-	}
+	};
 	
 	function showModal() {
 		$('.darken').show();
@@ -80,4 +84,14 @@ function UserSessionController(mainController) {
 			$(this).hide();
 		});
 	};
+	
+	function articlesInit() {
+		articlesController = new ArticlesController(controller);
+		articlesController.init();
+	}
+	
+	function statisticsInit() {
+		statisticsController = new StatisticsController(controller);
+		statisticsController.init(statisticsConfig.url, statisticsConfig.container);
+	}
 }

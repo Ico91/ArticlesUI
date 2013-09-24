@@ -3,16 +3,27 @@
  */
 
 function UserController() {
-	var usersListController = new UsersListController(this);
-	var userDetailsController = new UserDetailsController(this);
+	var controller = this;
+	var usersListController = {};
+	var userDetailsController = {};
 	
 	/**
 	 * Loads the necessary html contents
 	 */
 	this.init = function() {
-		usersListController.init();
-		userDetailsController.init();
+		ServerRequest.getScript("app/session/administrator/users/js/UsersListController.js", usersListInit);
+		ServerRequest.getScript("app/session/administrator/users/js/UserDetailsController.js", userDetailsInit);
 	};
+	
+	function usersListInit() {
+		usersListController =  new UsersListController(controller);
+		usersListController.init();
+	}
+	
+	function userDetailsInit() {
+		userDetailsController = new UserDetailsController(controller);
+		userDetailsController.init();
+	}
 	
 	/**
 	 * Invoked when creating a new user, tells the UserDetailsController to show it.

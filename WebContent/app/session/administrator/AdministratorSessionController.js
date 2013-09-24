@@ -5,7 +5,8 @@
  */
 function AdministratorSessionController(context) {
 	var mainController = context;
-	var userController = new UserController();
+	var adminContext = this;
+	var userController = {};
 	var statisticsController = {};
 	var statisticsConfig = {
 		url: 'statistics',
@@ -20,23 +21,35 @@ function AdministratorSessionController(context) {
 	 * Load appropriate html
 	 */
 	this.init = function() {
-		var adminContext = this;
+		ServerRequest.getCss("app/session/administrator/users/css/user.css");
+		ServerRequest.getCss("app/session/common/pagination/simplePagination.css");
+		ServerRequest.getCss("app/session/common/statistics/statistics.css");
 		$('#container').load('app/session/administrator/administrator.html', function() {
 			bind();
 			$( "#tabs" ).tabs({
 				activate: function( event, ui ) {
 					if(ui.newPanel.selector == '#tabs-statistics')
 					{
-						statisticsController = new StatisticsController(adminContext);
-						statisticsController.init(statisticsConfig.url, statisticsConfig.container);
+						ServerRequest.getScript("app/session/common/statistics/StatisticsController.js", statisticsInit);
 					}
 					if(ui.newPanel.selector != '#tabs-statistics')
 						statisticsController = null;
 				}
 			});
-			userController.init();
+			ServerRequest.getScript("app/session/administrator/users/js/UserController.js", userInit);
 		});
 	};
+	
+	function userInit() {
+		console.log("init usercontroller");
+		userController = new UserController();
+		userController.init();
+	}
+	
+	function statisticsInit() {
+		statisticsController = new StatisticsController(adminContext);
+		statisticsController.init(statisticsConfig.url, statisticsConfig.container);
+	}
 	
 	/**
 	 * Add listeners to the buttons

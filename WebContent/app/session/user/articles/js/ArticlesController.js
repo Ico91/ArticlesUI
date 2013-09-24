@@ -2,6 +2,7 @@
  * Manages communication between the ArticlesListController & ArticleDetailsController
  */
 function ArticlesController() {
+	var controller = this;
 	var articlesListController = {};
 	var articleDetailsController = {};
 	
@@ -9,11 +10,19 @@ function ArticlesController() {
 	 * Loads the necessary html contents
 	 */
 	this.init = function() {
-		articlesListController = new ArticlesListController(this);
-		articleDetailsController = new ArticleDetailsController(this);
-		articlesListController.init();
-		articleDetailsController.init();
+		ServerRequest.getScript("app/session/user/articles/js/ArticlesListController.js", articlesListInit);
+		ServerRequest.getScript("app/session/user/articles/js/ArticleDetailsController.js", articleDetailsInit);
 	};
+	
+	function articlesListInit() {
+		articlesListController = new ArticlesListController(controller);
+		articlesListController.init();
+	}
+	
+	function articleDetailsInit() {
+		articleDetailsController = new ArticleDetailsController(controller);
+		articleDetailsController.init();
+	}
 	/**
 	 * Invoked when creating a new article, tells the article details controller to show it.
 	 */

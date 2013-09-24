@@ -5,6 +5,7 @@
  * @returns
  */
 function StatisticsController(context) {
+	var thisController = this;
 	var statisticsList = [];
 	var dateStr = {};
 	var activity = 'ALL';
@@ -19,18 +20,23 @@ function StatisticsController(context) {
 	this.init = function(url, element) {
 		dateStr = '';
 		activity = 'ALL';
-		var controller = this;
+		
 		statisticsURL = url;
 		container = element;
+		
 		$(container).load('app/session/common/statistics/statistics.html', function() {
 			bind();
-			paginationController = new PaginationController(controller);
-			paginationController.init({
-					selector: container + ' .statistics-pages',
-					url: statisticsURL
-			});
+			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
 		});
 	};
+	
+	function paginationInit() {
+		paginationController = new PaginationController(thisController);
+		paginationController.init({
+				selector: container + ' .statistics-pages',
+				url: statisticsURL
+		});
+	}
 
 	/**
 	 * Visualizes the returned from the server statistics.
