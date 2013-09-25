@@ -91,8 +91,7 @@ function PaginationComponent(context) {
 		ServerRequest.request(options.url, {
 			data: options.data,
 			success: function(response) {
-				context.show(response);
-				updatePages(response.totalResults);
+				updatePages(response);
 			},
 			error: function(response) {
 				// TODO: create some error flow
@@ -108,11 +107,15 @@ function PaginationComponent(context) {
 	 * and redraws the pages.
 	 * @param totalResults - total number of results, returned by the server
 	 */
-	function updatePages(totalResults) {
-		var pages = Math.ceil(totalResults / options.elementsPerPage);
-		if(pagesContext.pages > pages && pagesContext.pages == options.currentPage)
+	function updatePages(response) {
+		var pages = Math.ceil(response.totalResults / options.elementsPerPage);
+		if(pagesContext.pages > pages && pagesContext.pages == options.currentPage + 1) {
 			$(options.selector).pagination('prevPage');
-		pagesContext.pages = pages;
-		$(options.selector).pagination('redraw');
+		}
+		else {
+			pagesContext.pages = pages;
+			$(options.selector).pagination('redraw');
+			context.show(response);
+		}
 	}
 }
