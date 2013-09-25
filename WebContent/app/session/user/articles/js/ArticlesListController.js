@@ -1,20 +1,23 @@
 function ArticlesListController(context) {
-	var controller = this;
 	var timeout = null;
 	var articlesList = [];
 	var allArticles = false;
 	var searchMode = false; // whether we're currently searching
 	var searchTerm = {};
-	var paginationController = {};
+	var paginationComponent = {};
 
 	/**
 	 * Loads the necessary html contents, and the initial articles list
 	 */
 	this.init = function() {
-		
+		var controller = this;
 		$('#articlesList').load('app/session/user/articles/html/articles_list.html', function() {
 			bind();
-			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
+			paginationComponent = new PaginationComponent(controller);
+			paginationComponent.init({
+				selector: "#articles-pages",
+				url: "articles"
+			});
 		});
 	};
 
@@ -61,7 +64,7 @@ function ArticlesListController(context) {
 			context.onNew();
 		});
 
-		/*$('input[value="all"]').on('click', function() {
+		$('input[value="all"]').on('click', function() {
 			allArticles = true;
 			updateArticlesList(true);
 		});
@@ -69,7 +72,7 @@ function ArticlesListController(context) {
 		$('input[value="own"]').on('click', function() {
 			allArticles = false;
 			updateArticlesList(true);
-		});*/
+		});
 
 		$('body').on('click', '.btn-article', function(event) {
 					event.preventDefault();
@@ -109,7 +112,7 @@ function ArticlesListController(context) {
 		if (searchMode) {
 			search(fromFirstPage);
 		} else {
-			paginationController.reload(fromFirstPage, {
+			paginationComponent.reload(fromFirstPage, {
 				data : {
 					all : allArticles
 				} 
@@ -145,7 +148,7 @@ function ArticlesListController(context) {
 	 * corresponding articles to get. On success shows the returned articles.
 	 */
 	function search(fromFirstPage) {
-		paginationController.reload(fromFirstPage, {
+		paginationComponent.reload(fromFirstPage, {
 			data : {
 				search: searchTerm,
 				all : allArticles
@@ -207,13 +210,5 @@ function ArticlesListController(context) {
 	 */
 	function indexToId(index) {
 		return articlesList[index]['@id'];
-	}
-	
-	function paginationInit() {
-		paginationController = new PaginationController(controller);
-		paginationController.init({
-			selector: "#articles-pages",
-			url: "articles"
-		});
 	}
 }

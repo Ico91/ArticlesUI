@@ -35,7 +35,7 @@ ServerRequest.request = function(relativeURL, options) {
 		}
 	});
 };
-
+/* TODO: remove?
 ServerRequest.getScript = function(url, callback) {
 	$.getScript(url, function() {
 		callback();
@@ -55,7 +55,7 @@ ServerRequest.getCss = function(url) {
       href: url
     });
 };
-
+*/
 // TODO: move somewhere else
 function dialogWindow(options) {
 	var modalHtml = '<div id="dialog" title="' + 

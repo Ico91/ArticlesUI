@@ -2,7 +2,7 @@
  * Adds pagination to the specified by a selector
  * list and controls operation on it. 
  */
-function PaginationController(context) {
+function PaginationComponent(context) {
 	var pagesContext = {};
 	var options = {};
 

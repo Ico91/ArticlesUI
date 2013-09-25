@@ -7,7 +7,7 @@
  */
 function UserSessionController(mainController) {
 	var controller = this;
-	var statisticsController = {};
+	var statisticsComponent = {};
 	var articlesController = {};
 	var statisticsConfig = {
 		url: 'session/statistics',
@@ -22,12 +22,10 @@ function UserSessionController(mainController) {
 	 * Load articles form
 	 */
 	this.init = function() {
-		ServerRequest.getCss("app/session/user/articles/css/articles.css");
-		ServerRequest.getCss("app/session/common/pagination/simplePagination.css");
-		ServerRequest.getCss("app/session/common/statistics/statistics.css");
 		$('#container').load('app/session/user/articles/html/articles.html', function() {
 			bind();
-			ServerRequest.getScript("app/session/user/articles/js/ArticlesController.js", articlesInit);
+			articlesController = new ArticlesController(controller);
+			articlesController.init();
 		});
 	};
 	
@@ -37,7 +35,8 @@ function UserSessionController(mainController) {
 	function bind() {
 		$('#btn-statistics').on('click', function(event) {
 			event.preventDefault();
-			ServerRequest.getScript("app/session/common/statistics/StatisticsController.js", statisticsInit);
+			statisticsComponent = new StatisticsComponent(controller);
+			statisticsComponent.init(statisticsConfig.url, statisticsConfig.container);
 			showModal();
 		});
 		
@@ -84,14 +83,4 @@ function UserSessionController(mainController) {
 			$(this).hide();
 		});
 	};
-	
-	function articlesInit() {
-		articlesController = new ArticlesController(controller);
-		articlesController.init();
-	}
-	
-	function statisticsInit() {
-		statisticsController = new StatisticsController(controller);
-		statisticsController.init(statisticsConfig.url, statisticsConfig.container);
-	}
 }

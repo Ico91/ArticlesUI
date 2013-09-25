@@ -3,7 +3,6 @@
  */
 
 function UserController() {
-	var controller = this;
 	var usersListController = {};
 	var userDetailsController = {};
 	
@@ -11,8 +10,10 @@ function UserController() {
 	 * Loads the necessary html contents
 	 */
 	this.init = function() {
-		ServerRequest.getScript("app/session/administrator/users/js/UsersListController.js", usersListInit);
-		ServerRequest.getScript("app/session/administrator/users/js/UserDetailsController.js", userDetailsInit);
+		usersListController =  new UsersListController(this);
+		usersListController.init();
+		userDetailsController = new UserDetailsController(this);
+		userDetailsController.init();
 	};
 	
 	/**
@@ -50,14 +51,4 @@ function UserController() {
 	this.onLogout = function(callback) {
 		userDetailsController.show(null, callback);
 	};
-	
-	function usersListInit() {
-		usersListController =  new UsersListController(controller);
-		usersListController.init();
-	}
-	
-	function userDetailsInit() {
-		userDetailsController = new UserDetailsController(controller);
-		userDetailsController.init();
-	}
 }

@@ -3,20 +3,24 @@
  */
 
 function UsersListController(context) {
-	var controller = this;
 	var timeout = null;
 	var usersList = [];
 	var searchMode = false;
 	var searchTerm = {};
-	var paginationController = {};
+	var paginationComponent = {};
 
 	/**
 	 * Binds the necessary functions to the relevant controls
 	 */
 	this.init = function() {
+		var controller = this;
 		$('#usersList').load('app/session/administrator/users/html/users_list.html', function() {
 			bind();
-			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
+			paginationComponent = new PaginationComponent(controller);
+			paginationComponent.init({
+				selector : "#users-pages",
+				url : "users"
+			});
 		});
 	};
 
@@ -101,7 +105,7 @@ function UsersListController(context) {
 		if (searchMode) {
 			search(fromFirstPage);
 		} else {
-			paginationController.reload(fromFirstPage);
+			paginationComponent.reload(fromFirstPage);
 		}
 	}
 
@@ -133,7 +137,7 @@ function UsersListController(context) {
 	 * corresponding users to get. On success shows the returned users.
 	 */
 	function search(fromFirstPage) {
-		paginationController.reload(fromFirstPage, {
+		paginationComponent.reload(fromFirstPage, {
 			data : {
 				search : searchTerm
 			}
@@ -194,13 +198,5 @@ function UsersListController(context) {
 	 */
 	function indexToId(index) {
 		return usersList[index].userId;
-	}
-
-	function paginationInit() {
-		paginationController = new PaginationController(controller);
-		paginationController.init({
-			selector : "#users-pages",
-			url : "users"
-		});
 	}
 };

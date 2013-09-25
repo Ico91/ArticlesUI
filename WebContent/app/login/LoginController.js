@@ -5,13 +5,11 @@
  * @returns
  */
 function LoginController(mainController) {
-	var controller = mainController;
 
 	/**
 	 * Load the login form
 	 */
 	this.init = function() {
-		ServerRequest.getCss("app/login/login.css");
 		$("#container").load('app/login/login.html', function() {
 			bind();
 		});
@@ -43,7 +41,7 @@ function LoginController(mainController) {
 			data: JSON.stringify(user),
 			success: function(response) {
 				sessionStorage.setItem("user", JSON.stringify(response));
-				controller.userLoggedIn(response);
+				mainController.userLoggedIn(response);
 			},
 			error: function(response) {
 				var container = $('#loginForm');

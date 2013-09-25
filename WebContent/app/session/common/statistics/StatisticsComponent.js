@@ -4,19 +4,19 @@
  * @author Galina Hristova
  * @returns
  */
-function StatisticsController(context) {
-	var thisController = this;
+function StatisticsComponent(context) {
 	var statisticsList = [];
 	var dateStr = {};
 	var activity = 'ALL';
 	var statisticsURL = '';
 	var container = {};
-	var paginationController = {};
+	var paginationComponent = {};
 
 	/**
 	 * Initialize modal window which displays user statistics
 	 */
 	this.init = function(url, element) {
+		var controller = this;
 		dateStr = '';
 		activity = 'ALL';
 		
@@ -25,7 +25,11 @@ function StatisticsController(context) {
 		
 		$(container).load('app/session/common/statistics/statistics.html', function() {
 			bind();
-			ServerRequest.getScript("app/session/common/pagination/PaginationController.js", paginationInit);
+			paginationComponent = new PaginationComponent(controller);
+			paginationComponent.init({
+					selector: container + ' .statistics-pages',
+					url: statisticsURL
+			});
 		});
 	};
 
@@ -68,7 +72,7 @@ function StatisticsController(context) {
 				dateStr = date;
 				if(activity == 'ALL')
 					activity = '';
-				paginationController.reload(true, {
+				paginationComponent.reload(true, {
 					data : {
 						date : dateStr,
 						activity : activity
@@ -92,7 +96,7 @@ function StatisticsController(context) {
 			else {
 				activity = $(this).val();
 			}
-			paginationController.reload(true, {
+			paginationComponent.reload(true, {
 				data : {
 					date : dateStr,
 					activity : activity
@@ -115,13 +119,5 @@ function StatisticsController(context) {
 				statisticsList.push(response.userStatisticsDTO);
 			}
 		}
-	}
-	
-	function paginationInit() {
-		paginationController = new PaginationController(thisController);
-		paginationController.init({
-				selector: container + ' .statistics-pages',
-				url: statisticsURL
-		});
 	}
 }

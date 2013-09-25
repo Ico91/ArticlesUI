@@ -10,7 +10,8 @@ function MainController() {
 	 */
 	this.init = function() {
 		if (sessionStorage.getItem("user") == null) {
-			ServerRequest.getScript("app/login/LoginController.js", loginInit);
+			var loginController = new LoginController(controller);
+			loginController.init();
 		} else {
 			var user = $.parseJSON(sessionStorage.getItem("user"));
 			controller.userLoggedIn(user);
@@ -23,9 +24,9 @@ function MainController() {
 	 */
 	this.userLoggedIn = function(user) {
 		if (user.usertype == "ADMIN") {
-			ServerRequest.getScript("app/session/administrator/AdministratorSessionController.js", administratorInit);
+			$('#references').load("app/session/administrator/references.html", administratorInit);
 		} else {
-			ServerRequest.getScript("app/session/user/UserSessionController.js", userInit);
+			$('#references').load("app/session/user/references.html", userInit);
 		}
 	};
 
@@ -40,7 +41,7 @@ function MainController() {
 			method : 'POST',
 			success : function(response) {
 				window.location.reload();
-				// controller.init();
+				// controller.init(); // TODO: comment?
 			},
 			error : function(response) {
 				showModal();
@@ -70,11 +71,6 @@ function MainController() {
 				}
 			}
 		});
-	}
-	
-	function loginInit() {
-		var loginController = new LoginController(controller);
-		loginController.init();
 	}
 	
 	function administratorInit() {

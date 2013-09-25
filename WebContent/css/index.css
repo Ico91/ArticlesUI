@@ -23,6 +23,10 @@ a {
 	height: 100%;
 }
 
+#references {
+	display: none;
+}
+
 .articleDetails , .userDetails {
 	font: italic 200 24px Georgia, Times, serif;
 	display: inline-block;

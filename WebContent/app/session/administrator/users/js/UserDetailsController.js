@@ -6,7 +6,7 @@ function UserDetailsController(userController) {
 	this.userController = userController;
 	var controller = this;
 	var detailsController = {};
-	var statisticsController = {};
+	var statisticsComponent = {};
 	var tabsContext = {};
 	var userIdStatistics = {};
 	var statisticsConfig = {
@@ -26,14 +26,16 @@ function UserDetailsController(userController) {
 			tabsContext = $( "#userTabs" ).tabs({
 				activate: function( event, ui ) {					
 					if(ui.newPanel.selector == '#tabs-userStatistics' && userIdStatistics != null)
-						ServerRequest.getScript("app/session/common/statistics/StatisticsController.js", statisticsInit);
+						statisticsComponent = new StatisticsComponent(controller);
+						statisticsComponent.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
 				},
 				create: function( event, ui ) {
 					$(this).tabs('disable', 1);
 				}
 			});
 			
-			ServerRequest.getScript("app/session/administrator/users/js/DetailsController.js", detailsInit);
+			detailsController = new DetailsController(controller);
+			detailsController.init();
 		});
 	};
 	
@@ -44,7 +46,8 @@ function UserDetailsController(userController) {
 		else {
 			$(tabsContext).tabs('enable', 1);
 			userIdStatistics = user.userId;
-			ServerRequest.getScript("app/session/common/statistics/StatisticsController.js", statisticsInit);
+			statisticsComponent = new StatisticsComponent(controller);
+			statisticsComponent.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
 		}
 		detailsController.show(user, callback);
 	};
@@ -57,15 +60,5 @@ function UserDetailsController(userController) {
 	this.onSave = function() {
 		userController.onSave();
 	};
-	
-	function detailsInit() {
-		detailsController = new DetailsController(controller);
-		detailsController.init();
-	}
-	
-	function statisticsInit() {
-		statisticsController = new StatisticsController(controller);
-		statisticsController.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
-	}
 	
 }

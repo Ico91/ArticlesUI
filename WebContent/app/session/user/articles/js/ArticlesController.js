@@ -2,7 +2,6 @@
  * Manages communication between the ArticlesListController & ArticleDetailsController
  */
 function ArticlesController() {
-	var controller = this;
 	var articlesListController = {};
 	var articleDetailsController = {};
 	
@@ -10,8 +9,10 @@ function ArticlesController() {
 	 * Loads the necessary html contents
 	 */
 	this.init = function() {
-		ServerRequest.getScript("app/session/user/articles/js/ArticlesListController.js", articlesListInit);
-		ServerRequest.getScript("app/session/user/articles/js/ArticleDetailsController.js", articleDetailsInit);
+		articlesListController = new ArticlesListController(this);
+		articlesListController.init();
+		articleDetailsController = new ArticleDetailsController(this);
+		articleDetailsController.init();
 	};
 	
 	/**
@@ -49,14 +50,4 @@ function ArticlesController() {
 	this.onLogout = function(callback) {
 		articleDetailsController.show(null, callback);
 	};
-	
-	function articlesListInit() {
-		articlesListController = new ArticlesListController(controller);
-		articlesListController.init();
-	}
-	
-	function articleDetailsInit() {
-		articleDetailsController = new ArticleDetailsController(controller);
-		articleDetailsController.init();
-	}
 }
