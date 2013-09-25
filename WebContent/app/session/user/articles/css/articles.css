@@ -1,0 +1,42 @@
+.articles-head {
+	width: 100%;
+	border-bottom: 2px solid #333;
+	min-height: 30px;
+	padding: 15px 0px;
+	background: #444 !important;
+}
+
+.articles-main {
+	width: 100%;
+	min-height: 100%;
+	background: #f4f4f4 url(/ArticlesUI/images/bg.gif) repeat top left;
+}
+
+.articles-head #btn-statistics {
+	margin-left: 10px;
+}
+
+#articleTitle {
+	width: 95%;
+	height: 30px;
+	margin-top: 10px;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.layout-articleContent {
+	margin-top: 20px;
+}
+
+#articleContent {
+	width: 95%;
+	height: 300px;
+	margin-top: 15px;
+	border-radius: 5px;
+	padding: 5px;
+}
+
+.articlesList #search {
+	font: italic 200 24px Georgia, Times, serif;
+	font-style: italic;
+}
