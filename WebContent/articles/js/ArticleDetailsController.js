@@ -168,12 +168,8 @@ function ArticleDetailsController(articlesController) {
 		};
 	}
 	
-	/**
-	 * Displays a modal window asking the user for appropriate actions.
-	 * @param article
-	 * @param callback
-	 */
-	function showModal(article, callback) {
+	// TODO: remove
+	function showModal_old(article, callback) {
 		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened article is modified!<p>Save changes?</p></div>';
 		$('#articleDetails').append(modalHtml);
 		$( "#dialog" ).dialog({
@@ -202,7 +198,36 @@ function ArticleDetailsController(articlesController) {
 		});
 	}
 
-	
+	/**
+	 * Displays a modal window asking the user for appropriate actions.
+	 * @param article
+	 * @param callback
+	 */
+	function showModal(article, callback) {
+		var options = {
+			window : {
+				title : 'Warning!',
+				content : "Your currently opened article is modified!<p>Save changes?</p>"
+			},
+			selector : '#articleDetails',
+			buttons : buttons = {
+					"Yes" : function() {
+						save(article, callback);
+						$(this).dialog("close");
+					},
+					"No": function() {
+						visualize(article);
+						if(callback != null)
+							callback();
+						$(this).dialog("close");
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+			}
+		};
+		dialogWindow(options);
+	}
 
 	/**
 	 * Displays a message to the user, indicating the result of the last action.

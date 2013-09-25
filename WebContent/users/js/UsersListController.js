@@ -144,13 +144,8 @@ function UsersListController(context) {
 		});
 	};
 
-	/**
-	 * Displays a modal window asking the user to confirm the action.
-	 * 
-	 * @param index -
-	 *            of the deleted user.
-	 */
-	function showModal(index) {
+	//TODO: delete
+	function showModal_old(index) {
 		var modalHtml = '<div id="dialog" title="Warning!">Are you sure you want to delete this user?</p></div>';
 		$('#userDetails').append(modalHtml);
 		$("#dialog").dialog({
@@ -170,6 +165,30 @@ function UsersListController(context) {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * /** Displays a modal window asking the user to confirm the action.
+	 * 
+	 * @param index - of the deleted user.
+	 */
+	function showModal(index) {
+		var options = {
+			window : {
+				title : 'Warning!',
+				content : "Are you sure you want to delete this user?"
+			},
+			selector : '#userDetails',
+			buttons : buttons = {
+					"Delete" : function() {
+						deleteUser(index, this);
+					},
+					Cancel : function() {
+						$(this).dialog("close");
+					}
+			}
+		};
+		dialogWindow(options);
 	}
 
 	/**

@@ -156,12 +156,8 @@ function ArticlesListController(context) {
 		});
 	};
 
-	/**
-	 * /** Displays a modal window asking the user to confirm the action.
-	 * 
-	 * @param index - of the deleted article.
-	 */
-	function showModal(index) {
+	// TODO: delete
+	function showModal_old(index) {
 		var modalHtml = '<div id="dialog" title="Warning!">Are you sure you want to delete this article?</p></div>';
 		$('#articleDetails').append(modalHtml);
 		$("#dialog").dialog({
@@ -181,6 +177,30 @@ function ArticlesListController(context) {
 				}
 			}
 		});
+	}
+	
+	/**
+	 * /** Displays a modal window asking the user to confirm the action.
+	 * 
+	 * @param index - of the deleted article.
+	 */
+	function showModal(index) {
+		var options = {
+			window : {
+				title : 'Warning!',
+				content : "Are you sure you want to delete this article?"
+			},
+			selector : '#articleDetails',
+			buttons : buttons = {
+					"Delete" : function() {
+						deleteArticle(index, this);
+					},
+					Cancel : function() {
+						$(this).dialog("close");
+					}
+			}
+		};
+		dialogWindow(options);
 	}
 
 	/**

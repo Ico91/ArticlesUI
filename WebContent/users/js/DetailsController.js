@@ -170,10 +170,7 @@ function DetailsController(userDetailsController) {
 		};
 	}
 	
-	/**
-	 * Displays a modal window asking the user for appropriate actions.
-	 * @param user
-	 */
+	// TODO: remove
 	function showModal(user, callback) {
 		var modalHtml = '<div id="dialog" title="Warning!">Your currently opened user is modified!<p>Save changes?</p></div>';
 		$('#userDetails').append(modalHtml);
@@ -203,4 +200,34 @@ function DetailsController(userDetailsController) {
 		});
 	};
 	
+	/**
+	 * Displays a modal window asking the user for appropriate actions.
+	 * @param user
+	 * @param callback
+	 */
+	function showModal(user, callback) {
+		var options = {
+			window : {
+				title : 'Warning!',
+				content : "Your currently opened user is modified!<p>Save changes?</p>"
+			},
+			selector : '#userDetails',
+			buttons : buttons = {
+					"Yes" : function() {
+						save(user, callback);
+						$(this).dialog("close");
+					},
+					"No": function() {
+						visualize(user);
+						if(callback != null)
+							callback();
+						$(this).dialog("close");
+					},
+					Cancel: function() {
+						$( this ).dialog( "close" );
+					}
+			}
+		};
+		dialogWindow(options);
+	}
 }
