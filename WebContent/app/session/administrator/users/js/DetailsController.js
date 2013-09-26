@@ -1,6 +1,8 @@
 /**
  * Manages operations on the currently opened user.
- * @param userDetailsController - the context in which this controller works.
+ * 
+ * @param userDetailsController -
+ *            the context in which this controller works.
  */
 function DetailsController(userDetailsController) {
 	var currentUser = newUser();
@@ -10,57 +12,72 @@ function DetailsController(userDetailsController) {
 	var userTypeField = {};
 	this.userDetailsController = userDetailsController;
 
+	var errorlist = {
+		USERNAME_IS_NULL : "Username is null",
+		USERNAME_IS_EMPTY : "Username is empty",
+		PASSWORD_IS_NULL : "Password is null",
+		PASSWORD_IS_EMPTY : "Password is empty",
+		USERTYPE_IS_NULL : "Usertype is null",
+		NOT_UNIQUE_USERNAME : "Username is not unique"
+	};
+
 	/**
 	 * Loads the necessary html contents.
 	 */
 	this.init = function() {
-		$('#details').load('app/session/administrator/users/html/details.html', function() {
-			bind();
-		});
+		$('#details').load('app/session/administrator/users/html/details.html',
+				function() {
+					bind();
+				});
 	};
-	
+
 	/**
 	 * Shows the specified user.
-	 * @param user - the user to display; 
-	 * if null is passed, displays a new, empty user.
+	 * 
+	 * @param user -
+	 *            the user to display; if null is passed, displays a new, empty
+	 *            user.
 	 */
 	this.show = function(user, callback) {
 		// checks whether currently opened user is modified
-		if(currentUser.username != usernameField.val() || currentUser.password != passwordField.val()
+		if (currentUser.username != usernameField.val()
+				|| currentUser.password != passwordField.val()
 				|| currentUser.userType != userTypeField.val())
 			showModal(user, callback);
 		else {
 			visualize(user);
-			if(callback != null)
+			if (callback != null)
 				callback();
 		}
 	};
-	
+
 	/**
-	 * Checks if the deleted user is the one currently shown and if true
-	 * shows a new empty user.
+	 * Checks if the deleted user is the one currently shown and if true shows a
+	 * new empty user.
 	 */
 	this.userDeleted = function(user) {
-		if(currentUser.userId === user.userId) {
+		if (currentUser.userId === user.userId) {
 			visualize(null);
 		}
 	};
-	
+
 	/**
 	 * Displays the specified user in the appropriate text fields.
-	 * @param user - the user to display
+	 * 
+	 * @param user -
+	 *            the user to display
 	 */
 	function visualize(user) {
-		if(user != null)
+		if (user != null)
 			currentUser = user;
-		else 
+		else
 			currentUser = newUser();
 		userIdField.text(currentUser.userId);
 		usernameField.val(currentUser.username);
 		passwordField.val(currentUser.password);
 		userTypeField.val(currentUser.userType);
 	}
-	
+
 	/**
 	 * Binds the necessary functions to the relevant controls
 	 */
@@ -71,16 +88,19 @@ function DetailsController(userDetailsController) {
 		userTypeField = $('#types');
 		$('#btnSave').click(function(event) {
 			event.preventDefault();
-			if(!validateFields()) {
+			if (!validateFields()) {
 				return;
 			}
 			save(currentUser);
 		});
 	}
-	
+
 	/**
-	 * Sends the appropriate request to the server for saving the currently opened user. 
-	 * @param user - the user to be saved
+	 * Sends the appropriate request to the server for saving the currently
+	 * opened user.
+	 * 
+	 * @param user -
+	 *            the user to be saved
 	 */
 	function save(user, callback) {
 		var dataToSend = {
@@ -88,75 +108,74 @@ function DetailsController(userDetailsController) {
 			password : passwordField.val(),
 			userType : userTypeField.val()
 		};
-		
-		if(currentUser.userId != "") {
+
+		if (currentUser.userId != "") {
 			ServerRequest.request('users/' + currentUser.userId, {
-				method: 'POST',
-				data: JSON.stringify(dataToSend),
-				success: function(response) {
+				method : 'POST',
+				data : JSON.stringify(dataToSend),
+				success : function(response) {
 					userSaved(dataToSend, "update", callback);
 					visualize(user);
 				},
-				error: function(response) {
-					// TODO: create error flow
-					console.log('Error updating user');
-					console.log(response);
+				error : function(response) {
+					error(response);
 				}
 			});
-		}
-		else {
+		} else {
 			ServerRequest.request('users/', {
-				method: 'PUT',
-				data: JSON.stringify(dataToSend),
-				success: function(response) {
+				method : 'PUT',
+				data : JSON.stringify(dataToSend),
+				success : function(response) {
 					userSaved(response, "save", callback);
 					visualize(user);
 				},
-				error: function(response) {
-					// TODO: Create error flow
-					console.log('Error saving user');
-					console.log(response);
+				error : function(response) {
+					error(response);
 				}
 			});
-		};
-	};
-	
+		}
+		;
+	}
+	;
+
 	/**
-	 * Set that the currently opened user is the saved one. 
-	 * @param userData - the user that has been saved
-	 * @param action - if the action is to save a new user or
-	 * update an existing.
+	 * Set that the currently opened user is the saved one.
+	 * 
+	 * @param userData -
+	 *            the user that has been saved
+	 * @param action -
+	 *            if the action is to save a new user or update an existing.
 	 * @param result
 	 */
 	function userSaved(userData, action, callback) {
-		if(action === "save")
+		if (action === "save")
 			currentUser.userId = userData.userId;
 		currentUser.username = userData.username;
 		currentUser.password = userData.password;
 		currentUser.userType = userData.userType;
-		if(callback != null)
+		if (callback != null)
 			callback();
-		if(sessionStorage.getItem('user') != null) {
+		if (sessionStorage.getItem('user') != null) {
 			userDetailsController.onSave();
 		}
 	}
 
 	/**
 	 * Validates the user text fields, returning false if they are empty.
+	 * 
 	 * @returns {Boolean}
 	 */
 	function validateFields() {
-		if(usernameField.val() == "") {
+		if (usernameField.val() == "") {
 			alert('Username field is empty!');
 			return false;
-		}
-		else if(passwordField.val() == "") {
+		} else if (passwordField.val() == "") {
 			alert('Password field is empty');
 			return false;
 		} else
 			return true;
 	}
-	
+
 	/**
 	 * @returns Returns a new copy of empty user.
 	 */
@@ -168,9 +187,10 @@ function DetailsController(userDetailsController) {
 			userType : "ADMIN"
 		};
 	}
-	
+
 	/**
 	 * Displays a modal window asking the user for appropriate actions.
+	 * 
 	 * @param user
 	 * @param callback
 	 */
@@ -182,19 +202,48 @@ function DetailsController(userDetailsController) {
 			},
 			selector : '#userDetails',
 			buttons : buttons = {
-					"Yes" : function() {
-						save(user, callback);
-						$(this).dialog("close");
-					},
-					"No": function() {
-						visualize(user);
-						if(callback != null)
-							callback();
-						$(this).dialog("close");
-					},
-					Cancel: function() {
-						$( this ).dialog( "close" );
-					}
+				"Yes" : function() {
+					save(user, callback);
+					$(this).dialog("close");
+				},
+				"No" : function() {
+					visualize(user);
+					if (callback != null)
+						callback();
+					$(this).dialog("close");
+				},
+				Cancel : function() {
+					$(this).dialog("close");
+				}
+			}
+		};
+		dialogWindow(options);
+	}
+	
+	function error(response) {
+		var errors = $.parseJSON(response.responseText);
+		if (errors instanceof Array) {
+			var errorText = "";
+			for (var i = 0; i < errors.length; i++) {
+				errorText += "<p>" + errorlist[errors[i].messages] + "</p>";
+			}
+			errorModal(errorText);
+		} else {
+			errorModal(errorlist[errors.messages]);
+		}
+	}
+
+	function errorModal(errorContent) {
+		var options = {
+			window : {
+				title : 'Error!',
+				content : errorContent
+			},
+			selector : '#userDetails',
+			buttons : buttons = {
+				"OK" : function() {
+					$(this).dialog("close");
+				}
 			}
 		};
 		dialogWindow(options);

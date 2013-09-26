@@ -187,8 +187,7 @@ function UsersListController(context) {
 				$(dialogContext).dialog("close");
 			},
 			error: function(response) {
-				alert('Cannot delete user!');
-				console.log(response);
+				errorModal('Cannot delete user!');
 			}
 		});
 	};
@@ -198,5 +197,21 @@ function UsersListController(context) {
 	 */
 	function indexToId(index) {
 		return usersList[index].userId;
+	}
+	
+	function errorModal(errorContent) {
+		var options = {
+			window : {
+				title : 'Error!',
+				content : errorContent
+			},
+			selector : '#userDetails',
+			buttons : buttons = {
+				"OK" : function() {
+					$(this).dialog("close");
+				}
+			}
+		};
+		dialogWindow(options);
 	}
 };

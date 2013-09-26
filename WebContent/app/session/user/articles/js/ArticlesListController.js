@@ -199,8 +199,7 @@ function ArticlesListController(context) {
 				$(dialogContext).dialog("close");
 			},
 			error: function(response) {
-				alert('Cannot delete article!');
-				console.log(response);
+				errorModal('Cannot delete article!');
 			}
 		});
 	};
@@ -210,5 +209,21 @@ function ArticlesListController(context) {
 	 */
 	function indexToId(index) {
 		return articlesList[index]['@id'];
+	}
+	
+	function errorModal(errorContent) {
+		var options = {
+			window : {
+				title : 'Error!',
+				content : errorContent
+			},
+			selector : '#articleDetails',
+			buttons : buttons = {
+				"OK" : function() {
+					$(this).dialog("close");
+				}
+			}
+		};
+		dialogWindow(options);
 	}
 }
