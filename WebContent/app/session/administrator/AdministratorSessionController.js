@@ -10,12 +10,24 @@ function AdministratorSessionController(context) {
 	var statisticsComponent = {};
 	var statisticsConfig = {
 		url: 'statistics',
-		container: '#statistics'
+		container: '#statistics',
+		item : {
+			username : 'Username',
+			activityDate : 'Activity Date',
+			userActivity : 'User Activity'
+		},
+		renderItem : function(item) {
+			var username = '<span class="statistics-username">' + item.username + '</span>';
+			var date = '<span class="statistics-date">' + item.activityDate + '</span>';
+			var activity = '<span class="statistics-activity">' + item.userActivity + '</span>';
+			
+			return username + date + activity;
+		}
 	};
 	
 	this.statisticsElements = {
-			element: "list-head-admin"
-		};
+		element: "list-head-admin"
+	};
 	
 	/**
 	 * Load appropriate html
@@ -28,7 +40,7 @@ function AdministratorSessionController(context) {
 					if(ui.newPanel.selector == '#tabs-statistics')
 					{
 						statisticsComponent = new StatisticsComponent(adminContext);
-						statisticsComponent.init(statisticsConfig.url, statisticsConfig.container);
+						statisticsComponent.init(statisticsConfig);
 					}
 					else
 						statisticsComponent = null;

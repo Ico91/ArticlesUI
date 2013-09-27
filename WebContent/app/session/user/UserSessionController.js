@@ -11,7 +11,17 @@ function UserSessionController(mainController) {
 	var articlesController = {};
 	var statisticsConfig = {
 		url: 'session/statistics',
-		container: '#userStatistics'
+		container: '#userStatistics',
+		item : {
+			activityDate : 'Activity Date',
+			userActivity : 'User Activity'
+		},
+		renderItem : function(item) {
+			var date = '<span class="statistics-date">' + item.activityDate + '</span>';
+			var activity = '<span class="statistics-activity">' + item.userActivity + '</span>';
+			
+			return date + activity;
+		}
 	};
 	
 	this.statisticsElements = {
@@ -36,7 +46,7 @@ function UserSessionController(mainController) {
 		$('#btn-statistics').on('click', function(event) {
 			event.preventDefault();
 			statisticsComponent = new StatisticsComponent(controller);
-			statisticsComponent.init(statisticsConfig.url, statisticsConfig.container);
+			statisticsComponent.init(statisticsConfig);
 			showModal();
 		});
 		

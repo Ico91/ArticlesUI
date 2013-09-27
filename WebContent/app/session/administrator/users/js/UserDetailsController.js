@@ -11,7 +11,17 @@ function UserDetailsController(userController) {
 	var userIdStatistics = {};
 	var statisticsConfig = {
 		url: 'statistics',
-		container: '.userTabs .tabs-userStatistics #userStatistics'
+		container: '.userTabs .tabs-userStatistics #userStatistics',
+		item : {
+			activityDate : 'Activity Date',
+			userActivity : 'User Activity'
+		},
+		renderItem : function(item) {
+			var date = '<span class="statistics-date">' + item.activityDate + '</span>';
+			var activity = '<span class="statistics-activity">' + item.userActivity + '</span>';
+			
+			return date + activity;
+		}
 	};
 	
 	this.statisticsElements = {
@@ -26,8 +36,9 @@ function UserDetailsController(userController) {
 			tabsContext = $( "#userTabs" ).tabs({
 				activate: function( event, ui ) {					
 					if(ui.newPanel.selector == '#tabs-userStatistics' && userIdStatistics != null)
+						statisticsConfig.url = 'statistics/' + userIdStatistics;
 						statisticsComponent = new StatisticsComponent(controller);
-						statisticsComponent.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
+						statisticsComponent.init(statisticsConfig);
 				},
 				create: function( event, ui ) {
 					$(this).tabs('disable', 1);
@@ -46,8 +57,9 @@ function UserDetailsController(userController) {
 		else {
 			$(tabsContext).tabs('enable', 1);
 			userIdStatistics = user.userId;
+			statisticsConfig.url = 'statistics/' + userIdStatistics;
 			statisticsComponent = new StatisticsComponent(controller);
-			statisticsComponent.init(statisticsConfig.url + "/" + userIdStatistics, statisticsConfig.container);
+			statisticsComponent.init(statisticsConfig);
 		}
 		detailsController.show(user, callback);
 	};

@@ -162,7 +162,7 @@ a {
 	top: 1px;
 }
 
-.article .btnDelete, .user .btnDelete {
+.article .btn-delete, .user .btn-delete {
 	margin-top: 3px;
 	float: right;
 	line-height: normal;
@@ -195,7 +195,7 @@ a {
 	-moz-box-shadow: inset 0px 1px 0px 0px #ffffff;
 }
 
-.article .btnDelete:hover, .user .btnDelete:hover {
+.article .btn-delete:hover, .user .btn-delete:hover {
 	background: -webkit-gradient(linear, left top, left bottom, color-stop(0.05, #e9e9e9
 		), color-stop(1, #f9f9f9));
 	background: -moz-linear-gradient(top, #e9e9e9 5%, #f9f9f9 100%);
@@ -208,7 +208,7 @@ a {
 	background-color: #e9e9e9;
 }
 
-.article .btnDelete:active, .user .btnDelete:active {
+.article .btn-delete:active, .user .btn-delete:active {
 	position: relative;
 	top: 1px;
 }

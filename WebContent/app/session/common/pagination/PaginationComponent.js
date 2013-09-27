@@ -3,6 +3,7 @@
  * list and controls operation on it. 
  */
 function PaginationComponent(context) {
+	var itemsList = [];
 	var pagesContext = {};
 	var options = {};
 
@@ -15,10 +16,12 @@ function PaginationComponent(context) {
 	 */
 	this.init = function(properties) {
 		options = $.extend({
-			selector : null,
-			url : null,
-			data : { },
-			elementsPerPage : 10,
+			selector : null, // selector of the pagination buttons
+			url : null, // request url
+			data : { }, // data to send
+			listContainer : null, // selector of the list container
+			listElement : null, // selector of an element in the list
+			elementsPerPage : 10
 		}, properties || {});
 
 		$(options.selector).pagination({
@@ -51,6 +54,14 @@ function PaginationComponent(context) {
 	this.reload = function(fromFirstPage, properties) {
 		load(fromFirstPage, properties);
 	};
+
+	/**
+	 * Returns the item, corresponding to the specified index
+	 * @param index
+	 */
+	this.getItem = function(index) {
+		return itemsList[index];
+	};
 	
 	/*
 	 * Sends a request to the server with the provided parametes.
@@ -79,8 +90,7 @@ function PaginationComponent(context) {
 			to : options.currentPage*options.elementsPerPage + parseInt(options.elementsPerPage)
 		};
 		
-		var data = $.extend(options.data, requestData);
-		options.data = data;
+		options.data = $.extend(options.data, requestData);
 		loadContents();
 	}
 
@@ -92,6 +102,7 @@ function PaginationComponent(context) {
 			data: options.data,
 			success: function(response) {
 				updatePages(response);
+				show(response);
 			},
 			error: function(response) {
 				// TODO: create some error flow
@@ -112,10 +123,62 @@ function PaginationComponent(context) {
 		if(pagesContext.pages > pages && pagesContext.pages == options.currentPage + 1) {
 			$(options.selector).pagination('prevPage');
 		}
-		else {
-			pagesContext.pages = pages;
-			$(options.selector).pagination('redraw');
-			context.show(response);
-		}
+		pagesContext.pages = pages;
+		$(options.selector).pagination('redraw');
 	}
+
+	/**
+	 * If necessary, converts the returned list of items from the server to an array
+	 * list.
+	 */
+	function convertToList(response) {
+		var responseList = Object.keys(response)[0];
+		var list = [];
+		if(response[responseList] != null && responseList != 'totalResults') {
+			if(response[responseList] instanceof Array) {
+				list = response[responseList];
+			} else {
+				list.push(response[responseList]);
+			}
+		}
+		return list;
+	};
+
+	/**
+	 * Visualizes the returned from the server list of items.
+	 * @param response
+	 */
+	function show(response) {
+		itemsList = convertToList(response);
+		$(options.listContainer).find('li:gt(0)').remove();
+		var listElement = $(options.listContainer + ' ' + options.listElement);
+		listElement.removeAttr('style');
+		if(itemsList.length == 0) {
+			listElement.text('No results found!');
+			listElement.appendTo(options.listContainer);
+			return;
+		}
+		for(var i = 0; i < itemsList.length; i++) {
+			listElement.html(renderItem(itemsList[i]));
+			listElement.appendTo(options.listContainer);
+			listElement = listElement.clone();
+		}
+
+	}
+
+	/**
+	 * Checks, if a rendering function is provided, to show the specified,
+	 * as a parameter entity.
+	 * @param entity - list item to show
+	 * @returns If rendering function is provided, returns the context
+	 * representation of the entity, otherwise returns it as a text.
+	 */
+	function renderItem(entity) {
+		if(options.renderItem) {
+			return options.renderItem(entity);
+		}
+		return entity;
+	}
+
+
 }
