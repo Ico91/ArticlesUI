@@ -10,14 +10,6 @@ function ArticleDetailsController(articlesController) {
 	var articleContentField = {};
 	var actionResult = {};
 
-	var errorlist = {
-		TITLE_IS_NULL : "Article title is null",
-		TITLE_IS_EMPTY : "Article title is empty",
-		CONTENT_IS_NULL : "Article content is null",
-		CONTENT_IS_EMPTY : "Article content is empty",
-		NOT_UNIQUE_TITLE : "Article title must be unique"
-	};
-
 	/**
 	 * Loads the necessary html contents.
 	 */
@@ -108,12 +100,8 @@ function ArticleDetailsController(articlesController) {
 				method : 'POST',
 				data : JSON.stringify(dataToSend),
 				success : function(response) {
-					articleSaved(dataToSend, "update", true, callback);
+					articleSaved(dataToSend, "update", callback);
 					visualize(article);
-				},
-				error : function(response) {
-					notificateUser("update", false, response);
-					
 				}
 			});
 		} else {
@@ -121,12 +109,8 @@ function ArticleDetailsController(articlesController) {
 				method : 'PUT',
 				data : JSON.stringify(dataToSend),
 				success : function(response) {
-					articleSaved(response, "save", true, callback);
+					articleSaved(response, "save", callback);
 					visualize(article);
-				},
-				error : function(response) {
-					notificateUser("save", false, response);
-					
 				}
 			});
 		}
@@ -146,7 +130,7 @@ function ArticleDetailsController(articlesController) {
 	 * @param callback -
 	 *            method to be called
 	 */
-	function articleSaved(articleData, action, result, callback) {
+	function articleSaved(articleData, action, callback) {
 		if (action === "save")
 			currentArticle['@id'] = articleData['@id'];
 		currentArticle.title = articleData.title;
@@ -154,7 +138,7 @@ function ArticleDetailsController(articlesController) {
 		if (callback != null)
 			callback();
 		if (sessionStorage.getItem('user') != null) {
-			notificateUser(action, result);
+			notificateUser(action);
 			articlesController.onSave();
 		}
 	}
@@ -225,19 +209,11 @@ function ArticleDetailsController(articlesController) {
 	 * @param action
 	 * @param result
 	 */
-	function notificateUser(action, result, response) {
+	function notificateUser(action) {
 		if (action === "save") {
-			if (result == true) {
-				successAnimation('Article saved successfully!');
-			} else {
-				error(response);
-			}
+			successAnimation('Article saved successfully!');
 		} else {
-			if (result == true) {
-				successAnimation('Article updated successfully!');
-			} else {
-				error(response);
-			}
+			successAnimation('Article updated successfully!');
 		}		
 	}
 	
@@ -250,34 +226,5 @@ function ArticleDetailsController(articlesController) {
 			opacity : 0,
 			height : "toggle"
 		}, 2500);
-	}
-	
-	function error(response) {
-		var errors = $.parseJSON(response.responseText);
-		if (errors instanceof Array) {
-			var errorText = "";
-			for (var i = 0; i < errors.length; i++) {
-				errorText += "<p>" + errorlist[errors[i].messages] + "</p>";
-			}
-			errorModal(errorText);
-		} else {
-			errorModal(errorlist[errors.messages]);
-		}
-	}
-
-	function errorModal(errorContent) {
-		var options = {
-			window : {
-				title : 'Error!',
-				content : errorContent
-			},
-			selector : '.content',
-			buttons : buttons = {
-				"OK" : function() {
-					$(this).dialog("close");
-				}
-			}
-		};
-		dialogWindow(options);
 	}
 }

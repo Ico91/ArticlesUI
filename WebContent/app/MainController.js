@@ -44,30 +44,10 @@ function MainController() {
 				window.location.reload();
 			},
 			error : function(response) {
-				showModal();
+				
 			}
 		});
 	};
-
-	/**
-	 * Displays a modal window warning the user for an occured error.
-	 */
-	function showModal() {
-		var options = {
-			window : {
-				title : 'Error!',
-				content : "<p>Please, log in the system again.</p>"
-			},
-			selector : '.content',
-			buttons : buttons = {
-				"Home" : function() {
-					controller.init();
-					$(this).dialog("close");
-				}
-			}
-		};
-		dialogWindow(options);
-	}
 
 	function administratorInit() {
 		var adminSessionController = new AdministratorSessionController(

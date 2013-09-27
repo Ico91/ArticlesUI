@@ -12,15 +12,6 @@ function DetailsController(userDetailsController) {
 	var userTypeField = {};
 	this.userDetailsController = userDetailsController;
 
-	var errorlist = {
-		USERNAME_IS_NULL : "Username is null",
-		USERNAME_IS_EMPTY : "Username is empty",
-		PASSWORD_IS_NULL : "Password is null",
-		PASSWORD_IS_EMPTY : "Password is empty",
-		USERTYPE_IS_NULL : "Usertype is null",
-		NOT_UNIQUE_USERNAME : "Username is not unique"
-	};
-
 	/**
 	 * Loads the necessary html contents.
 	 */
@@ -116,9 +107,6 @@ function DetailsController(userDetailsController) {
 				success : function(response) {
 					userSaved(dataToSend, "update", callback);
 					visualize(user);
-				},
-				error : function(response) {
-					error(response);
 				}
 			});
 		} else {
@@ -128,9 +116,6 @@ function DetailsController(userDetailsController) {
 				success : function(response) {
 					userSaved(response, "save", callback);
 					visualize(user);
-				},
-				error : function(response) {
-					error(response);
 				}
 			});
 		}
@@ -213,35 +198,6 @@ function DetailsController(userDetailsController) {
 					$(this).dialog("close");
 				},
 				Cancel : function() {
-					$(this).dialog("close");
-				}
-			}
-		};
-		dialogWindow(options);
-	}
-	
-	function error(response) {
-		var errors = $.parseJSON(response.responseText);
-		if (errors instanceof Array) {
-			var errorText = "";
-			for (var i = 0; i < errors.length; i++) {
-				errorText += "<p>" + errorlist[errors[i].messages] + "</p>";
-			}
-			errorModal(errorText);
-		} else {
-			errorModal(errorlist[errors.messages]);
-		}
-	}
-
-	function errorModal(errorContent) {
-		var options = {
-			window : {
-				title : 'Error!',
-				content : errorContent
-			},
-			selector : '.content',
-			buttons : buttons = {
-				"OK" : function() {
 					$(this).dialog("close");
 				}
 			}

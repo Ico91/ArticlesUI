@@ -115,7 +115,7 @@ function EntityListController(context) {
 				$(dialogContext).dialog("close");
 			},
 			error: function(response) {
-				errorModal('Cannot delete item!');
+				
 			}
 		});
 	}

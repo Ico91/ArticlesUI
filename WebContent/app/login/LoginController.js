@@ -35,19 +35,12 @@ function LoginController(mainController) {
 			username : $("#input-username").val(),
 			password : $("#input-password").val(),
 		};
-
 		ServerRequest.request('session/login', {
 			method: 'POST',
 			data: JSON.stringify(user),
 			success: function(response) {
 				sessionStorage.setItem("user", JSON.stringify(response));
 				mainController.userLoggedIn(response);
-			},
-			error: function(response) {
-				var container = $('#loginForm');
-				var error = $('#error');
-				error.text("Wrong username or password.");
-				container.append(error);
 			}
 		});
 	}
