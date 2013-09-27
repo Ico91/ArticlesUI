@@ -24,7 +24,8 @@ function MainController() {
 	 */
 	this.userLoggedIn = function(user) {
 		if (user.usertype == "ADMIN") {
-			$('#references').load("app/session/administrator/references.html", administratorInit);
+			$('#references').load("app/session/administrator/references.html",
+					administratorInit);
 		} else {
 			$('#references').load("app/session/user/references.html", userInit);
 		}
@@ -41,7 +42,6 @@ function MainController() {
 			method : 'POST',
 			success : function(response) {
 				window.location.reload();
-				// controller.init(); // TODO: comment?
 			},
 			error : function(response) {
 				showModal();
@@ -53,31 +53,28 @@ function MainController() {
 	 * Displays a modal window warning the user for an occured error.
 	 */
 	function showModal() {
-		var modalHtml = '<div id="dialog" title="Warning!"><p>Error has occurred.</p><p>Please, log in the system again.</p></div>';
-		$('#articleDetails').append(modalHtml);
-		$("#dialog").dialog({
-			resizable : false,
-			closeOnEscape : false,
-			dialogClass : "no-close",
-			draggable : true,
-			hide : "explode",
-			height : 300,
-			width : 350,
-			modal : true,
+		var options = {
+			window : {
+				title : 'Error!',
+				content : "<p>Please, log in the system again.</p>"
+			},
+			selector : '.content',
 			buttons : buttons = {
 				"Home" : function() {
 					controller.init();
 					$(this).dialog("close");
 				}
 			}
-		});
+		};
+		dialogWindow(options);
 	}
-	
+
 	function administratorInit() {
-		var adminSessionController = new AdministratorSessionController(controller);
+		var adminSessionController = new AdministratorSessionController(
+				controller);
 		adminSessionController.init();
 	}
-	
+
 	function userInit() {
 		var userSessionController = new UserSessionController(controller);
 		userSessionController.init();

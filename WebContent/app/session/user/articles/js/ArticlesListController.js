@@ -59,19 +59,6 @@ function ArticlesListController(context) {
 	};
 	
 	/**
-	 * Provides options for the modal window when deleting an article.
-	 */
-	this.getModalDeleteOptions = function() {
-		return {
-			window : {
-				title : 'Warning!',
-				content : "Are you sure you want to delete this article?"
-			},
-			selector : '#articleDetails',
-		};
-	};
-	
-	/**
 	 * Binds the necessary functions to the relevant controls
 	 */
 	function bind() {

@@ -56,18 +56,4 @@ function UsersListController(context) {
 		context.onNew();
 	};
 	
-	
-	
-	/**
-	 * Provides options for the modal window when deleting an article.
-	 */
-	this.getModalDeleteOptions = function() {
-		return {
-			window : {
-				title : 'Warning!',
-				content : "Are you sure you want to delete this user?"
-			},
-			selector : '#userDetails',
-		};
-	};
 };

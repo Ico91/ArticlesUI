@@ -47,7 +47,7 @@ function EntityListController(context) {
 
 		$('body').on('click', '.' + entity.btnDelete, function(event) {
 			event.preventDefault();
-			showModal($(this).parent().index());
+			showDeleteModal($(this).parent().index());
 		});
 		
 		$('body').on('click', '.' + entity.selectorClass, function(event) {
@@ -83,14 +83,20 @@ function EntityListController(context) {
 	 * Shows a modal window to warn the user when deleting.
 	 * @param index - the index of the deleted item in the list
 	 */
-	function showModal(index) {
-		var options = context.getModalDeleteOptions();
-		options.buttons = buttons = {
-				"Delete" : function() {
-					deleteItem(index, this);
+	function showDeleteModal(index) {
+		var options = {
+				window : {
+					title : 'Warning!',
+					content : "Are you sure you want to delete this item?"
 				},
-				Cancel : function() {
-					$(this).dialog("close");
+				selector : '.content',
+				buttons : buttons = {
+					"Delete" : function() {
+						deleteItem(index, this);
+					},
+					Cancel : function() {
+						$(this).dialog("close");
+					}
 				}
 		};
 		dialogWindow(options);
@@ -109,8 +115,7 @@ function EntityListController(context) {
 				$(dialogContext).dialog("close");
 			},
 			error: function(response) {
-				alert('Cannot delete article!');
-				console.log(response);
+				errorModal('Cannot delete item!');
 			}
 		});
 	}
@@ -154,4 +159,20 @@ function EntityListController(context) {
 			}
 		});
 	};
+	
+	function errorModal(errorContent) {
+		var options = {
+			window : {
+				title : 'Error!',
+				content : errorContent
+			},
+			selector : '.content',
+			buttons : buttons = {
+				"OK" : function() {
+					$(this).dialog("close");
+				}
+			}
+		};
+		dialogWindow(options);
+	}
 }
