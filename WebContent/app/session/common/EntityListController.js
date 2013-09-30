@@ -113,9 +113,6 @@ function EntityListController(context) {
 				updateList(false);
 				context.onDelete(deletedItem);
 				$(dialogContext).dialog("close");
-			},
-			error: function(response) {
-				
 			}
 		});
 	}
@@ -159,20 +156,4 @@ function EntityListController(context) {
 			}
 		});
 	};
-	
-	function errorModal(errorContent) {
-		var options = {
-			window : {
-				title : 'Error!',
-				content : errorContent
-			},
-			selector : '.content',
-			buttons : buttons = {
-				"OK" : function() {
-					$(this).dialog("close");
-				}
-			}
-		};
-		dialogWindow(options);
-	}
 }

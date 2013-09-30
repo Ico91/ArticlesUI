@@ -10,10 +10,13 @@ var errorList = {
 	PASSWORD_IS_EMPTY : "Password is empty",
 	USERTYPE_IS_NULL : "Usertype is null",
 	NOT_UNIQUE_USERNAME : "Username is not unique",
+	USER_CANNOT_DELETE_HIMSELF : ("You cannot delete yourself"),
 	WRONG_LOGIN : "Wrong username or password",
 	LOGOUT_ERROR : "Error occured on logout!",
 	ARTICLE_NOT_EXIST : ("Article does not exist"),
 	USER_NOT_EXIST : ("User does not exist"),
 	CANNOT_DELETE_ARTICLE : ("Article cannot be deleted"),
-	FORBIDDEN : ("This service is forbidden for you!!!")
+	FORBIDDEN : ("This service is forbidden for you!!!"),
+	NOT_FOUND : ("The selected item was not found"),
+	SERVER_ERROR : ("Server error has occured!")
 };

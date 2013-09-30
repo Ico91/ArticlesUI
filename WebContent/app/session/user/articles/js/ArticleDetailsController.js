@@ -176,6 +176,10 @@ function ArticleDetailsController(articlesController) {
 	}
 
 	
+	/**
+	 * Animation on success request
+	 * @param text
+	 */
 	function successAnimation(text) {
 		actionResult.css('opacity', 1);
 		actionResult.show('slow');
