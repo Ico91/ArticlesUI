@@ -34,7 +34,9 @@ ServerRequest.request = function(relativeURL, options) {
 			var statusCode = response.status;
 			console.log(response.status);
 			if (statusCode === 500) {
-				errorModal("Server error has occured!");
+				errorModal(errorList.SERVER_ERROR);
+			} else if (statusCode === 404) {
+				errorModal(errorList.NOT_FOUND);
 			} else {
 				$.getScript("app/session/common/languages/en.js")
 				.done( function() {
