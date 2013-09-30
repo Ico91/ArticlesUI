@@ -169,7 +169,7 @@ function DetailsController(userDetailsController) {
 			userId : "",
 			username : "",
 			password : "",
-			userType : "ADMIN"
+			userType : "USER"
 		};
 	}
 

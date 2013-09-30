@@ -47,6 +47,9 @@ ServerRequest.request = function(relativeURL, options) {
 		}
 	});
 	
+	/**
+	 * Parse the response error message
+	 */
 	function error(response) {
 		var errors = $.parseJSON(response.responseText);
 		if (errors instanceof Array) {
@@ -60,6 +63,9 @@ ServerRequest.request = function(relativeURL, options) {
 		}
 	}
 
+	/**
+	 * Visualize the error messages in dialog window
+	 */
 	function errorModal(errorContent) {
 		var options = {
 			window : {

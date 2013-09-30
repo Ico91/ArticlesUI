@@ -15,5 +15,10 @@ var errorList = {
 	ARTICLE_NOT_EXIST : ("Article does not exist"),
 	USER_NOT_EXIST : ("User does not exist"),
 	CANNOT_DELETE_ARTICLE : ("Article cannot be deleted"),
-	FORBIDDEN : ("This service is forbidden for you!!!")
+	FORBIDDEN : ("This service is forbidden for you!!!"),
+	NEGATIVE_FROM_PARAMETER : ("You send wrong page parameter"),
+	NEGATIVE_TO_PARAMETER : ("You send wrong page parameter"),
+	FROM_GREATER_THAN_TOTAL : ("You send wrong page parameter"),
+	TO_LOWER_THAN_FROM : ("You send wrong page parameter"),
+	FROM_EQUALS_TO : ("You send wrong page parameter")
 };
