@@ -29,16 +29,8 @@ function ArticleDetailsController(articlesController) {
 	 *            empty article.
 	 * @param callback
 	 */
-	this.show = function(article, callback) {
-		// checks whether currently opened article is modified
-		if (currentArticle.title != articleTitleField.val()
-				|| currentArticle.content != articleContentField.val())
-			showModal(article, callback);
-		else {
-			visualize(article);
-			if (callback != null)
-				callback();
-		}
+	this.show = function(article) {
+		visualize(article);
 	};
 
 	/**
@@ -52,18 +44,28 @@ function ArticleDetailsController(articlesController) {
 	};
 
 	/**
-	 * Displays the specified article in the appropriate text fields.
+	 * Displays a message to the user, indicating the result of the last action.
 	 * 
-	 * @param article
+	 * @param method
+	 * @param result
 	 */
-	function visualize(article) {
-		if (article != null)
-			currentArticle = article;
-		else
-			currentArticle = newArticle();
-		articleTitleField.val(currentArticle.title);
-		articleContentField.val(currentArticle.content);
-	}
+	this.notificateUser = function(method) {
+		if (method === "PUT") {
+			successAnimation('Article saved successfully!');
+		} else {
+			successAnimation('Article updated successfully!');
+		}		
+	};
+	
+	/**
+	 * Whether the currently opened article is modified
+	 */
+	this.articleModified = function() {
+		if (currentArticle.title != articleTitleField.val() || 
+			currentArticle.content != articleContentField.val())
+			return true;
+		return false;
+	};
 
 	/**
 	 * Binds the necessary functions to the relevant controls
@@ -78,6 +80,19 @@ function ArticleDetailsController(articlesController) {
 			save(currentArticle);
 		});
 	}
+	
+	/**
+	 * Displays the corresponding article fields on the view.
+	 * @param article
+	 */
+	function visualize(article) {
+		if (article != null)
+			currentArticle = article;
+		else
+			currentArticle = newArticle();
+		articleTitleField.val(currentArticle.title);
+		articleContentField.val(currentArticle.content);
+	}
 
 	/**
 	 * Sends the appropriate request to the server for saving the currently
@@ -87,7 +102,7 @@ function ArticleDetailsController(articlesController) {
 	 * @param callback -
 	 *            method to be invoked on a successful save
 	 */
-	function save(article, callback) {
+	function save() {
 		if (!validateFields()) {
 			return;
 		}
@@ -100,8 +115,7 @@ function ArticleDetailsController(articlesController) {
 				method : 'POST',
 				data : JSON.stringify(dataToSend),
 				success : function(response) {
-					articleSaved(dataToSend, "update", callback);
-					visualize(article);
+					articleSaved(dataToSend, "POST");
 				}
 			});
 		} else {
@@ -109,8 +123,7 @@ function ArticleDetailsController(articlesController) {
 				method : 'PUT',
 				data : JSON.stringify(dataToSend),
 				success : function(response) {
-					articleSaved(response, "save", callback);
-					visualize(article);
+					articleSaved(response, "PUT");
 				}
 			});
 		}
@@ -123,24 +136,15 @@ function ArticleDetailsController(articlesController) {
 	 * 
 	 * @param articleData -
 	 *            data to update the current article
-	 * @param action -
+	 * @param method -
 	 *            operation on the article (create or modify)
-	 * @param result -
-	 *            result of the operation
-	 * @param callback -
-	 *            method to be called
 	 */
-	function articleSaved(articleData, action, callback) {
-		if (action === "save")
+	function articleSaved(articleData, method) {
+		if (method === "PUT")
 			currentArticle['@id'] = articleData['@id'];
 		currentArticle.title = articleData.title;
 		currentArticle.content = articleData.content;
-		if (callback != null)
-			callback();
-		if (sessionStorage.getItem('user') != null) {
-			notificateUser(action);
-			articlesController.onSave();
-		}
+		articlesController.onSave(method);
 	}
 
 	/**
@@ -171,51 +175,6 @@ function ArticleDetailsController(articlesController) {
 		};
 	}
 
-	/**
-	 * Displays a modal window asking the user for appropriate actions.
-	 * 
-	 * @param article
-	 * @param callback
-	 */
-	function showModal(article, callback) {
-		var options = {
-			window : {
-				title : 'Warning!',
-				content : "Your currently opened article is modified!<p>Save changes?</p>"
-			},
-			selector : '.content',
-			buttons : buttons = {
-				"Yes" : function() {
-					save(article, callback);
-					$(this).dialog("close");
-				},
-				"No" : function() {
-					visualize(article);
-					if (callback != null)
-						callback();
-					$(this).dialog("close");
-				},
-				Cancel : function() {
-					$(this).dialog("close");
-				}
-			}
-		};
-		dialogWindow(options);
-	}
-
-	/**
-	 * Displays a message to the user, indicating the result of the last action.
-	 * 
-	 * @param action
-	 * @param result
-	 */
-	function notificateUser(action) {
-		if (action === "save") {
-			successAnimation('Article saved successfully!');
-		} else {
-			successAnimation('Article updated successfully!');
-		}		
-	}
 	
 	function successAnimation(text) {
 		actionResult.css('opacity', 1);

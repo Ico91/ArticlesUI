@@ -20,14 +20,14 @@ function UserController() {
 	 * Invoked when creating a new user, tells the UserDetailsController to show it.
 	 */
 	this.onNew = function() {
-		userDetailsController.show(null);
+		show(null);
 	};
 	
 	/**
 	 * Invoked on selection an user from the list, tells the UserDetailsController to show it
 	 */
 	this.onSelect = function(user) {
-		userDetailsController.show(user);
+		show(user);
 	};
 	
 	/**
@@ -48,7 +48,51 @@ function UserController() {
 	 * Invoked when pressing the logout button, tells the user details controller
 	 * to clear the fields, thus checking for a not saved user.
 	 */
-	this.onLogout = function(callback) {
-		userDetailsController.show(null, callback);
+	this.logoutEnabled = function() {
+		if(userDetailsController.userModified())
+			return confirm();
+		return true;
 	};
+	
+	function show(user) {
+		if(userDetailsController.userModified())
+		{
+			confirm().then(function (answer){
+				if(answer)
+					userDetailsController.show(user);
+			});
+		}
+		else
+			userDetailsController.show(user);
+	}
+	
+	function confirm() {
+		var defer = $.Deferred();
+		showModal(defer);
+		return defer.promise();
+	}
+	
+	/**
+	 * Displays a modal window asking the user for appropriate actions.
+	 */
+	function showModal(defer) {
+		var options = {
+			window : {
+				title : 'Warning!',
+				content : "Your currently opened user is modified! Do you want to continue without saving?"
+			},
+			selector : '.content',
+			buttons : buttons = {
+				"Yes" : function() {
+					defer.resolve(true);
+					$(this).dialog("close");
+				},
+				"No" : function() {
+					defer.resolve(false);
+					$(this).dialog("close");
+				}
+			}
+		};
+		dialogWindow(options);
+	}
 }

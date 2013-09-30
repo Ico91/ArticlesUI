@@ -52,7 +52,16 @@ function UserSessionController(mainController) {
 		
 		$('#btn-logout').on('click', function(event) {
 			event.preventDefault();
-			articlesController.onLogout(mainController.logout);			
+			var logoutEnabled = articlesController.logoutEnabled();
+			if(logoutEnabled.then != null)
+			{
+				logoutEnabled.then(function (answer) {
+					if(answer)
+						mainController.logout();
+				});
+			}
+			else
+				mainController.logout();
 		});
 
 		$('.darken').on('click', function() {

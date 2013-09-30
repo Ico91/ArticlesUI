@@ -29,17 +29,8 @@ function DetailsController(userDetailsController) {
 	 *            the user to display; if null is passed, displays a new, empty
 	 *            user.
 	 */
-	this.show = function(user, callback) {
-		// checks whether currently opened user is modified
-		if (currentUser.username != usernameField.val()
-				|| currentUser.password != passwordField.val()
-				|| currentUser.userType != userTypeField.val())
-			showModal(user, callback);
-		else {
-			visualize(user);
-			if (callback != null)
-				callback();
-		}
+	this.show = function(user) {
+		visualize(user);
 	};
 
 	/**
@@ -51,6 +42,31 @@ function DetailsController(userDetailsController) {
 			visualize(null);
 		}
 	};
+	
+	/**
+	 * Whether the currently opened user is modified.
+	 */
+	this.userModified = function() {
+		if(currentUser.username != usernameField.val() ||
+			currentUser.password != passwordField.val() ||
+			currentUser.userType != userTypeField.val())
+			return true;
+		return false;
+	};
+
+	/**
+	 * Binds the necessary functions to the relevant controls
+	 */
+	function bind() {
+		userIdField = $('#userID');
+		usernameField = $('#username');
+		passwordField = $('#password');
+		userTypeField = $('#types');
+		$('#btnSave').click(function(event) {
+			event.preventDefault();
+			save(currentUser);
+		});
+	}
 
 	/**
 	 * Displays the specified user in the appropriate text fields.
@@ -70,30 +86,16 @@ function DetailsController(userDetailsController) {
 	}
 
 	/**
-	 * Binds the necessary functions to the relevant controls
-	 */
-	function bind() {
-		userIdField = $('#userID');
-		usernameField = $('#username');
-		passwordField = $('#password');
-		userTypeField = $('#types');
-		$('#btnSave').click(function(event) {
-			event.preventDefault();
-			if (!validateFields()) {
-				return;
-			}
-			save(currentUser);
-		});
-	}
-
-	/**
 	 * Sends the appropriate request to the server for saving the currently
 	 * opened user.
 	 * 
 	 * @param user -
 	 *            the user to be saved
 	 */
-	function save(user, callback) {
+	function save() {
+		if (!validateFields()) {
+			return;
+		}
 		var dataToSend = {
 			username : usernameField.val(),
 			password : passwordField.val(),
@@ -105,8 +107,7 @@ function DetailsController(userDetailsController) {
 				method : 'POST',
 				data : JSON.stringify(dataToSend),
 				success : function(response) {
-					userSaved(dataToSend, "update", callback);
-					visualize(user);
+					userSaved(dataToSend, "POST");
 				}
 			});
 		} else {
@@ -114,8 +115,7 @@ function DetailsController(userDetailsController) {
 				method : 'PUT',
 				data : JSON.stringify(dataToSend),
 				success : function(response) {
-					userSaved(response, "save", callback);
-					visualize(user);
+					userSaved(response, "PUT");
 				}
 			});
 		}
@@ -128,21 +128,16 @@ function DetailsController(userDetailsController) {
 	 * 
 	 * @param userData -
 	 *            the user that has been saved
-	 * @param action -
+	 * @param method -
 	 *            if the action is to save a new user or update an existing.
-	 * @param result
 	 */
-	function userSaved(userData, action, callback) {
-		if (action === "save")
+	function userSaved(userData, action) {
+		if (action === "PUT")
 			currentUser.userId = userData.userId;
 		currentUser.username = userData.username;
 		currentUser.password = userData.password;
 		currentUser.userType = userData.userType;
-		if (callback != null)
-			callback();
-		if (sessionStorage.getItem('user') != null) {
-			userDetailsController.onSave();
-		}
+		userDetailsController.onSave();
 	}
 
 	/**
@@ -171,37 +166,5 @@ function DetailsController(userDetailsController) {
 			password : "",
 			userType : "ADMIN"
 		};
-	}
-
-	/**
-	 * Displays a modal window asking the user for appropriate actions.
-	 * 
-	 * @param user
-	 * @param callback
-	 */
-	function showModal(user, callback) {
-		var options = {
-			window : {
-				title : 'Warning!',
-				content : "Your currently opened user is modified!<p>Save changes?</p>"
-			},
-			selector : '.content',
-			buttons : buttons = {
-				"Yes" : function() {
-					save(user, callback);
-					$(this).dialog("close");
-				},
-				"No" : function() {
-					visualize(user);
-					if (callback != null)
-						callback();
-					$(this).dialog("close");
-				},
-				Cancel : function() {
-					$(this).dialog("close");
-				}
-			}
-		};
-		dialogWindow(options);
 	}
 }

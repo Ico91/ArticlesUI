@@ -57,7 +57,16 @@ function AdministratorSessionController(context) {
 	function bind() {
 		$('body').on('click', '#btn-logout', function(event) {
 			event.preventDefault();
-			userController.onLogout(mainController.logout);
+			var logoutEnabled = userController.logoutEnabled();
+			if(logoutEnabled.then != null)
+			{
+				logoutEnabled.then(function (answer) {
+					if(answer)
+						mainController.logout();
+				});
+			}
+			else
+				mainController.logout();
 		});
 
 	}

@@ -50,7 +50,7 @@ function UserDetailsController(userController) {
 		});
 	};
 	
-	this.show = function(user, callback) {
+	this.show = function(user) {
 		if(user == null) {
 			$(tabsContext).tabs('disable', 1).tabs('option', 'active', 0);
 		}
@@ -61,7 +61,7 @@ function UserDetailsController(userController) {
 			statisticsComponent = new StatisticsComponent(controller);
 			statisticsComponent.init(statisticsConfig);
 		}
-		detailsController.show(user, callback);
+		detailsController.show(user);
 	};
 	
 	this.userDeleted = function(user) {
@@ -72,5 +72,9 @@ function UserDetailsController(userController) {
 	this.onSave = function() {
 		userController.onSave();
 	};
+	
+	this.userModified = function() {
+		return detailsController.userModified();
+	}
 	
 }
