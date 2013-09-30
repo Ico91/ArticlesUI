@@ -42,9 +42,6 @@ function MainController() {
 			method : 'POST',
 			success : function(response) {
 				window.location.reload();
-			},
-			error : function(response) {
-				
 			}
 		});
 	};
