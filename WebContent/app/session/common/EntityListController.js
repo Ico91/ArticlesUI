@@ -92,7 +92,8 @@ function EntityListController(context) {
 				selector : '.content',
 				buttons : buttons = {
 					"Delete" : function() {
-						deleteItem(index, this);
+						$(this).dialog("close");
+						deleteItem(index);
 					},
 					Cancel : function() {
 						$(this).dialog("close");
@@ -105,14 +106,13 @@ function EntityListController(context) {
 	/**
 	 * Sends a request to the server to delete the specified item
 	 */
-	function deleteItem(index, dialogContext) {
+	function deleteItem(index) {
 		var deletedItem = indexToId(index);
 		ServerRequest.request(paginationOptions.url + indexToId(index)[entityOptions.id], {
 			method: 'DELETE',
 			success: function(response) {
 				updateList(false);
 				context.onDelete(deletedItem);
-				$(dialogContext).dialog("close");
 			}
 		});
 	}

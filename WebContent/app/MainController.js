@@ -4,11 +4,14 @@
  */
 function MainController() {
 	var controller = this;
-
+	var DEFAULT_LANG = "en";
+	
 	/**
 	 * Creates a new instance of the login controller
 	 */
 	this.init = function() {
+		Messages.setLanguage(DEFAULT_LANG);
+		
 		if (sessionStorage.getItem("user") == null) {
 			var loginController = new LoginController(controller);
 			loginController.init();
@@ -16,8 +19,15 @@ function MainController() {
 			var user = $.parseJSON(sessionStorage.getItem("user"));
 			controller.userLoggedIn(user);
 		}
-
 	};
+	
+	function bind() {
+		$('body').on('click', '.lang', function(event) {
+			event.preventDefault();
+			selectedIndex = $(this).parent().index();
+			loadLanguageScript(selectedIndex);
+		});
+	}
 
 	/**
 	 * Invoked when the user successfully logs in

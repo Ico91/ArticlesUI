@@ -32,19 +32,13 @@ ServerRequest.request = function(relativeURL, options) {
 		},
 		error : function(response) {
 			var statusCode = response.status;
-			console.log(response.status);
+			
 			if (statusCode === 500) {
-				errorModal(errorList.SERVER_ERROR);
+				errorModal(Messages.getMessage("SERVER_ERROR"));
 			} else if (statusCode === 404) {
-				errorModal(errorList.NOT_FOUND);
+				errorModal(Messages.getMessage("NOT_FOUND"));
 			} else {
-				$.getScript("app/session/common/languages/en.js")
-				.done( function() {
-					error(response);
-				})
-				.fail( function() {
-					errorModal("Something terrible has happend!!");
-				});
+				error(response);
 			}
 		}
 	});
@@ -54,14 +48,17 @@ ServerRequest.request = function(relativeURL, options) {
 	 */
 	function error(response) {
 		var errors = $.parseJSON(response.responseText);
+		
 		if (errors instanceof Array) {
 			var errorText = "";
 			for (var i = 0; i < errors.length; i++) {
-				errorText += "<p>" + errorList[errors[i].messages] + "</p>";
+				errorText += "<p>" + Messages.getMessage(errors[i].messages) + "</p>";
 			}
 			errorModal(errorText);
 		} else {
-			errorModal(errorList[errors.messages]);
+			var error = errors.messages;
+			//console.log(errors.messages);
+			errorModal(Messages.getMessage(error));
 		}
 	}
 
