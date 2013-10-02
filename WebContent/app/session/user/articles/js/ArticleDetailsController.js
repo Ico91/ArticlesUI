@@ -38,7 +38,7 @@ function ArticleDetailsController(articlesController) {
 	 * shows a new empty article.
 	 */
 	this.articleDeleted = function(article) {
-		if (currentArticle['@id'] === article['@id']) {
+		if (currentArticle['id'] === article['id']) {
 			visualize(null);
 		}
 	};
@@ -110,8 +110,8 @@ function ArticleDetailsController(articlesController) {
 			title : articleTitleField.val(),
 			content : articleContentField.val()
 		};
-		if (currentArticle['@id'] != null) {
-			ServerRequest.request('articles/' + currentArticle['@id'], {
+		if (currentArticle['id'] != null) {
+			ServerRequest.request('articles/' + currentArticle['id'], {
 				method : 'POST',
 				data : JSON.stringify(dataToSend),
 				success : function(response) {
@@ -141,7 +141,7 @@ function ArticleDetailsController(articlesController) {
 	 */
 	function articleSaved(articleData, method) {
 		if (method === "PUT")
-			currentArticle['@id'] = articleData['@id'];
+			currentArticle['id'] = articleData['id'];
 		currentArticle.title = articleData.title;
 		currentArticle.content = articleData.content;
 		articlesController.onSave(method);
@@ -169,7 +169,7 @@ function ArticleDetailsController(articlesController) {
 	 */
 	function newArticle() {
 		return {
-			'@id' : null,
+			'id' : null,
 			title : "",
 			content : ""
 		};
