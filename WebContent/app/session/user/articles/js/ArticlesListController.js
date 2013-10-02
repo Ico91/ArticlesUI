@@ -20,7 +20,7 @@ function ArticlesListController(context) {
 			bind();
 			entityListController = new EntityListController(controller);
 			var entityOptions = {
-				id : '@id',
+				id : 'id',
 				selectorClass : 'btn-article',
 				property : 'title',
 				btnDelete : 'btn-delete'
